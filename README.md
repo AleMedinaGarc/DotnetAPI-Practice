@@ -3,7 +3,6 @@
 ## In Progress
 
 - Docker implementation
-- Swagger auth instead of Postman
 
 ## Backlog
 
@@ -28,3 +27,4 @@
 - IT Ticket .\install
 - Db Running
 - Car controller
+- Swagger auth instead of Postman
