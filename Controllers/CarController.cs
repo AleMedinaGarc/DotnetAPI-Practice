@@ -64,17 +64,18 @@ namespace APICarData.Controllers
                 throw;
             }
         }
-    /*
-        [HttpPost("deleteCar")]
+
+        [HttpPut("updateCar/{id}")]
         [Authorize(Roles = "Administrator,GeneralUser")]
-        public IActionResult DeleteCar(string )
+        public IActionResult UpdateCar([FromBody] Car car, int id)
         {
             var currentUser = GetCurrentUser();
             try
-            {
+            {   if (car.Id != id ) return BadRequest();
+                //var car = context.Cars.FirstOrDefault(p => p.Id == id);
                 if(car.User ==  currentUser.Username || currentUser.Role == "Administrator")
                 {
-                    context.Cars.Delete(car);
+                    context.Cars.Remove(car);
                     context.SaveChanges();
                     return Ok();
                 }
@@ -87,7 +88,30 @@ namespace APICarData.Controllers
                 throw;
             }
         }
-*/
+
+        [HttpPost("deleteCar/{id}")]
+        [Authorize(Roles = "Administrator,GeneralUser")]
+        public IActionResult DeleteCar(int id)
+        {
+            var currentUser = GetCurrentUser();
+            try
+            {   
+                var car = context.Cars.FirstOrDefault(p => p.Id == id);
+                if(car.User ==  currentUser.Username || currentUser.Role == "Administrator")
+                {
+                    context.Cars.Remove(car);
+                    context.SaveChanges();
+                    return Ok();
+                }
+                return BadRequest();
+
+            } catch (Exception e)
+            { 
+                if (e.Source != null)
+                Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
+        }
         private UserModel GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
