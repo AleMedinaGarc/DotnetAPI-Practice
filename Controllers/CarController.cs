@@ -21,7 +21,9 @@ namespace APICarData.Controllers
             this.context = context;
         }
 
-
+        /// <summary>
+        /// Return user cars
+        /// </summary>
         [HttpGet("myCars")]
         [Authorize(Roles = "Administrator,GeneralUser")]
         public IEnumerable<Car> GetUserCars()
@@ -30,7 +32,9 @@ namespace APICarData.Controllers
             var cars = context.Cars.Where(p => p.User == currentUser.Username).ToList();
             return cars;
         }
-
+        /// <summary>
+        /// Return all cars in the database
+        /// </summary>
         [HttpGet("allCars")]
         [Authorize(Roles = "Administrator")]
         public IEnumerable<Car> GetAllCars()
@@ -38,7 +42,9 @@ namespace APICarData.Controllers
             var cars = context.Cars.ToList();
             return cars;
         }
-
+        /// <summary>
+        /// Add a car to the database under users username 
+        /// </summary>
         [HttpPost("addCar")]
         [Authorize(Roles = "Administrator,GeneralUser")]
         public IActionResult AddCar([FromBody] Car car)
@@ -61,7 +67,9 @@ namespace APICarData.Controllers
                 throw;
             }
         }
-
+        /// <summary>
+        /// Update a car to the database under users username 
+        /// </summary>
         [HttpPut("updateCar/{id}")]
         [Authorize(Roles = "Administrator,GeneralUser")]
         public IActionResult UpdateCar([FromBody] Car car, int id)
@@ -86,7 +94,9 @@ namespace APICarData.Controllers
                 throw;
             }
         }
-
+        /// <summary>
+        /// Delete a car on the database under users username 
+        /// </summary>
         [HttpPost("deleteCar/{id}")]
         [Authorize(Roles = "Administrator,GeneralUser")]
         public IActionResult DeleteCar(int id)
