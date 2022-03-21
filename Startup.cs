@@ -43,7 +43,10 @@ namespace APICarData
 
             services.AddControllers();
 
-            services.AddSwaggerDocument();
+            services.AddSwaggerDocument(settings =>
+            {
+                settings.Title = "Car API Practice";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,7 +58,7 @@ namespace APICarData
             }
 
             app.UseOpenApi();
-            
+
             app.UseSwaggerUi3();
 
             app.UseHttpsRedirection();

@@ -3,14 +3,11 @@ using APICarData.Data.Entities;
 using APICarData.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 
 namespace APICarData.Controllers
 {
@@ -24,7 +21,9 @@ namespace APICarData.Controllers
             this.context = context;
         }
 
-
+        /// <summary>
+        /// Return user cars
+        /// </summary>
         [HttpGet("myCars")]
         [Authorize(Roles = "Administrator,GeneralUser")]
         public IEnumerable<Car> GetUserCars()
@@ -33,7 +32,9 @@ namespace APICarData.Controllers
             var cars = context.Cars.Where(p => p.User == currentUser.Username).ToList();
             return cars;
         }
-
+        /// <summary>
+        /// Return all cars in the database
+        /// </summary>
         [HttpGet("allCars")]
         [Authorize(Roles = "Administrator")]
         public IEnumerable<Car> GetAllCars()
@@ -41,7 +42,9 @@ namespace APICarData.Controllers
             var cars = context.Cars.ToList();
             return cars;
         }
-
+        /// <summary>
+        /// Add a car to the database under users username 
+        /// </summary>
         [HttpPost("addCar")]
         [Authorize(Roles = "Administrator,GeneralUser")]
         public IActionResult AddCar([FromBody] Car car)
@@ -64,17 +67,21 @@ namespace APICarData.Controllers
                 throw;
             }
         }
-    /*
-        [HttpPost("deleteCar")]
+        /// <summary>
+        /// Update a car to the database under users username 
+        /// </summary>
+        [HttpPut("updateCar/{id}")]
         [Authorize(Roles = "Administrator,GeneralUser")]
-        public IActionResult DeleteCar(string )
+        public IActionResult UpdateCar([FromBody] Car car, int id)
         {
             var currentUser = GetCurrentUser();
             try
-            {
-                if(car.User ==  currentUser.Username || currentUser.Role == "Administrator")
+            {  
+                if(car.Id == id  && 
+                  (car.User ==  currentUser.Username || 
+                   currentUser.Role == "Administrator"))
                 {
-                    context.Cars.Delete(car);
+                    context.Entry(car).State = EntityState.Modified;;
                     context.SaveChanges();
                     return Ok();
                 }
@@ -87,7 +94,32 @@ namespace APICarData.Controllers
                 throw;
             }
         }
-*/
+        /// <summary>
+        /// Delete a car on the database under users username 
+        /// </summary>
+        [HttpDelete("deleteCar/{id}")]
+        [Authorize(Roles = "Administrator,GeneralUser")]
+        public IActionResult DeleteCar(int id)
+        {
+            var currentUser = GetCurrentUser();
+            try
+            {   
+                var car = context.Cars.FirstOrDefault(p => p.Id == id);
+                if(car.User ==  currentUser.Username || currentUser.Role == "Administrator")
+                {
+                    context.Cars.Remove(car);
+                    context.SaveChanges();
+                    return Ok();
+                }
+                return BadRequest();
+
+            } catch (Exception e)
+            { 
+                if (e.Source != null)
+                Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
+        }
         private UserModel GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
