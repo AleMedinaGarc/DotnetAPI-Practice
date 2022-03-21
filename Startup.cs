@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using APICarData.Data.CarContex;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace APICarData
 {
@@ -23,8 +24,16 @@ namespace APICarData
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<CarContext>(options => options.UseSqlServer(Configuration.GetConnectionString("APICarDataDb")));
+
+            services.AddMvc();
+
+            services.AddControllers();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => {
+                // Adding Jwt Bearer
+                .AddJwtBearer(options =>
+                {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -37,15 +46,33 @@ namespace APICarData
                     };
                 });
 
-            services.AddDbContext<CarContext>(options => options.UseSqlServer(Configuration.GetConnectionString("APICarDataDb")));
-
-            services.AddMvc();
-
-            services.AddControllers();
-
-            services.AddSwaggerDocument(settings =>
+            services.AddSwaggerGen(option =>
             {
-                settings.Title = "Car API Practice";
+
+                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+                });
+
+                option.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                        new string[] {}
+                    }
+                });
             });
         }
 
@@ -55,14 +82,12 @@ namespace APICarData
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "JWTAuthDemo v1"));
             }
 
-            app.UseOpenApi();
-
-            app.UseSwaggerUi3();
-
             app.UseHttpsRedirection();
-            
+
             app.UseRouting();
 
             app.UseAuthentication();
