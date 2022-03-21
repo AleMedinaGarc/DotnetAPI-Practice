@@ -97,7 +97,7 @@ namespace APICarData.Controllers
         /// <summary>
         /// Delete a car on the database under users username 
         /// </summary>
-        [HttpPost("deleteCar/{id}")]
+        [HttpDelete("deleteCar/{id}")]
         [Authorize(Roles = "Administrator,GeneralUser")]
         public IActionResult DeleteCar(int id)
         {
