@@ -2,16 +2,18 @@
 
 ## In Progress
 
+- DB Connection with the API
 - Docker implementation
+- Install Visual Studio
 
 ## Backlog
 
 - Frontend
   - Learn about Angular basics
 
-## Blocked
+## Review
 
-- DB Connection with the API
+- Swagger auth instead of Postman
 
 ## Done
 
@@ -27,4 +29,3 @@
 - IT Ticket .\install
 - Db Running
 - Car controller
-- Swagger auth instead of Postman
