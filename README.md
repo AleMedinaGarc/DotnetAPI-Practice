@@ -3,8 +3,12 @@
 ## In Progress
 
 - DB Connection with the API
+  - Blocked by user permission
 - Docker implementation
+  - Blocked by waiting the license
+  - Blocked by Docker group permission
 - Install Visual Studio
+  - Blocked by waiting install specifications
 
 ## Backlog
 
