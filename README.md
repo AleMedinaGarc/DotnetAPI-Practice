@@ -2,11 +2,8 @@
 
 ## In Progress
 
-- DB Connection with the API
-  - Blocked by user permission
 - Docker implementation
-  - Blocked by waiting the license
-  - Blocked by Docker group permission
+  - Connect Docker containers
 - Install Visual Studio
   - Blocked by waiting install specifications
 
@@ -33,3 +30,4 @@
 - IT Ticket .\install
 - Db Running
 - Car controller
+- Docker SQL Server container
