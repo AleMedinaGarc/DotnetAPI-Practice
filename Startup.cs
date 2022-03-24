@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using APICarData.Data.CarContex;
+using APICarData.Data.CarsContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -24,14 +24,13 @@ namespace APICarData
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CarContext>(options => options.UseSqlServer(Configuration.GetConnectionString("APICarDataDb")));
+            services.AddDbContext<CarsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("APICarDataDb")));
 
             services.AddMvc();
 
             services.AddControllers();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                // Adding Jwt Bearer
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters

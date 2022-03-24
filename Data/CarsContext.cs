@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using APICarData.Data.Entities;
 
-namespace APICarData.Data.CarContex
+namespace APICarData.Data.CarsContext
 {
-    public class CarContext : DbContext
+    public class CarsContext : DbContext
     {
-        public CarContext(DbContextOptions<CarContext> options):base(options)
+        public CarsContext(DbContextOptions<CarsContext> options):base(options)
         {
         }
         public DbSet<Car> Cars {get; set; } 
