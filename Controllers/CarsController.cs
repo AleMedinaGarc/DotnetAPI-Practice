@@ -54,9 +54,17 @@ namespace APICarData.Controllers
             {
                 if(car.Username ==  currentUser.Username || currentUser.Role == "Administrator")
                 {
-                    context.Cars.Add(car);
-                    context.SaveChanges();
-                    return Ok();
+/*                     var plateAlreadyExist = context.Cars.FirstOrDefault(p => 
+                        p.PlateNumber == car.PlateNumber);
+    
+                     if(string.IsNullOrEmpty(plateAlreadyExist))
+                    { */
+                        context.Cars.Add(car);
+                        context.SaveChanges();
+                        return Ok();
+/*                     } 
+                    Console.WriteLine("Plate number already registered:", plateAlreadyExist ); */
+
                 }
                 return BadRequest();
 
