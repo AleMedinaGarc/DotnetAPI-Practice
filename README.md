@@ -1,21 +1,5 @@
 # Documentation list
 
-## In Progress
-
-- Docker implementation
-  - Connect Docker containers
-- Install Visual Studio
-  - Blocked by waiting install specifications
-
-## Backlog
-
-- Frontend
-  - Learn about Angular basics
-
-## Review
-
-- Swagger auth instead of Postman
-
 ## Done
 
 - Api running
@@ -28,6 +12,9 @@
 - Authentication
 - Postman Test
 - IT Ticket .\install
+- Swagger auth instead of Postman
 - Db Running
 - Car controller
 - Docker SQL Server container
+- Dockerize API
+- Connection between API and SQL containers
