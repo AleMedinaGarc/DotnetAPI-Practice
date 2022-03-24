@@ -1,4 +1,4 @@
-using APICarData.Data.CarContex;
+using APICarData.Data.CarsContext;
 using APICarData.Data.Entities;
 using APICarData.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +13,10 @@ namespace APICarData.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarController : ControllerBase
+    public class CarsController : ControllerBase
     {
-        private readonly CarContext context;
-        public CarController(CarContext context)
+        private readonly CarsContext context;
+        public CarsController(CarsContext context)
         {
             this.context = context;
         }
@@ -29,7 +29,7 @@ namespace APICarData.Controllers
         public IEnumerable<Car> GetUserCars()
         {
             var currentUser = GetCurrentUser();
-            var cars = context.Cars.Where(p => p.User == currentUser.Username).ToList();
+            var cars = context.Cars.Where(p => p.Username == currentUser.Username).ToList();
             return cars;
         }
         /// <summary>
@@ -52,7 +52,7 @@ namespace APICarData.Controllers
             var currentUser = GetCurrentUser();
             try
             {
-                if(car.User ==  currentUser.Username || currentUser.Role == "Administrator")
+                if(car.Username ==  currentUser.Username || currentUser.Role == "Administrator")
                 {
                     context.Cars.Add(car);
                     context.SaveChanges();
@@ -78,7 +78,7 @@ namespace APICarData.Controllers
             try
             {  
                 if(car.Id == id  && 
-                  (car.User ==  currentUser.Username || 
+                  (car.Username ==  currentUser.Username || 
                    currentUser.Role == "Administrator"))
                 {
                     context.Entry(car).State = EntityState.Modified;;
@@ -105,7 +105,7 @@ namespace APICarData.Controllers
             try
             {   
                 var car = context.Cars.FirstOrDefault(p => p.Id == id);
-                if(car.User ==  currentUser.Username || currentUser.Role == "Administrator")
+                if(car.Username ==  currentUser.Username || currentUser.Role == "Administrator")
                 {
                     context.Cars.Remove(car);
                     context.SaveChanges();
