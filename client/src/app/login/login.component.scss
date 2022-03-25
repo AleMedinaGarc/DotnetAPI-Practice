@@ -1,0 +1,54 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: none;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    padding-top: 10%;
+}
+
+.box {
+    border-radius: 10px;
+    border-width: 2%;
+    padding: 40px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+}
+
+.box h2 {
+    margin: 0 0 30px 0;
+    padding: 0;
+    text-align: center;
+}
+
+.box input[type="submit"],
+.box button[type="submit"],
+a.button {
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10%;
+    display: inline-block;
+    width: 100%;
+}
+
+.box input[type="submit"]:hover,
+.box button[type="submit"]:hover,
+a.button:hover {
+    opacity: 0.8;
+}
