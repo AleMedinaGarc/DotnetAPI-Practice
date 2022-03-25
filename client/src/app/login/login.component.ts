@@ -11,13 +11,9 @@ export class LoginComponent implements OnInit {
   constructor() {}
   ngOnInit(): void {}
 
-  username = new FormControl('', [Validators.required]);
-  password = new FormControl('', [Validators.required]);
+  username = "";
+  password = "";
 
-  getErrorMessage() {
-    if (this.username.hasError('required')) 
-      return 'You must enter a value';
-    return this.username.hasError('username') ? 'Not a valid email' : '';
-  }
+  
 
 }

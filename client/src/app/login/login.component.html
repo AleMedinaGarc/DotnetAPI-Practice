@@ -1,17 +1,19 @@
-<main class="box">
-    <h2>Login</h2>
-    <mat-divider></mat-divider>
-    <div class="form-container">
-        <mat-form-field appearance="legacy">
-            <mat-label>Username</mat-label>
-            <input matInput>
-        </mat-form-field>
-        <mat-form-field appearance="legacy">
-            <mat-label>Password</mat-label>
-            <input matInput>
-        </mat-form-field>
-    </div>
-    <button type="submit" mat-flat-button color="primary">Submit</button>
-</main>
+<div class="container">
+    <main class="box">
+        <h2>Login</h2>
+        <mat-divider></mat-divider>
+        <div class="form-container">
+            <mat-form-field appearance="legacy">
+                <mat-label>Username</mat-label>
+                <input matInput [(ngModel)]="username">
+            </mat-form-field>
+            <mat-form-field appearance="legacy">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" [(ngModel)]="password">
+            </mat-form-field>
+        </div>
+        <button type="submit" mat-flat-button color="primary">Submit</button>
+    </main>
+</div>
 <footer>
 </footer>
