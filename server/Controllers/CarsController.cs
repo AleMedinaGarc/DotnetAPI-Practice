@@ -36,7 +36,7 @@ namespace APICarData.Controllers
         /// Return all cars in the database
         /// </summary>
         [HttpGet("allCars")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public IEnumerable<Car> GetAllCars()
         {
             var cars = context.Cars.ToList();
