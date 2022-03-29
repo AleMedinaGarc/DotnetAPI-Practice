@@ -1,13 +1,14 @@
-using APICarData.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
+
+using APICarData.Models;
 
 namespace APICarData.Controllers
 {
@@ -15,11 +16,11 @@ namespace APICarData.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private IConfiguration _config;
+        private readonly IConfiguration config;
 
         public LoginController(IConfiguration config)
         {
-            _config = config;
+            this.config = config;
         }
 
         [AllowAnonymous]
@@ -27,19 +28,14 @@ namespace APICarData.Controllers
         public IActionResult Login([FromBody] UserLogin userLogin)
         {
             var user = Authenticate(userLogin);
-
-            if (user != null)
-            {
-                var token = Generate(user);
-                return Ok(token);
-            }
-
+            if( Authenticate(userLogin) != null)
+                return Ok(Generate(user));
             return NotFound("User not found");
         }
 
         private string Generate(UserModel user)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
@@ -48,25 +44,21 @@ namespace APICarData.Controllers
                 new Claim(ClaimTypes.Role, user.Role)
             };
 
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-              _config["Jwt:Audience"],
-              claims,
-              expires: DateTime.Now.AddMinutes(30),
-              signingCredentials: credentials);
+            var token = new JwtSecurityToken(config["Jwt:Issuer"],
+                config["Jwt:Audience"],
+                claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         private UserModel Authenticate(UserLogin userLogin)
         {
-            var currentUser = UserConstants.Users.FirstOrDefault(o => o.Username.ToLower() == userLogin.Username.ToLower() && o.Password == userLogin.Password);
+            var currentUser = UserConstants.Users.FirstOrDefault(o => 
+                o.Username.ToLower() == userLogin.Username.ToLower() && o.Password == userLogin.Password);
 
-            if (currentUser != null)
-            {
-                return currentUser;
-            }
-
-            return null;
+            return currentUser != null ? currentUser : null;
         }
     }
 }

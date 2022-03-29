@@ -1,14 +1,15 @@
-using APICarData.Data.CarsContext;
-using APICarData.Data.Entities;
-using APICarData.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+
+using APICarData.Models;
+using APICarData.Data.Entities;
+using APICarData.Data.CarsContext;
 
 namespace APICarData.Controllers
 {
@@ -37,8 +38,7 @@ namespace APICarData.Controllers
                     return await context.Cars.Where(p =>
                     p.Username == GetCurrentUser().Username).ToListAsync();
                 }
-                Console.WriteLine("There's no cars registered in the database.");
-                return NotFound();
+                return NotFound("There's no cars registered in the database.");
             }
             catch (Exception e)
             {
@@ -58,8 +58,7 @@ namespace APICarData.Controllers
             {
                 if (context.Cars.Any())
                     return await context.Cars.ToListAsync();
-                Console.WriteLine("There's no cars registered in the database.");
-                return NotFound();
+                return NotFound("There's no cars registered in the database.");
             }
             catch (Exception e)
             {
@@ -90,11 +89,9 @@ namespace APICarData.Controllers
                         context.SaveChanges();
                         return Ok();
                     }
-                    Console.WriteLine("Plate number already registered.");
-                    return Conflict();
+                    return Conflict("Plate number already registered.");
                 }
-                Console.WriteLine("Problem with the credentials, try to log in with a valid account.");
-                return Unauthorized();
+                return Unauthorized("Problem with the credentials, try to log in with a valid account.");
             }
             catch (Exception e)
             {
@@ -122,11 +119,9 @@ namespace APICarData.Controllers
                         context.SaveChanges();
                         return Ok();
                     }
-                    Console.WriteLine("The route and the body id doesn't match: ", car.Id, id);
-                    return BadRequest();
+                    return BadRequest("The route and the body id doesn't match");
                 }
-                Console.WriteLine("Problem with the credentials, try to log in with a valid account.");
-                return Unauthorized();
+                return Unauthorized("Problem with the credentials, try to log in with a valid account.");
             }
             catch (Exception e)
             {
@@ -155,11 +150,9 @@ namespace APICarData.Controllers
                         context.SaveChanges();
                         return Ok();
                     }
-                     Console.WriteLine("Unauthorized, try to log in with a valid account.");
-                    return Unauthorized();
+                    return Unauthorized("Unauthorized, try to log in with a valid account.");
                 }
-                Console.WriteLine("The car doesn't exist in the database.");
-                return NotFound();
+                return NotFound("The car doesn't exist in the database.");
             }
             catch (Exception e)
             {
