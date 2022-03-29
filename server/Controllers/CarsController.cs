@@ -1,13 +1,15 @@
-using APICarData.Data.CarsContext;
-using APICarData.Data.Entities;
-using APICarData.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+
+using APICarData.Models;
+using APICarData.Data.Entities;
+using APICarData.Data.CarsContext;
 
 namespace APICarData.Controllers
 {
@@ -26,21 +28,44 @@ namespace APICarData.Controllers
         /// </summary>
         [HttpGet("myCars")]
         [Authorize(Roles = "Administrator,GeneralUser")]
-        public IEnumerable<Car> GetUserCars()
+        public async Task<ActionResult<IEnumerable<Car>>> GetUserCars()
         {
-            var currentUser = GetCurrentUser();
-            var cars = context.Cars.Where(p => p.Username == currentUser.Username).ToList();
-            return cars;
+            try
+            {
+                if (context.Cars.Any(p =>
+                    p.Username == GetCurrentUser().Username))
+                {
+                    return await context.Cars.Where(p =>
+                    p.Username == GetCurrentUser().Username).ToListAsync();
+                }
+                return NotFound("There's no cars registered in the database.");
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
         }
         /// <summary>
         /// Return all cars in the database
         /// </summary>
         [HttpGet("allCars")]
         [Authorize(Roles = "Administrator")]
-        public IEnumerable<Car> GetAllCars()
+        public async Task<ActionResult<IEnumerable<Car>>> GetAllCars()
         {
-            var cars = context.Cars.ToList();
-            return cars;
+            try
+            {
+                if (context.Cars.Any())
+                    return await context.Cars.ToListAsync();
+                return NotFound("There's no cars registered in the database.");
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
         }
         /// <summary>
         /// Add a car to the database under users username 
@@ -52,24 +77,24 @@ namespace APICarData.Controllers
             var currentUser = GetCurrentUser();
             try
             {
-                if(car.Username ==  currentUser.Username || currentUser.Role == "Administrator")
+                if (car.Username == currentUser.Username ||
+                    currentUser.Role == "Administrator")
                 {
-/*                     var plateAlreadyExist = context.Cars.FirstOrDefault(p => 
-                        p.PlateNumber == car.PlateNumber);
-    
-                     if(string.IsNullOrEmpty(plateAlreadyExist))
-                    { */
+                    bool plateAlreadyExist = context.Cars.Any(p =>
+                       p.PlateNumber == car.PlateNumber);
+
+                    if (!plateAlreadyExist)
+                    {
                         context.Cars.Add(car);
                         context.SaveChanges();
                         return Ok();
-/*                     } 
-                    Console.WriteLine("Plate number already registered:", plateAlreadyExist ); */
-
+                    }
+                    return Conflict("Plate number already registered.");
                 }
-                return BadRequest();
-
-            } catch (Exception e)
-            { 
+                return Unauthorized("Problem with the credentials, try to log in with a valid account.");
+            }
+            catch (Exception e)
+            {
                 if (e.Source != null)
                     Console.WriteLine("Exception source:", e.Source);
                 throw;
@@ -84,21 +109,24 @@ namespace APICarData.Controllers
         {
             var currentUser = GetCurrentUser();
             try
-            {  
-                if(car.Id == id  && 
-                  (car.Username ==  currentUser.Username || 
-                   currentUser.Role == "Administrator"))
+            {
+                if (car.Username == currentUser.Username ||
+                    currentUser.Role == "Administrator")
                 {
-                    context.Entry(car).State = EntityState.Modified;;
-                    context.SaveChanges();
-                    return Ok();
+                    if (car.Id == id)
+                    {
+                        context.Entry(car).State = EntityState.Modified;
+                        context.SaveChanges();
+                        return Ok();
+                    }
+                    return BadRequest("The route and the body id doesn't match");
                 }
-                return BadRequest();
-
-            } catch (Exception e)
-            { 
+                return Unauthorized("Problem with the credentials, try to log in with a valid account.");
+            }
+            catch (Exception e)
+            {
                 if (e.Source != null)
-                Console.WriteLine("Exception source:", e.Source);
+                    Console.WriteLine("Exception source:", e.Source);
                 throw;
             }
         }
@@ -111,20 +139,25 @@ namespace APICarData.Controllers
         {
             var currentUser = GetCurrentUser();
             try
-            {   
+            {
                 var car = context.Cars.FirstOrDefault(p => p.Id == id);
-                if(car.Username ==  currentUser.Username || currentUser.Role == "Administrator")
+                if (car != null)
                 {
-                    context.Cars.Remove(car);
-                    context.SaveChanges();
-                    return Ok();
+                    if (car.Username == currentUser.Username ||
+                        currentUser.Role == "Administrator")
+                    {
+                        context.Cars.Remove(car);
+                        context.SaveChanges();
+                        return Ok();
+                    }
+                    return Unauthorized("Unauthorized, try to log in with a valid account.");
                 }
-                return BadRequest();
-
-            } catch (Exception e)
-            { 
+                return NotFound("The car doesn't exist in the database.");
+            }
+            catch (Exception e)
+            {
                 if (e.Source != null)
-                Console.WriteLine("Exception source:", e.Source);
+                    Console.WriteLine("Exception source:", e.Source);
                 throw;
             }
         }
