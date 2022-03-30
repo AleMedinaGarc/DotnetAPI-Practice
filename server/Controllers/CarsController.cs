@@ -7,9 +7,8 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 
-using APICarData.Models;
 using APICarData.Data.Entities;
-using APICarData.Data.CarsContext;
+using APICarData.Data.ApiContext;
 
 namespace APICarData.Controllers
 {
@@ -17,8 +16,8 @@ namespace APICarData.Controllers
     [ApiController]
     public class CarsController : ControllerBase
     {
-        private readonly CarsContext context;
-        public CarsController(CarsContext context)
+        private readonly ApiContext context;
+        public CarsController(ApiContext context)
         {
             this.context = context;
         }
@@ -161,7 +160,7 @@ namespace APICarData.Controllers
                 throw;
             }
         }
-        private UserModel GetCurrentUser()
+        private User GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
 
@@ -169,10 +168,12 @@ namespace APICarData.Controllers
             {
                 var userClaims = identity.Claims;
 
-                return new UserModel
+                return new User
                 {
-                    Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
-                    Role = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value
+                    Username = userClaims.FirstOrDefault(o => 
+                        o.Type == ClaimTypes.NameIdentifier)?.Value,
+                    Role = userClaims.FirstOrDefault(o => 
+                        o.Type == ClaimTypes.Role)?.Value
                 };
             }
             return null;

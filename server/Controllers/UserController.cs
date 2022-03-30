@@ -1,3 +1,4 @@
+using APICarData.Data.Entities;
 using APICarData.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -44,7 +45,7 @@ namespace APICarData.Controllers
             return Ok("Hi, you're on public property");
         }
 
-        private UserModel GetCurrentUser()
+        private User GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
 
@@ -52,10 +53,12 @@ namespace APICarData.Controllers
             {
                 var userClaims = identity.Claims;
 
-                return new UserModel
+                return new User
                 {
-                    Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
-                    Role = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value
+                    Username = userClaims.FirstOrDefault(o => 
+                        o.Type == ClaimTypes.NameIdentifier)?.Value,
+                    Role = userClaims.FirstOrDefault(o => 
+                        o.Type == ClaimTypes.Role)?.Value
                 };
             }
             return null;
