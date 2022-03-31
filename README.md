@@ -7,17 +7,29 @@
   - [x] Learn about C# basics
   - [x] Project initialized
 - [x] Swagger running
-- [ ] Login controller
-- [ ] User controller
-- [ ] Authentication
+- [ ] API controllers
+  - [ ] Login controller
+  - [ ] Signup controller
+  - [ ] Rent controller
+  - [ ] Car controller
 - [ ] Postman Test
-- [ ] IT Ticket .\install
-- [ ] Swagger auth instead of Postman
 - [ ] Db Running
-- [ ] Car controller
 - [ ] Docker SQL Server container
 - [ ] Dockerize API
 - [ ] Connection between API and SQL containers
+- [ ] Data modeling
+- [ ] Google oauth login and signup
+- [ ] Data filter script
+- [ ] Database Tables
+  - [ ] User Table
+  - [ ] Car Table
+  - [ ] Rent Table
+- [ ] Deserialize XML
+- [ ] Implement ETL process
+- [ ] Front add car to rent form
+  - [ ] Create user rent list
+  - [ ] Add car form
+  - [ ] Form front validation
 
 ## External documentation
 
