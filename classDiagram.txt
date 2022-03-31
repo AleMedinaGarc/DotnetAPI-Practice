@@ -37,3 +37,6 @@ note on link #red: note that is red
 Dummy --> Foo2 : Another link
 
 @enduml
+
+http://www.plantuml.com/plantuml/uml/LOxD2W8n38JlUOe1ptlnk0VP1V4zgXjiiJ_GfWVVtZIow488oJ3V94iJLwMdIFI8hZLSUqflievfkk1M2cQiY26_A1TXb6mBJfMt6IQ9TuBGe0eTsVE0rUEv_aNKyFJo2xh7pYHU0xIKtSzyROQvl25ac9Dr7XQYHSVn-mS0
+https://plantuml.com/class-diagram
