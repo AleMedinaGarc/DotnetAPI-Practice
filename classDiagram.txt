@@ -1,0 +1,39 @@
+@startuml
+class DGTCar{
+ test
+ test2
+ test3
+}
+
+class User{
+ test
+ test2
+ test3
+}
+
+class AvailableCar{
+ test
+ test2
+ test3
+}
+
+class Reservation{
+ test
+ test2
+ test3
+}
+
+class GoogleData{
+ test
+ test2
+ test3
+}
+
+User --> Reservation
+AvailableCar --> Reservation
+
+note on link #red: note that is red
+
+Dummy --> Foo2 : Another link
+
+@enduml
