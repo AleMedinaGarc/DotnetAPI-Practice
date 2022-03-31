@@ -30,6 +30,10 @@
 - [Docker](https://www.docker.com/)
 - [SQL Server image](https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver15&pivots=cs1-bash)
 
+### DGT Data
+
+- [DGT](https://dgt-microdata.s3.eu-central-1.amazonaws.com/)
+
 ## Project Kanban
 
 - [Kanban](https://github.com/AleMedinaGarc/DotnetAPI-Practice/projects/1)
