@@ -2,16 +2,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace APICarData.Data.Entities 
 { 
-    public class User
+    public class User : GoogleUserData
     {
-        [Key]
-        public int Id {get; set; }
         [Required]
-        [StringLength(50)]
-        public string Username { get; set; }
+        [RegularExpression(@"^(?:{9}[0-9]$")]
+        public string contactNumber {get; set; }
         [Required]
-        [StringLength(50)]
-        public string Password { get; set; }
-        public string Role { get; set; } = "GeneralUser";
+        [StringLength(70)]
+        public string address {get; set; }
+        [Required]
+        [StringLength(13)]
+        public string role {get; set; } // administrator/employee
     }
 }

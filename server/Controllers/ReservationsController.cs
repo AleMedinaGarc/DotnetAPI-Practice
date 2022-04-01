@@ -14,28 +14,28 @@ namespace APICarData.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarsController : ControllerBase
+    public class ReservationsController : ControllerBase
     {
-        private readonly ApiContext context;
-        public CarsController(ApiContext context)
+        private readonly ApiContext _context;
+        public ReservationsController(ApiContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
         /// <summary>
-        /// Return user cars
+        /// Return user reservation 
         /// </summary>
-        [HttpGet("myCars")]
-        [Authorize(Roles = "Administrator,GeneralUser")]
-        public async Task<ActionResult<IEnumerable<Car>>> GetUserCars()
+        [HttpGet("myReservations")]
+        [Authorize(Roles = "Administrator,Employee")]
+        public async Task<ActionResult<IEnumerable<Reservation>>> GetUserReservations()
         {
             try
             {
-                if (context.Cars.Any(p =>
-                    p.Username == GetCurrentUser().Username))
+                if (_context.Reservations.Any(p =>
+                    p.userId == GetCurrentUser().userId))
                 {
-                    return await context.Cars.Where(p =>
-                    p.Username == GetCurrentUser().Username).ToListAsync();
+                    return await _context.Reservations.Where(p =>
+                    p.userId == GetCurrentUser().userId).ToListAsync();
                 }
                 return NotFound("There's no cars registered in the database.");
             }
@@ -49,15 +49,15 @@ namespace APICarData.Controllers
         /// <summary>
         /// Return all cars in the database
         /// </summary>
-        [HttpGet("allCars")]
+        [HttpGet("allReservations")]
         [Authorize(Roles = "Administrator")]
-        public async Task<ActionResult<IEnumerable<Car>>> GetAllCars()
+        public async Task<ActionResult<IEnumerable<Reservation>>> GetAllReservations()
         {
             try
             {
-                if (context.Cars.Any())
-                    return await context.Cars.ToListAsync();
-                return NotFound("There's no cars registered in the database.");
+                if (_context.Reservations.Any())
+                    return await _context.Reservations.ToListAsync();
+                return NotFound("There's no reservations registered in the database.");
             }
             catch (Exception e)
             {
@@ -69,23 +69,23 @@ namespace APICarData.Controllers
         /// <summary>
         /// Add a car to the database under users username 
         /// </summary>
-        [HttpPost("addCar")]
-        [Authorize(Roles = "Administrator,GeneralUser")]
-        public IActionResult AddCar([FromBody] Car car)
+        [HttpPost("addReservation")]
+        [Authorize(Roles = "Administrator,Employee")]
+        public IActionResult AddReservation([FromBody] CompanyCar car)
         {
             var currentUser = GetCurrentUser();
             try
             {
-                if (car.Username == currentUser.Username ||
-                    currentUser.Role == "Administrator")
+                if (car.username == currentUser.email ||
+                    currentUser.role == "Administrator")
                 {
-                    bool plateAlreadyExist = context.Cars.Any(p =>
-                       p.PlateNumber == car.PlateNumber);
+                    bool plateAlreadyExist = _context.CompanyCars.Any(p =>
+                       p.numberPlate == car.numberPlate);
 
                     if (!plateAlreadyExist)
                     {
-                        context.Cars.Add(car);
-                        context.SaveChanges();
+                        _context.CompanyCars.Add(car);
+                        _context.SaveChanges();
                         return Ok();
                     }
                     return Conflict("Plate number already registered.");
@@ -104,18 +104,18 @@ namespace APICarData.Controllers
         /// </summary>
         [HttpPut("updateCar/{id}")]
         [Authorize(Roles = "Administrator,GeneralUser")]
-        public IActionResult UpdateCar([FromBody] Car car, int id)
+        public IActionResult UpdateCar([FromBody] CompanyCar car, int id)
         {
             var currentUser = GetCurrentUser();
             try
             {
-                if (car.Username == currentUser.Username ||
+                if (car.username == currentUser.Username ||
                     currentUser.Role == "Administrator")
                 {
-                    if (car.Id == id)
+                    if (car.id == id)
                     {
-                        context.Entry(car).State = EntityState.Modified;
-                        context.SaveChanges();
+                        _context.Entry(car).State = EntityState.Modified;
+                        _context.SaveChanges();
                         return Ok();
                     }
                     return BadRequest("The route and the body id doesn't match");
@@ -139,14 +139,14 @@ namespace APICarData.Controllers
             var currentUser = GetCurrentUser();
             try
             {
-                var car = context.Cars.FirstOrDefault(p => p.Id == id);
+                var car = _context.CompanyCars.FirstOrDefault(p => p.id == id);
                 if (car != null)
                 {
-                    if (car.Username == currentUser.Username ||
+                    if (car.username == currentUser.Username ||
                         currentUser.Role == "Administrator")
                     {
-                        context.Cars.Remove(car);
-                        context.SaveChanges();
+                        _context.CompanyCars.Remove(car);
+                        _context.SaveChanges();
                         return Ok();
                     }
                     return Unauthorized("Unauthorized, try to log in with a valid account.");
@@ -170,9 +170,9 @@ namespace APICarData.Controllers
 
                 return new User
                 {
-                    Username = userClaims.FirstOrDefault(o => 
-                        o.Type == ClaimTypes.NameIdentifier)?.Value,
-                    Role = userClaims.FirstOrDefault(o => 
+                    userId = userClaims.FirstOrDefault(o => 
+                        o.Type == ClaimTypes.UserId)?.Value,
+                    role = userClaims.FirstOrDefault(o => 
                         o.Type == ClaimTypes.Role)?.Value
                 };
             }
