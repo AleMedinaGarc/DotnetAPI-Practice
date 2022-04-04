@@ -9,6 +9,7 @@ using System.Text;
 using APICarData.Data.ApiContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace APICarData
 {
@@ -43,6 +44,13 @@ namespace APICarData
                         ValidAudience = Configuration["Jwt:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                     };
+                })
+                .AddGoogle("google", opt =>
+                {
+                    var googleAuth = Configuration.GetSection("Authentication:Google");
+                    opt.ClientId = googleAuth["ClientId"];
+                    opt.ClientSecret = googleAuth["ClientSecret"];
+                    opt.SignInScheme = IdentityConstants.ExternalScheme;
                 });
 
             services.AddSwaggerGen(option =>
@@ -82,7 +90,7 @@ namespace APICarData
             .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

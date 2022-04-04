@@ -1,1 +1,15 @@
-<h2>Console test: allCars api get request</h2>
+<div *ngIf="socialAuthService.authState | async as socialUser">
+    <p>Hello, {{socialUser.name}}!</p>
+    <br>
+    <p>A test get petition is running on console.</p>
+    <br>
+    <p>Your email: {{socialUser.email}}</p>
+    <br>
+    <mat-card-actions>
+        <div>
+            <button mat-raised-button (click)="printContent(socialUser)">Test console data</button>
+            <button mat-raised-button (click)="logout()">Logout</button>
+        </div>
+    </mat-card-actions>
+
+</div>

@@ -47,7 +47,7 @@ namespace APICarData.Controllers
             }
         }
         /// <summary>
-        /// Return all cars in the database
+        /// Return all reservations in the database
         /// </summary>
         [HttpGet("allReservations")]
         [Authorize(Roles = "Administrator")]
@@ -71,24 +71,17 @@ namespace APICarData.Controllers
         /// </summary>
         [HttpPost("addReservation")]
         [Authorize(Roles = "Administrator,Employee")]
-        public IActionResult AddReservation([FromBody] CompanyCar car)
+        public IActionResult AddReservation([FromBody] Reservation reservation)
         {
             var currentUser = GetCurrentUser();
             try
             {
-                if (car.username == currentUser.email ||
+                if (reservation.userId == currentUser.userId ||
                     currentUser.role == "Administrator")
                 {
-                    bool plateAlreadyExist = _context.CompanyCars.Any(p =>
-                       p.numberPlate == car.numberPlate);
-
-                    if (!plateAlreadyExist)
-                    {
-                        _context.CompanyCars.Add(car);
-                        _context.SaveChanges();
-                        return Ok();
-                    }
-                    return Conflict("Plate number already registered.");
+                    _context.Reservations.Add(reservation);
+                    _context.SaveChanges();
+                    return Ok();
                 }
                 return Unauthorized("Problem with the credentials, try to log in with a valid account.");
             }
@@ -100,21 +93,21 @@ namespace APICarData.Controllers
             }
         }
         /// <summary>
-        /// Update a car to the database under users username 
+        /// Update a reservation 
         /// </summary>
         [HttpPut("updateCar/{id}")]
         [Authorize(Roles = "Administrator,GeneralUser")]
-        public IActionResult UpdateCar([FromBody] CompanyCar car, int id)
+        public IActionResult UpdateCar([FromBody] Reservation reservation, int id)
         {
             var currentUser = GetCurrentUser();
             try
             {
-                if (car.username == currentUser.Username ||
-                    currentUser.Role == "Administrator")
+                if (reservation.userId == currentUser.userId ||
+                    currentUser.role == "Administrator")
                 {
-                    if (car.id == id)
+                    if (reservation.vin == id)
                     {
-                        _context.Entry(car).State = EntityState.Modified;
+                        _context.Entry(reservation).State = EntityState.Modified;
                         _context.SaveChanges();
                         return Ok();
                     }
@@ -139,13 +132,13 @@ namespace APICarData.Controllers
             var currentUser = GetCurrentUser();
             try
             {
-                var car = _context.CompanyCars.FirstOrDefault(p => p.id == id);
-                if (car != null)
+                var reservation = _context.Reservations.FirstOrDefault(p => p.vin == id);
+                if (reservation != null)
                 {
-                    if (car.username == currentUser.Username ||
-                        currentUser.Role == "Administrator")
+                    if (reservation.userId == currentUser.userId ||
+                        currentUser.role == "Administrator")
                     {
-                        _context.CompanyCars.Remove(car);
+                        _context.Reservations.Remove(reservation);
                         _context.SaveChanges();
                         return Ok();
                     }
@@ -170,9 +163,9 @@ namespace APICarData.Controllers
 
                 return new User
                 {
-                    userId = userClaims.FirstOrDefault(o => 
-                        o.Type == ClaimTypes.UserId)?.Value,
-                    role = userClaims.FirstOrDefault(o => 
+                    userId = userClaims.FirstOrDefault(o =>
+                        o.Type == ClaimTypes.userId)?.Value,
+                    role = userClaims.FirstOrDefault(o =>
                         o.Type == ClaimTypes.Role)?.Value
                 };
             }

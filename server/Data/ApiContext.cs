@@ -8,7 +8,9 @@ namespace APICarData.Data.ApiContext
         public ApiContext(DbContextOptions<ApiContext> options):base(options)
         {
         }
-        public DbSet<Car> Cars {get; set; } 
+        public DbSet<CompanyCar> CompanyCars {get; set; } 
         public DbSet<User> Users {get; set; }
+        public DbSet<GoogleUserData> GoogleUsersData {get; set; }
+        public DbSet<Reservation> Reservations {get; set; }
     }
 }

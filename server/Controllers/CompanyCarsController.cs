@@ -108,11 +108,11 @@ namespace APICarData.Controllers
         {
             try
             {
-                var car = _context.CompanyCars.FirstOrDefault(p => p.vin == id);
+                var car = _context.Reservations.FirstOrDefault(p => p.vin == id);
                 if (car != null)
                 {
 
-                    _context.CompanyCars.Remove(car);
+                    _context.Reservations.Remove(car);
                     _context.SaveChanges();
                     return Ok();
 

@@ -2,16 +2,24 @@ import { NgModule } from '@angular/core';
 import { HomeComponent } from './home/home.component';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
+import { AuthenticationService } from './shared/services/authentication.service';
+
 
 const routes: Routes = [
   {
-    path: 'home',
-    component: HomeComponent
+    path: '',
+    component: HomeComponent,
+    canActivate:  [AuthenticationService]
+
   },
   {
-    path: '',
+    path: 'login',
     component: LoginComponent
   },
+  {
+    path: '**', 
+    component: LoginComponent
+  }
 ];
 
 @NgModule({

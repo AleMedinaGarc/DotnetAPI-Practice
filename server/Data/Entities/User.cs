@@ -4,14 +4,16 @@ namespace APICarData.Data.Entities
 { 
     public class User : GoogleUserData
     {
-        [Required]
         [RegularExpression(@"^(?:{9}[0-9]$")]
         public string contactNumber {get; set; }
-        [Required]
         [StringLength(70)]
         public string address {get; set; }
         [Required]
         [StringLength(13)]
-        public string role {get; set; } // administrator/employee
+        public string role {get; set; } = "employee";// administrator/employee
+        [Required]
+        public string creationDate{get; set; }
+        [Required]
+        public string lastLogin {get; set; }
     }
 }
