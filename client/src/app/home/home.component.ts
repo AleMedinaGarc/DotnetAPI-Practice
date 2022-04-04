@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {SocialAuthService} from 'angularx-social-login';
+import { SocialAuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +11,7 @@ import {SocialAuthService} from 'angularx-social-login';
 })
 export class HomeComponent implements OnInit {
   response: Object | undefined;
-  
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -28,11 +28,10 @@ export class HomeComponent implements OnInit {
     } catch (e) {
       console.log(e);
     }
-
   }
 
-  printContent(test: any){
-    console.log(test)
+  printContent(test: any) {
+    console.log(test);
   }
 
   logout(): void {
