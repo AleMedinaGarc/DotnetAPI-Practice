@@ -79,11 +79,11 @@ namespace APICarData.Controllers
         /// </summary>
         [HttpPut("updateCar/{id}")]
         [Authorize(Roles = "Administrator")]
-        public IActionResult UpdateCar([FromBody] CompanyCar car, int id)
+        public IActionResult UpdateCar([FromBody] CompanyCar car, string id)
         {
             try
             {
-                if (car.vin == id)
+                if (car.VIN == id)
                 {
                     _context.Entry(car).State = EntityState.Modified;
                     _context.SaveChanges();

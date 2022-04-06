@@ -163,8 +163,8 @@ namespace APICarData.Controllers
 
                 return new User
                 {
-                    userId = userClaims.FirstOrDefault(o =>
-                        o.Type == ClaimTypes.something?)?.Value,
+                    email = userClaims.FirstOrDefault(o =>
+                        o.Type == ClaimTypes.Email)?.Value,
                     role = userClaims.FirstOrDefault(o =>
                         o.Type == ClaimTypes.Role)?.Value
                 };

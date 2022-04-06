@@ -1,4 +1,4 @@
-using APICarData.Data.Entities;
+/* using APICarData.Data.Entities;
 using APICarData.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -64,4 +64,4 @@ namespace APICarData.Controllers
             return null;
         }
     }
-}
+} */

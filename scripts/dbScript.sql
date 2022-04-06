@@ -1,5 +1,9 @@
+DROP DATABASE CarPractiseDB
+GO
+
 CREATE DATABASE CarPractiseDB
 GO
+
 USE CarPractiseDB
 GO
 
