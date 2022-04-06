@@ -30,6 +30,8 @@
   - [ ] Create user rent list
   - [ ] Add car form
   - [ ] Form front validation
+- [X] Console App .txt to car Object
+- [X] Redis running
 
 ## External documentation
 
@@ -45,6 +47,10 @@
 ### DGT Data
 
 - [DGT](https://dgt-microdata.s3.eu-central-1.amazonaws.com/)
+
+### Google Auth login
+
+- [Google Auth guide](https://medium.com/@danilrabizo/google-authentication-in-the-angular-application-e86df69be58a)
 
 ## Project Kanban
 

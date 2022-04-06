@@ -5,14 +5,15 @@ class DGTCar{
 }
 
 class User{
- contactNumber
  address
  role
  creationDate
  lastLogin
+ department
+ phoneNumber
 }
 
-class AvailableCar{
+class CompanyCar{
  numberPlate
  fabricationYear
  nextITV
@@ -23,7 +24,7 @@ class Reservation{
  id
  fromDate
  toDate
- use
+ carUse
 }
 
 class GoogleUserData{
@@ -35,8 +36,8 @@ class GoogleUserData{
  email
 }
 
-User --|> GoogleData 
-AvailableCar --|> DGTCar 
-User "many"--"many" Reservation : perform >
-AvailableCar "1"--"1" Reservation
+User --|> GoogleUserData 
+CompanyCar --|> DGTCar 
+User "1"--"many" Reservation : perform >
+CompanyCar "1"--"1" Reservation
 @enduml

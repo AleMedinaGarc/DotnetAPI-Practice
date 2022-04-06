@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace APICarData.Data.Entities 
@@ -11,13 +12,11 @@ namespace APICarData.Data.Entities
         [Required]
         public int vin {get; set; }
         [Required]
-        [RegularExpression(@"^(?:[0-3][0-9]-[0-1][0-9]-20{2}[0-9]$")]
-        public int fromDate {get; set; }
+        public DateTime fromDate {get; set; }
         [Required]
-        [RegularExpression(@"^(?:[0-3][0-9]-[0-1][0-9]-20{2}[0-9]$")]
-        public string toDate {get; set; }
+        public DateTime toDate {get; set; }
         [Required]
         [StringLength(7)] // personal/shared
-        public string use {get; set; }
+        public string carUse {get; set; }
     }
 }
