@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace APICarData
+namespace APICarData.Api
 {
     public class Program
     {
@@ -18,3 +18,4 @@ namespace APICarData
                 });
     }
 }
+

@@ -7,21 +7,21 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 
-using APICarData.DataAccessLayer.Data.Entities;
-using Microsoft.AspNetCore.Http;
-using APICarData.BusinessLogicLayer.Models;
 
-namespace APICarData.Controllers
+using Microsoft.AspNetCore.Http;
+using APICarData.Domain.Models;
+
+namespace APICarData.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ReservationsController : ControllerBase
     {
-        private readonly BusinessLogicLayer.ReservationsBLL _BLL;
+        private readonly Services.ReservationsService _service;
 
-        public ReservationsController(BusinessLogicLayer.ReservationsBLL BLL)
+        public ReservationsController(Services.ReservationsService service)
         {
-            _BLL = BLL;
+            _service = service;
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace APICarData.Controllers
         [Authorize(Roles = "Administrator,Employee")]
         public async Task<ActionResult<IEnumerable<ReservationModel>>> GetReservationsByUser()
         {
-            var reservations = await _BLL.GetReservationsByUser();
+            var reservations = await _service.GetReservationsByUser();
             return Ok(reservations);
             //try
             //{
@@ -57,7 +57,7 @@ namespace APICarData.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<IEnumerable<ReservationModel>>> GetAllReservations()
         {
-            var reservations = await _BLL.GetAllReservations();
+            var reservations = await _service.GetAllReservations();
             return Ok(reservations);
             //try
             //{
@@ -79,7 +79,7 @@ namespace APICarData.Controllers
         [Authorize(Roles = "Administrator,Employee")]
         public IActionResult AddReservation([FromBody] ReservationModel reservation)
         {
-            _BLL.AddReservation(reservation);
+            _service.AddReservation(reservation);
             return Ok();
             //var currentUser = GetCurrentUser();
             //try
@@ -107,7 +107,7 @@ namespace APICarData.Controllers
         [Authorize(Roles = "Administrator,GeneralUser")]
         public IActionResult UpdateReservationById([FromBody] ReservationModel reservation, int id)
         {
-            _BLL.UpdateReservationById(reservation, id);
+            _service.UpdateReservationById(reservation, id);
             return Ok();
             //var currentUser = GetCurrentUser();
             //try
@@ -139,7 +139,7 @@ namespace APICarData.Controllers
         [Authorize(Roles = "Administrator,GeneralUser")]
         public IActionResult DeleteReservationById(int id)
         {
-            _BLL.DeleteReservationById(id);
+            _service.DeleteReservationById(id);
             return Ok();
         }
             //var currentUser = GetCurrentUser();

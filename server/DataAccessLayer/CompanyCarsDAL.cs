@@ -1,13 +1,12 @@
-﻿
-using APICarData.DataAccessLayer.Data.ApiContext;
-using APICarData.DataAccessLayer.Data.Entities;
+﻿using APICarData.Domain.Data;
+using APICarData.Domain.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace APICarData.DataAccessLayer
+namespace APICarData.Dal
 {
     public class CompanyCarsDAL
     {

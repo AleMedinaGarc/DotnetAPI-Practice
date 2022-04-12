@@ -1,30 +1,46 @@
-﻿using APICarData.DataAccessLayer.Data.ApiContext;
-using APICarData.DataAccessLayer.Data.Entities;
+﻿using APICarData.Domain.Data.Entities;
+using APICarData.Domain.Interfaces.Login;
+using APICarData.Domain.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace APICarData.DataAccessLayer
+namespace APICarData.Dal
 {
-    public class LoginDAL
+    public class LoginDAL : ILoginDAL
     {
-        private readonly ApiContext _context;
-        public LoginDAL(ApiContext context)
+        private readonly IApiContext _context;
+        public LoginDAL(IApiContext context)
         {
             _context = context;
         }
         public void RegisterUser(User user)
-        { 
-            _context.Add(user);
-            _context.SaveChanges();
+        {
+            try
+            {
+                _context.Insert(user);
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
         }
-
         public bool CheckUserExist(GoogleUserData googleUserData)
         {
-            return _context.Users.Any(o =>
-                o.userId == googleUserData.userId);
-            //&& o.Password == userLogin.Password);
+            try
+            {
+                bool test = _context.Users.Any(p =>
+                    p.userId == googleUserData.userId);
+                //&& o.Password == userLogin.Password);
+                return test;
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
         }
 
     }

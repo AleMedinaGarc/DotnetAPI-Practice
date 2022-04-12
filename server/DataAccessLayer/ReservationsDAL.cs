@@ -1,5 +1,5 @@
-﻿using APICarData.DataAccessLayer.Data.ApiContext;
-using APICarData.DataAccessLayer.Data.Entities;
+﻿using APICarData.Domain.Data;
+using APICarData.Domain.Data.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace APICarData.DataAccessLayer
+namespace APICarData.Dal
 {
     public class ReservationsDAL
     {
@@ -27,7 +27,7 @@ namespace APICarData.DataAccessLayer
 
         public async Task<IEnumerable<Reservation>> GetAllReservations()
         {
-            return (IEnumerable<Reservation>)await _context.Reservations.ToListAsync();
+            return await _context.Reservations.ToListAsync();
         }
 
         public void AddReservation(Reservation reservation)

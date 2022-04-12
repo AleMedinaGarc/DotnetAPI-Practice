@@ -1,28 +1,29 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using APICarData.BusinessLogicLayer.Models;
+using APICarData.Domain.Models;
+using APICarData.Domain.Interfaces.Login;
 
-namespace APICarData.Controllers
+namespace APICarData.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly BusinessLogicLayer.LoginBLL _BLL;
+        private readonly ILoginService _service;
 
-        public LoginController(BusinessLogicLayer.LoginBLL BLL)
+        public LoginController(ILoginService service)
         {
-            _BLL = BLL;
+            _service = service;
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Login([FromBody] GoogleUserDataModel googleUserData)
+        public IActionResult Login([FromBody] GoogleUserDataModel googleUserDataModel)
         {
             try
             {
-                string _JWT = _BLL.Login(googleUserData);
+                string _JWT = _service.Login(googleUserDataModel);
                 return Ok(_JWT);
             }
             catch (Exception e)

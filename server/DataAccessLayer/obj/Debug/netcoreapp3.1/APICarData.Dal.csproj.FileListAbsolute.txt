@@ -1,0 +1,16 @@
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\bin\Debug\netcoreapp3.1\APICarData.Dal.deps.json
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\bin\Debug\netcoreapp3.1\APICarData.Dal.runtimeconfig.json
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\bin\Debug\netcoreapp3.1\APICarData.Dal.runtimeconfig.dev.json
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\bin\Debug\netcoreapp3.1\APICarData.Dal.dll
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\bin\Debug\netcoreapp3.1\APICarData.Dal.pdb
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\obj\Debug\netcoreapp3.1\APICarData.Dal.csproj.AssemblyReference.cache
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\obj\Debug\netcoreapp3.1\APICarData.Dal.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\obj\Debug\netcoreapp3.1\APICarData.Dal.AssemblyInfoInputs.cache
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\obj\Debug\netcoreapp3.1\APICarData.Dal.AssemblyInfo.cs
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\obj\Debug\netcoreapp3.1\APICarData.Dal.csproj.CoreCompileInputs.cache
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\obj\Debug\netcoreapp3.1\APICarData.Dal.dll
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\obj\Debug\netcoreapp3.1\APICarData.Dal.pdb
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\obj\Debug\netcoreapp3.1\APICarData.Dal.genruntimeconfig.cache
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\bin\Debug\netcoreapp3.1\APICarData.Domain.dll
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\bin\Debug\netcoreapp3.1\APICarData.Domain.pdb
+C:\Users\alme\Documents\APICarData\server\DataAccessLayer\obj\Debug\netcoreapp3.1\APICarData.Dal.csproj.CopyComplete

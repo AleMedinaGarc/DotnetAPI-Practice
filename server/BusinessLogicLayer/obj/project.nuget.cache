@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "X44lmIlnNy20e2KHnzf9BKvzhwVyuAEwzOfIBYr09fJXIbImNT5BT0bZMFvpMkfjYc6ZwO7gA/Q/WK5koToPQQ==",
+  "dgSpecHash": "DZyypRoBK+Kr/WfTWWSFzZYePDwbuHYOYhP6AHdQJETxuDfS6grKWBG0mqWJJjH3SeHsPlSx7aQpl+jPBFM7JQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\alme\\Documents\\APICarData\\server\\BusinessLogicLayer\\BusinessLogicLayer.csproj",
+  "projectFilePath": "C:\\Users\\alme\\Documents\\APICarData\\server\\BusinessLogicLayer\\APICarData.Services.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\alme\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\alme\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

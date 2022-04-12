@@ -1,0 +1,13 @@
+C:\Users\alme\Documents\APICarData\server\BusinessLogicLayer\bin\Debug\netcoreapp3.1\BusinessLogicLayer.deps.json
+C:\Users\alme\Documents\APICarData\server\BusinessLogicLayer\bin\Debug\netcoreapp3.1\BusinessLogicLayer.dll
+C:\Users\alme\Documents\APICarData\server\BusinessLogicLayer\bin\Debug\netcoreapp3.1\BusinessLogicLayer.pdb
+C:\Users\alme\Documents\APICarData\server\BusinessLogicLayer\bin\Debug\netcoreapp3.1\DataAccessLayer.dll
+C:\Users\alme\Documents\APICarData\server\BusinessLogicLayer\bin\Debug\netcoreapp3.1\DataAccessLayer.pdb
+C:\Users\alme\Documents\APICarData\server\BusinessLogicLayer\obj\Debug\netcoreapp3.1\BusinessLogicLayer.csproj.AssemblyReference.cache
+C:\Users\alme\Documents\APICarData\server\BusinessLogicLayer\obj\Debug\netcoreapp3.1\BusinessLogicLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alme\Documents\APICarData\server\BusinessLogicLayer\obj\Debug\netcoreapp3.1\BusinessLogicLayer.AssemblyInfoInputs.cache
+C:\Users\alme\Documents\APICarData\server\BusinessLogicLayer\obj\Debug\netcoreapp3.1\BusinessLogicLayer.AssemblyInfo.cs
+C:\Users\alme\Documents\APICarData\server\BusinessLogicLayer\obj\Debug\netcoreapp3.1\BusinessLogicLayer.csproj.CoreCompileInputs.cache
+C:\Users\alme\Documents\APICarData\server\BusinessLogicLayer\obj\Debug\netcoreapp3.1\BusinessLogicLayer.csproj.CopyComplete
+C:\Users\alme\Documents\APICarData\server\BusinessLogicLayer\obj\Debug\netcoreapp3.1\BusinessLogicLayer.dll
+C:\Users\alme\Documents\APICarData\server\BusinessLogicLayer\obj\Debug\netcoreapp3.1\BusinessLogicLayer.pdb

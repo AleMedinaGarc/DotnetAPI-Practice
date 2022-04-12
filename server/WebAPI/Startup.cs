@@ -8,10 +8,15 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Identity;
-using APICarData.DataAccessLayer.Data.ApiContext;
+using APICarData.Services;
+using APICarData.Domain.Interfaces.Login;
+using APICarData.Domain.Interfaces;
+using APICarData.Dal;
+using APICarData.Domain.Data;
+using AutoMapper;
+using APICarData.Services.Mapper;
 
-namespace APICarData
+namespace APICarData.Api
 {
     public class Startup
     {
@@ -26,6 +31,17 @@ namespace APICarData
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("testdb")));
+            services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<ILoginDAL, LoginDAL>();
+            services.AddScoped<IApiContext, ApiContext>();
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddMvc();
 
@@ -46,14 +62,14 @@ namespace APICarData
                         ValidAudience = Configuration["Jwt:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                     };
-                })
-                .AddGoogle("google", opt =>
-                {
-                    var googleAuth = Configuration.GetSection("Authentication:Google");
-                    opt.ClientId = googleAuth["ClientId"];
-                    opt.ClientSecret = googleAuth["ClientSecret"];
-                    opt.SignInScheme = IdentityConstants.ExternalScheme;
                 });
+            //.AddGoogle("google", opt =>
+            //{
+            //    var googleAuth = Configuration.GetSection("Authentication:Google");
+            //    opt.ClientId = googleAuth["ClientId"];
+            //    opt.ClientSecret = googleAuth["ClientSecret"];
+            //    opt.SignInScheme = IdentityConstants.ExternalScheme;
+            //});
 
             services.AddSwaggerGen(option =>
             {

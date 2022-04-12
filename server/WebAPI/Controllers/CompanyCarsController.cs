@@ -2,26 +2,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
-using APICarData.BusinessLogicLayer.Models;
+using APICarData.Domain.Models;
 
-namespace APICarData.Controllers
+namespace APICarData.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CompanyCarsController : ControllerBase
     {
-        private readonly BusinessLogicLayer.CompanyCarsBLL _BLL;
+        private readonly Services.CompanyCarsService _service;
 
-        public CompanyCarsController(BusinessLogicLayer.CompanyCarsBLL BLL)
+        public CompanyCarsController(Services.CompanyCarsService service)
         {
-            _BLL = BLL;
+            _service = service;
         }
    
         [HttpGet("allCars")]
         [Authorize(Roles = "Administrator, Employee")]
         public async Task<ActionResult<IEnumerable<CompanyCarModel>>> GetAllCompanyCars()
         {
-            var result = await _BLL.GetAllCompanyCars();
+            var result = await _service.GetAllCompanyCars();
             return Ok(result);
 
         }
@@ -32,7 +32,7 @@ namespace APICarData.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult AddCompanyCar([FromBody] CompanyCarModel car)
         {
-            _BLL.AddCompanyCar(car);
+            _service.AddCompanyCar(car);
             return Ok();
             //     var currentUser = GetCurrentUser();
             //     try
@@ -67,7 +67,7 @@ namespace APICarData.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult UpdateCompanyCar([FromBody] CompanyCarModel car, string id)
         {
-            _BLL.UpdateCompanyCar(car, id);
+            _service.UpdateCompanyCar(car, id);
             return Ok();
             //try
             //{
@@ -94,7 +94,7 @@ namespace APICarData.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult DeleteCompanyCar(string id)
         {
-            _BLL.DeleteCompanyCar(id);
+            _service.DeleteCompanyCar(id);
             return Ok();
             //try
             //{

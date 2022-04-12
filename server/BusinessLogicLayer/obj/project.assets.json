@@ -1843,19 +1843,33 @@
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
       },
-      "DataAccessLayer/1.0.0": {
+      "APICarData.Dal/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
+          "APICarData.Domain": "1.0.0",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
           "Microsoft.EntityFrameworkCore": "3.1.23",
           "Microsoft.EntityFrameworkCore.SqlServer": "3.1.23"
         },
         "compile": {
-          "bin/placeholder/DataAccessLayer.dll": {}
+          "bin/placeholder/APICarData.Dal.dll": {}
         },
         "runtime": {
-          "bin/placeholder/DataAccessLayer.dll": {}
+          "bin/placeholder/APICarData.Dal.dll": {}
+        }
+      },
+      "APICarData.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "3.1.23"
+        },
+        "compile": {
+          "bin/placeholder/APICarData.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/APICarData.Domain.dll": {}
         }
       }
     }
@@ -6501,16 +6515,21 @@
         "system.xml.xmlserializer.nuspec"
       ]
     },
-    "DataAccessLayer/1.0.0": {
+    "APICarData.Dal/1.0.0": {
       "type": "project",
-      "path": "../DataAccessLayer/DataAccessLayer.csproj",
-      "msbuildProject": "../DataAccessLayer/DataAccessLayer.csproj"
+      "path": "../DataAccessLayer/APICarData.Dal.csproj",
+      "msbuildProject": "../DataAccessLayer/APICarData.Dal.csproj"
+    },
+    "APICarData.Domain/1.0.0": {
+      "type": "project",
+      "path": "../APICarData.Domain2/APICarData.Domain.csproj",
+      "msbuildProject": "../APICarData.Domain2/APICarData.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "AutoMapper >= 11.0.1",
-      "DataAccessLayer >= 1.0.0"
+      "APICarData.Dal >= 1.0.0",
+      "AutoMapper >= 11.0.1"
     ]
   },
   "packageFolders": {
@@ -6520,9 +6539,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alme\\Documents\\APICarData\\server\\BusinessLogicLayer\\BusinessLogicLayer.csproj",
-      "projectName": "BusinessLogicLayer",
-      "projectPath": "C:\\Users\\alme\\Documents\\APICarData\\server\\BusinessLogicLayer\\BusinessLogicLayer.csproj",
+      "projectUniqueName": "C:\\Users\\alme\\Documents\\APICarData\\server\\BusinessLogicLayer\\APICarData.Services.csproj",
+      "projectName": "APICarData.Services",
+      "projectPath": "C:\\Users\\alme\\Documents\\APICarData\\server\\BusinessLogicLayer\\APICarData.Services.csproj",
       "packagesPath": "C:\\Users\\alme\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\alme\\Documents\\APICarData\\server\\BusinessLogicLayer\\obj\\",
       "projectStyle": "PackageReference",
@@ -6545,8 +6564,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\alme\\Documents\\APICarData\\server\\DataAccessLayer\\DataAccessLayer.csproj": {
-              "projectPath": "C:\\Users\\alme\\Documents\\APICarData\\server\\DataAccessLayer\\DataAccessLayer.csproj"
+            "C:\\Users\\alme\\Documents\\APICarData\\server\\DataAccessLayer\\APICarData.Dal.csproj": {
+              "projectPath": "C:\\Users\\alme\\Documents\\APICarData\\server\\DataAccessLayer\\APICarData.Dal.csproj"
             }
           }
         }

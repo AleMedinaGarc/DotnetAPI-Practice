@@ -32,6 +32,8 @@
   - [ ] Form front validation
 - [X] Console App .txt to car Object
 - [X] Redis running
+- [ ] Layered API
+- [ ] Dockerize new API
 
 ## External documentation
 
@@ -43,6 +45,7 @@
 
 - [Docker](https://www.docker.com/)
 - [SQL Server image](https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver15&pivots=cs1-bash)
+- [CP files](https://stackoverflow.com/questions/22907231/how-to-copy-files-from-host-to-docker-container)
 
 ### DGT Data
 
@@ -55,3 +58,7 @@
 ## Project Kanban
 
 - [Kanban](https://github.com/AleMedinaGarc/DotnetAPI-Practice/projects/1)
+
+## Dependency Injection
+
+- [.NET Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.1)

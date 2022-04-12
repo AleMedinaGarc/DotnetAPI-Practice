@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lG+0wwVNLTYQ/nbbx+IabvNLRS4R1TgL8li9LQluUZgPJnMnqD11l02x0qXcUGj0cRBh0WIO+oXvTES9QuR5mQ==",
+  "dgSpecHash": "jpwq4AghNNL0+aRQbGHXsEmH818NYnwqB2biU95jxkIj+x+XPcEPC5/1kbTT2ACZiDJjhcd9KvJjEFHudex1IA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\alme\\Documents\\APICarData\\server\\DataAccessLayer\\DataAccessLayer.csproj",
+  "projectFilePath": "C:\\Users\\alme\\Documents\\APICarData\\server\\DataAccessLayer\\APICarData.Dal.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\alme\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\alme\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
