@@ -9,21 +9,28 @@
 - [x] Swagger running
 - [ ] API controllers
   - [ ] Login controller
-  - [ ] Signup controller
-  - [ ] Rent controller
-  - [ ] Car controller
-- [ ] Postman Test
-- [ ] Db Running
-- [ ] Docker SQL Server container
+    - [x] Login
+    - [ ] Get all users
+    - [ ] Get user by ID
+    - [ ] Update user
+    - [ ] Delete user
+  - [ ] CompanyCars controller
+    - [x] Get all cars complete info
+    - [x] Get car by id
+    - [x] Add car
+    - [x] Update car
+    - [x] Delete car
+  - [ ] Reservation controller
+- [x] Db Running
+- [x] Docker SQL Server container
 - [ ] Dockerize API
-- [ ] Connection between API and SQL containers
-- [ ] Data modeling
+- [x] Data modeling
 - [ ] Google oauth login and signup
 - [ ] Data filter script
-- [ ] Database Tables
-  - [ ] User Table
-  - [ ] Car Table
-  - [ ] Rent Table
+- [x] Database Tables
+  - [x] User Table
+  - [x] CompanyCar Table
+  - [x] Reservation Table
 - [ ] Deserialize XML
 - [ ] Implement ETL process
 - [ ] Front add car to rent form
@@ -33,7 +40,6 @@
 - [X] Console App .txt to car Object
 - [X] Redis running
 - [ ] Layered API
-- [ ] Dockerize new API
 
 ## External documentation
 
@@ -55,10 +61,14 @@
 
 - [Google Auth guide](https://medium.com/@danilrabizo/google-authentication-in-the-angular-application-e86df69be58a)
 
-## Project Kanban
+### Project Kanban
 
 - [Kanban](https://github.com/AleMedinaGarc/DotnetAPI-Practice/projects/1)
 
-## Dependency Injection
+### Dependency Injection
 
 - [.NET Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.1)
+
+### Redis
+
+- [Connection](https://docs.redis.com/latest/rs/references/client_references/client_csharp/)

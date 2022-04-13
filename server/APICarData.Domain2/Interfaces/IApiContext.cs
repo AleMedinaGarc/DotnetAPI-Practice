@@ -6,9 +6,15 @@ namespace APICarData.Domain.Interfaces
 {
     public interface IApiContext
     {
-        public DbSet<CompanyCar> CompanyCars { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Reservation> Reservations { get; set; }
-        public void Insert(User user);
+        DbSet<CompanyCar> CompanyCars { get; set; }
+        DbSet<User> Users { get; set; }
+        DbSet<Reservation> Reservations { get; set; }
+        //Login
+        void InsertUser(User user);
+        void UpdateUser(User user);
+        // CompanyCars
+        void InsertCar(CompanyCar car);
+        void UpdateCar(CompanyCar car);
+        void DeleteCar(CompanyCar car);
     }
 }

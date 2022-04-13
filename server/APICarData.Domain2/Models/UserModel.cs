@@ -11,7 +11,6 @@ namespace APICarData.Domain.Models
         public string department {get; set; }
         [StringLength(100)]
         public string addressFormatted {get; set; }
-        [Required]
         [StringLength(13)]
         public string role {get; set; } // administrator/employee
         [Required]

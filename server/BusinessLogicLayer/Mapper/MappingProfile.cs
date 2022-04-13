@@ -14,8 +14,17 @@ namespace APICarData.Services.Mapper
             // Login
             CreateMap<GoogleUserDataModel, GoogleUserData>();
             CreateMap<GoogleUserData, GoogleUserDataModel>();
-            // Reservations
-            // Company cars
+            CreateMap<UserModel, User>();
+            CreateMap<User, UserModel>();
+            // Company car
+            CreateMap<CompanyCarModel, CompanyCar>();
+            CreateMap<CompanyCar, CompanyCarModel>();
+            // Reservation
+            CreateMap<ReservationModel, Reservation>();
+            CreateMap<Reservation, ReservationModel>();
+            // DGTCar
+            CreateMap<DGTCarModel, DGTCar>();
+            CreateMap<DGTCar, DGTCarModel>();
         }
     }
 }

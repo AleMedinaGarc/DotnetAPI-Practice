@@ -7,7 +7,7 @@ GO
 USE CarPractiseDB
 GO
 
-CREATE TABLE AvailableCars (
+CREATE TABLE CompanyCars (
     VIN VARCHAR(21) PRIMARY KEY, 
     numberPlate VARCHAR(7) NOT NULL, 
     fabricationYear INT NOT NULL,
@@ -44,14 +44,16 @@ CREATE TABLE Reservations (
 )
 GO
 
-INSERT INTO AvailableCars 
+INSERT INTO CompanyCars 
 VALUES 
     ("WVGZZZ1TZ8W045784", "4793RTY", 2021, "09-2024", "09-2022"),
     ("ZDCNF11A0MF015755", "3456RTU", 2021, "05-2023", "09-2023"),
     ("ZCFA81LN302718519", "0984RTI", 2021, "12-2024", "12-2022");
+GO
 
 INSERT INTO Users 
 VALUES 
     (123456, "Alejandro Medina García", "Alejandro", "Medina García", 
     "testImage", "Alejandro.Medina@test.com", "+34 57685934","testDepartment", 
     "testAddress", "Administrator", '2038-01-19 03:14:07.99', '2038-01-19 03:14:07.99');
+GO

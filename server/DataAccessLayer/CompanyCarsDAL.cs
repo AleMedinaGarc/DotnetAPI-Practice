@@ -1,5 +1,7 @@
 ﻿using APICarData.Domain.Data;
 using APICarData.Domain.Data.Entities;
+using APICarData.Domain.Interfaces;
+using APICarData.Domain.Interfaces.CompanyCars;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,19 +10,20 @@ using System.Threading.Tasks;
 
 namespace APICarData.Dal
 {
-    public class CompanyCarsDAL
+    public class CompanyCarsDAL : ICompanyCarsDAL
     {
-        private readonly ApiContext _context;
-        public CompanyCarsDAL(ApiContext context)
+        private readonly IApiContext _context;
+        public CompanyCarsDAL(/*IConnectionMultiplexer redis, */IApiContext context)
         {
             _context = context;
+            // _redis = redis;
         }
 
         public async Task<IEnumerable<CompanyCar>> GetAllCompanyCars()
         {
             try
             {
-                var cars = await _context.CompanyCars
+                IEnumerable<CompanyCar> cars = await _context.CompanyCars
                     .OrderBy(x => x.numberPlate)
                     .ToListAsync();
                 return cars;
@@ -33,22 +36,30 @@ namespace APICarData.Dal
             }
         }
 
-        public void AddCompanyCar(CompanyCar car) //maybe async
-        {   //DGTCar carRedis = _context.redis.FirstOrDefault(p => p.VIN == car.VIN); // busca un coche en redis con VIN
-            //reflection car DGTCar
-            //_context.CompanyCars.Add(car);
-            _context.SaveChanges();
-        }
+        //public async Task GetRedisCarById(string id)
+        //{
+        //    return await _redis.GetDatabase().StringGetAsync(id);
+        //}
 
-        public void UpdateCompanyCar(CompanyCar car, string id)
+        public void AddCompanyCar(CompanyCar car)
         {
             try
             {
-                if (car.VIN == id)
-                {
-                    _context.Entry(car).State = EntityState.Modified;
-                    _context.SaveChanges();
-                }
+                _context.InsertCar(car);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
+                throw;
+            }
+        }
+
+        public void UpdateCompanyCar(CompanyCar car)
+        {
+            try
+            {
+                    _context.UpdateCar(car);
             }
             catch (Exception ex)
             {
@@ -61,9 +72,17 @@ namespace APICarData.Dal
 
         public void DeleteCompanyCar(string id)
         {
-            var car = _context.CompanyCars.FirstOrDefault(p => p.VIN == id);
-            _context.CompanyCars.Remove(car);
-            _context.SaveChanges();
+            try
+            {
+                var car = _context.CompanyCars.FirstOrDefault(p => p.VIN == id);
+                _context.DeleteCar(car);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
+                throw;
+            }
         }
 
         public bool CompanyCarsAny()
@@ -80,19 +99,18 @@ namespace APICarData.Dal
             }
         }
 
-        public bool DGTCarsAny()
-        {
-            //return _context.CompanyCars.Any();
-            return true;
-        }
-
         public bool CompanyCarsIsEmpty()
         {
-            if (_context.CompanyCars.Any())
-                return false;
-            return true;
+            try
+            {
+                return _context.CompanyCars.Any();
+            }
+            catch (ArgumentNullException ex)
+            {
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
+                throw;
+            }
         }
-
-
     }
 }

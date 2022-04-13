@@ -15,6 +15,8 @@ using APICarData.Dal;
 using APICarData.Domain.Data;
 using AutoMapper;
 using APICarData.Services.Mapper;
+using StackExchange.Redis;
+using APICarData.Domain.Interfaces.CompanyCars;
 
 namespace APICarData.Api
 {
@@ -27,14 +29,17 @@ namespace APICarData.Api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // MSSQL connection 
             services.AddDbContext<ApiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("testdb")));
+            // Interfaces declaration
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<ILoginDAL, LoginDAL>();
+            services.AddScoped<ICompanyCarsService, CompanyCarsService>();
+            services.AddScoped<ICompanyCarsDAL, CompanyCarsDAL>();
             services.AddScoped<IApiContext, ApiContext>();
-
+            // Mapper configuration
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
@@ -42,6 +47,9 @@ namespace APICarData.Api
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
+            // Redis connection
+            var multiplexer = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("redisdb"));
+            services.AddSingleton<IConnectionMultiplexer>(multiplexer);
 
             services.AddMvc();
 

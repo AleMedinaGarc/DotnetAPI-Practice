@@ -5,6 +5,7 @@ namespace APICarData.Domain.Interfaces.Login
 {
     public interface ILoginService
     {
-        public string Login(GoogleUserDataModel googleUserData);        
+        string Login(GoogleUserDataModel googleUserDataModel);
+        void UpdateUser(UserModel userModel);
     }
 }

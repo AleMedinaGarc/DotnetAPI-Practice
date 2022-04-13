@@ -14,10 +14,35 @@ namespace APICarData.Domain.Data
         public DbSet<User> Users {get; set; }
         public DbSet<Reservation> Reservations {get; set; }
 
-        public void Insert(User user)
+        //Login
+        public void InsertUser(User user)
         {
             Users.Add(user);
             SaveChanges();
         }
+        public void UpdateUser(User user)
+        {
+            Entry(user).State = EntityState.Modified;
+            SaveChanges();
+        }
+
+        //Cars
+        public void InsertCar(CompanyCar car)
+        {
+            CompanyCars.Add(car);
+            SaveChanges();
+        }
+ 
+        public void UpdateCar(CompanyCar car)
+        {
+            Entry(car).State = EntityState.Modified;
+            SaveChanges();
+        }
+        public void DeleteCar(CompanyCar car)
+        {
+            CompanyCars.Remove(car);
+            SaveChanges();
+        }
+
     }
 }

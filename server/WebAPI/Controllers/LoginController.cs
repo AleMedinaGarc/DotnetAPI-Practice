@@ -33,5 +33,22 @@ namespace APICarData.Api.Controllers
                 throw;
             }
         }
+
+        [HttpPut("updateUser/{id}")]
+        [Authorize(Roles = "Administrator, Employee")]
+        public IActionResult UpdateUser([FromBody] UserModel userModel)
+        {
+            try
+            {
+                _service.UpdateUser(userModel);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
+        }
     }
 }

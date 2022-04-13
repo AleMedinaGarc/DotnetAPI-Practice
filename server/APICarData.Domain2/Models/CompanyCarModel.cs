@@ -2,11 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace APICarData.Domain.Models 
 { 
-    public class CompanyCarModel : DGTCarModel
+    public class CompanyCarModel
     {
-        [Required]
-        [StringLength(50)]
-        public string username {get; set; }
+        [Key]
+        public string VIN { get; set; }
         [Required]
         [RegularExpression(@"^(?:[0-9]{4}[A-Z]{3})$")]
         public string numberPlate {get; set; }
@@ -18,6 +17,6 @@ namespace APICarData.Domain.Models
         public string nextITV {get; set; }
         [Required]
         [RegularExpression(@"^(?:(1[0-2]|0[0-9])-2[0-9]{3})$")]
-        public string nextInspection {get; set; }
+        public string nextCarInspection { get; set; }
     }
 }

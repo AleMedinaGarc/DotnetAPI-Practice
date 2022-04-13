@@ -2,11 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace APICarData.Domain.Data.Entities 
 { 
-    public class CompanyCar : DGTCar
+    public class CompanyCar
     {
-        [Required]
-        [StringLength(50)]
-        public string username {get; set; }
+        [Key]
+        public string VIN { get; set; }
         [Required]
         public string numberPlate {get; set; }
         [Required]
@@ -14,6 +13,6 @@ namespace APICarData.Domain.Data.Entities
         [Required]
         public string nextITV {get; set; }
         [Required]
-        public string nexTInspection {get; set; }
+        public string nextCarInspection { get; set; }
     }
 }
