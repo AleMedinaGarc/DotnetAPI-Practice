@@ -22,7 +22,7 @@ namespace APICarData.Dal
         public async Task<IEnumerable<Reservation>> GetReservationsByUser(int userId)
         {
             return await _context.Reservations.Where(p =>
-                p.userId == userId).ToListAsync();
+                p.UserId == userId).ToListAsync();
         }
 
         public async Task<IEnumerable<Reservation>> GetAllReservations()
@@ -50,7 +50,7 @@ namespace APICarData.Dal
 
         public Reservation GetReservationById (int id)
         {
-            return _context.Reservations.FirstOrDefault(p => p.vin == id);
+            return _context.Reservations.FirstOrDefault(p => p.ReservationId == id);
         }
     }
 

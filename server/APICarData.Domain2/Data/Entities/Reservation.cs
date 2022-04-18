@@ -6,17 +6,16 @@ namespace APICarData.Domain.Data.Entities
     public class Reservation
     {
         [Key]
-        public int reservationId {get; set; }
+        public int ReservationId {get; set; }
         [Required]
-        public int userId {get; set; }
+        public int UserId {get; set; }
         [Required]
-        public int vin {get; set; }
+        public string VIN {get; set; }
         [Required]
-        public DateTime fromDate {get; set; }
+        public string FromDate {get; set; }
         [Required]
-        public DateTime toDate {get; set; }
+        public string ToDate {get; set; }
         [Required]
-        [StringLength(7)] // personal/shared
-        public string carUse {get; set; }
+        public string CarUse {get; set; }
     }
 }

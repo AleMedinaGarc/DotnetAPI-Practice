@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace APICarData.Domain.Interfaces.Login
+namespace APICarData.Domain.Interfaces.UserData
 {
-    public interface ILoginDAL
+    public interface IUserDataDAL
     {
-        void RegisterUser(User user);
-        bool CheckUserExist(GoogleUserData googleUserData);
         User GetUserDataById(int id);
+        User GetUserDataByEmail(string email);
+        Task<IEnumerable<User>> GetAllUsers();
         void UpdateUser(User user);
+        void DeleteUserById(int userId);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using APICarData.Domain.Data.Entities;
-using APICarData.Domain.Interfaces.Login;
+using APICarData.Domain.Interfaces.UserData;
 using APICarData.Domain.Interfaces;
 using System;
 using System.Linq;
@@ -9,25 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APICarData.Dal
 {
-    public class LoginDAL : ILoginDAL
+    public class UserDataDAL : IUserDataDAL
     {
         private readonly IApiContext _context;
-        public LoginDAL(IApiContext context)
+        public UserDataDAL(IApiContext context)
         {
             _context = context;
-        }
-        public void RegisterUser(User user)
-        {
-            try
-            {
-                _context.InsertUser(user);
-            }
-            catch (Exception e)
-            {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
-            }
         }
         public User GetUserDataById(int id)
         {
@@ -40,6 +27,39 @@ namespace APICarData.Dal
             {
                 if (e.Source != null)
                     Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
+        }
+
+        // This should be fixed at finail product
+        public User GetUserDataByEmail(string email)
+        {
+            try
+            {
+                return _context.Users.FirstOrDefault(p =>
+                    p.Email == email);
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+            try
+            {
+                IEnumerable<User> users = await _context.Users
+                    .OrderBy(x => x.FullName)
+                    .ToListAsync();
+                return users;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
                 throw;
             }
         }
@@ -58,19 +78,17 @@ namespace APICarData.Dal
             }
         }
 
-        public bool CheckUserExist(GoogleUserData googleUserData)
+        public void DeleteUserById (int userId)
         {
             try
             {
-                bool exist = _context.Users.Any(p =>
-                    p.UserId == googleUserData.UserId);
-                //&& o.Password == userLogin.Password);
-                return exist;
+                var user = _context.Users.FirstOrDefault(p => p.UserId == userId);
+                _context.DeleteUser(user);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
                 throw;
             }
         }

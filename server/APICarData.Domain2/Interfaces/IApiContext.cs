@@ -12,6 +12,7 @@ namespace APICarData.Domain.Interfaces
         //Login
         void InsertUser(User user);
         void UpdateUser(User user);
+        void DeleteUser(User user);
         // CompanyCars
         void InsertCar(CompanyCar car);
         void UpdateCar(CompanyCar car);

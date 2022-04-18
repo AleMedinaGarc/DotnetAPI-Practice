@@ -11,6 +11,8 @@ using APICarData.Domain.Interfaces.Login;
 using APICarData.Domain.Interfaces;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace APICarData.Services
 {
@@ -19,7 +21,7 @@ namespace APICarData.Services
         private readonly ILoginDAL _DAL;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;        
 
         public LoginService(ILoginDAL DAL, IMapper mapper, IConfiguration config, IHttpContextAccessor httpContextAccessor)
         {
@@ -35,16 +37,29 @@ namespace APICarData.Services
             GoogleUserData googleUserData = _mapper.Map<GoogleUserData>(googleUserDataModel);
             if (_DAL.CheckUserExist(googleUserData))
             {
-                User existingUser = _DAL.GetUserDataById(googleUserData.userId);
-                existingUser.lastLogin = DateTime.Now;
+                User existingUser = _DAL.GetUserDataById(googleUserData.UserId);
+                existingUser.LastLogin = DateTime.Now;
                 _DAL.UpdateUser(existingUser);
                 return GenerateUserToken(existingUser);
 
             }
             User newUser = RegisterUser(googleUserData);
             return GenerateUserToken(newUser);
-        }
+        }        
 
+        private User RegisterUser(GoogleUserData googleUserData)
+        {
+            User newUser = new User
+            {
+                LastLogin = DateTime.Now,
+                CreationDate = DateTime.Now,
+                Role = "Employee"
+            };
+            PropertyCopier<GoogleUserData, User>.Copy(googleUserData, newUser);
+            _DAL.RegisterUser(newUser);
+            return newUser;
+        }
+        
         private string GenerateUserToken(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -52,8 +67,8 @@ namespace APICarData.Services
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.Email, user.email),
-                new Claim(ClaimTypes.Role, user.role)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role)
             };
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
@@ -61,50 +76,9 @@ namespace APICarData.Services
                 claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: credentials);
-            Console.Write("Access granted to {0} with {1} permissions\n", user.givenName, user.role);
+            Console.Write("Access granted to {0} with {1} permissions\n", user.GivenName, user.Role);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
-        private User RegisterUser(GoogleUserData googleUserData)
-        {
-            User newUser = new User
-            {
-                lastLogin = DateTime.Now,
-                creationDate = DateTime.Now,
-                role = "Employee"
-            };
-            PropertyCopier<GoogleUserData, User>.Copy(googleUserData, newUser);
-            _DAL.RegisterUser(newUser);
-            return newUser;
-        }
-
-        public void UpdateUser(UserModel userModel)
-        {
-            var currentUser = GetCurrentUser();
-            if (currentUser.email == userModel.email)
-            {
-                User user = _mapper.Map<User>(userModel);
-                _DAL.UpdateUser(user);
-            }
-        }
-
-        private User GetCurrentUser()
-        {
-            if (_httpContextAccessor.HttpContext.User.Identity is ClaimsIdentity identity)
-            {
-                var userClaims = identity.Claims;
-
-                return new User
-                {
-                    email = userClaims.FirstOrDefault(o =>
-                        o.Type == ClaimTypes.Email)?.Value,
-                    role = userClaims.FirstOrDefault(o =>
-                        o.Type == ClaimTypes.Role)?.Value
-                };
-            }
-            return null;
-        }
-
 
         public class PropertyCopier<TParent, TChild> where TParent : class
                                                          where TChild : class
@@ -118,7 +92,11 @@ namespace APICarData.Services
                 {
                     foreach (var childProperty in childProperties)
                     {
-                        if (parentProperty.Name == childProperty.Name && parentProperty.PropertyType == childProperty.PropertyType)
+                        if (parentProperty.Name == childProperty.Name && 
+                            parentProperty.PropertyType == childProperty.PropertyType && 
+                            parentProperty.GetValue(parent) != null &&
+                            parentProperty.Name != "lastLogin" &&
+                            parentProperty.Name != "creationDate")
                         {
                             childProperty.SetValue(child, parentProperty.GetValue(parent));
                             break;

@@ -6,17 +6,17 @@ namespace APICarData.Domain.Data.Entities
     public class User : GoogleUserData
     {
         [StringLength(15)]
-        public string phoneNumber {get; set; }
+        public string PhoneNumber {get; set; }
         [StringLength(50)]
-        public string department {get; set; }
+        public string Department {get; set; }
         [StringLength(100)]
-        public string addressFormatted {get; set; }
+        public string AddressFormatted {get; set; }
         [Required]
         [StringLength(13)]
-        public string role {get; set; } // administrator/employee
+        public string Role {get; set; } // administrator/employee
         [Required]
-        public DateTime creationDate{get; set; }
+        public DateTime CreationDate{get; set; }
         [Required]
-        public DateTime lastLogin {get; set; }
+        public DateTime LastLogin {get; set; }
     }
 }

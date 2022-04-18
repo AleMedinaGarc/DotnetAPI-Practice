@@ -9,42 +9,43 @@ GO
 
 CREATE TABLE CompanyCars (
     VIN VARCHAR(21) PRIMARY KEY, 
-    numberPlate VARCHAR(7) NOT NULL, 
-    fabricationYear INT NOT NULL,
-    nextITV VARCHAR(7) NOT NULL,
-    nextCarInspection VARCHAR(7) NOT NULL,
-    CONSTRAINT AK_NumberPlate UNIQUE(numberPlate)   
+    NumberPlate VARCHAR(7) NOT NULL, 
+    FabricationYear INT NOT NULL,
+    NextITV VARCHAR(7) NOT NULL,
+    NextCarInspection VARCHAR(7) NOT NULL
+    CONSTRAINT AK_NumberPlate UNIQUE(NumberPlate)   
 )
 GO
 
 CREATE TABLE Users (
-    userId INT PRIMARY KEY, 
-    fullName NVARCHAR(100) NOT NULL, 
-    givenName NVARCHAR(50) NOT NULL,
-    familyName NVARCHAR(50) NOT NULL, 
-    imageURL VARCHAR(200) NOT NULL, 
-    email VARCHAR(50) NOT NULL, 
-    phoneNumber VARCHAR(50),
-    department NVARCHAR(50), 
-    addressFormatted NVARCHAR(50),
-    role VARCHAR(15) NOT NULL,
-    creationDate DATETIME NOT NULL,
-    lastLogin DATETIME NOT NULL,
-    CONSTRAINT AK_Email UNIQUE(email) 
+    UserId INT PRIMARY KEY, 
+    FullName NVARCHAR(100) NOT NULL, 
+    GivenName NVARCHAR(50) NOT NULL,
+    FamilyName NVARCHAR(50) NOT NULL, 
+    ImageURL VARCHAR(200) NOT NULL, 
+    Email VARCHAR(50) NOT NULL, 
+    PhoneNumber VARCHAR(50),
+    Department NVARCHAR(50), 
+    AddressFormatted NVARCHAR(50),
+    Role VARCHAR(15) NOT NULL,
+    CreationDate DATETIME NOT NULL,
+    LastLogin DATETIME NOT NULL,
+    CONSTRAINT AK_Email UNIQUE(Email),
+    CONSTRAINT AK_Phone UNIQUE(PhoneNumber) 
 )
 GO
 
 CREATE TABLE Reservations (
-    id INT IDENTITY(1,1) PRIMARY KEY, 
-    userId INT NOT NULL,
-    VIN VARCHAR(21),
-    fromDate DATE NOT NULL, 
-    toDate DATE NOT NULL,
-    carUse NVARCHAR(15) NOT NULL 
+    ReservationId INT IDENTITY(1,1) PRIMARY KEY, 
+    UserId INT FOREIGN KEY REFERENCES Users(UserId),
+    VIN VARCHAR(21) FOREIGN KEY REFERENCES CompanyCars(VIN),
+    FromDate VARCHAR(10) NOT NULL, 
+    ToDate VARCHAR(10) NOT NULL,
+    CarUse VARCHAR(13) NOT NULL
 )
 GO
 
-INSERT INTO CompanyCars 
+INSERT INTO CompanyCars (VIN, NumberPlate, FabricationYear, NextITV, NextCarInspection)
 VALUES 
     ("WVGZZZ1TZ8W045784", "4793RTY", 2021, "09-2024", "09-2022"),
     ("ZDCNF11A0MF015755", "3456RTU", 2021, "05-2023", "09-2023"),
@@ -55,5 +56,13 @@ INSERT INTO Users
 VALUES 
     (123456, "Alejandro Medina García", "Alejandro", "Medina García", 
     "testImage", "Alejandro.Medina@test.com", "+34 57685934","testDepartment", 
-    "testAddress", "Administrator", '2038-01-19 03:14:07.99', '2038-01-19 03:14:07.99');
+    "testAddress", "Administrator", '2038-01-19 03:14:07.99', '2038-01-19 03:14:07.99'),
+    (144666, "Tesssssssst", "Test", "Tesssssssst Test", 
+    "testImage", "Test.Test@test.com", "+34 573654934","testDepartment", 
+    "testAddress", "Employee", '2038-01-19 03:14:07.99', '2038-01-19 03:14:07.99');
+GO
+
+INSERT INTO Reservations 
+VALUES 
+    (123456, "WVGZZZ1TZ8W045784", "02-09-2024", "24-09-2024", "shared");
 GO

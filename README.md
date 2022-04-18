@@ -8,35 +8,44 @@
   - [x] Project initialized
 - [x] Swagger running
 - [ ] API controllers
-  - [ ] Login controller
+  - [x] Login controller
     - [x] Login
-    - [ ] Get all users
-    - [ ] Get user by ID
-    - [ ] Update user
-    - [ ] Delete user
-  - [ ] CompanyCars controller
+    - [x] Get all users
+    - [x] Get user by ID
+    - [x] Update user
+    - [x] Delete user
+  - [x] CompanyCars controller
     - [x] Get all cars complete info
     - [x] Get car by id
     - [x] Add car
     - [x] Update car
     - [x] Delete car
   - [ ] Reservation controller
+    - [ ] Get my reservations
+    - [ ] Get all reservations
+    - [ ] Add reservation
+    - [ ] Update reservation
+    - [ ] Delete reservation
+- [ ] API error handling
 - [x] Db Running
 - [x] Docker SQL Server container
 - [ ] Dockerize API
 - [x] Data modeling
-- [ ] Google oauth login and signup
 - [ ] Data filter script
 - [x] Database Tables
   - [x] User Table
   - [x] CompanyCar Table
   - [x] Reservation Table
 - [ ] Deserialize XML
-- [ ] Implement ETL process
-- [ ] Front add car to rent form
-  - [ ] Create user rent list
-  - [ ] Add car form
-  - [ ] Form front validation
+- [ ] Implement automatic ETL process
+- [ ] Front
+  - [ ] Google oauth login and signup
+  - [ ] Main page
+  - [ ] User page
+  - [ ] Admin allUser page
+  - [ ] AllCars page
+  - [ ] MyCars page
+  - [ ] Detailed car page
 - [X] Console App .txt to car Object
 - [X] Redis running
 - [ ] Layered API

@@ -24,7 +24,7 @@ namespace APICarData.Dal
             try
             {
                 IEnumerable<CompanyCar> cars = await _context.CompanyCars
-                    .OrderBy(x => x.numberPlate)
+                    .OrderBy(x => x.NumberPlate)
                     .ToListAsync();
                 return cars;
             }

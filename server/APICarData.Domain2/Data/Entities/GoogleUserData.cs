@@ -5,19 +5,16 @@ namespace APICarData.Domain.Data.Entities
     public class GoogleUserData
     {
         [Key]
-        public int userId {get; set; }
+        public int UserId {get; set; }
         [Required]
-        [StringLength(70)]
-        public string fullName {get; set; }
+        public string FullName {get; set; }
         [Required]
-        [StringLength(50)]
-        public string givenName {get; set; }
+        public string GivenName {get; set; }
         [Required]
-        [StringLength(20)]
-        public string familyName {get; set; }
+        public string FamilyName {get; set; }
         [Required]
-        public string imageURL {get; set; }
+        public string ImageURL {get; set; }
         [Required]
-        public string email {get; set; }
+        public string Email {get; set; }
     }
 }

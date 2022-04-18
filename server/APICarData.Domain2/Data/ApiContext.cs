@@ -25,6 +25,11 @@ namespace APICarData.Domain.Data
             Entry(user).State = EntityState.Modified;
             SaveChanges();
         }
+        public void DeleteUser(User user)
+        {
+            Entry(user).State = EntityState.Modified;
+            SaveChanges();
+        }
 
         //Cars
         public void InsertCar(CompanyCar car)

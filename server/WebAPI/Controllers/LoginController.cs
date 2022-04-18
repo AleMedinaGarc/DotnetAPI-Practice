@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using APICarData.Domain.Models;
 using APICarData.Domain.Interfaces.Login;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace APICarData.Api.Controllers
 {
@@ -25,23 +27,6 @@ namespace APICarData.Api.Controllers
             {
                 string _JWT = _service.Login(googleUserDataModel);
                 return Ok(_JWT);
-            }
-            catch (Exception e)
-            {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
-            }
-        }
-
-        [HttpPut("updateUser/{id}")]
-        [Authorize(Roles = "Administrator, Employee")]
-        public IActionResult UpdateUser([FromBody] UserModel userModel)
-        {
-            try
-            {
-                _service.UpdateUser(userModel);
-                return Ok();
             }
             catch (Exception e)
             {

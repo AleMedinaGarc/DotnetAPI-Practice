@@ -28,7 +28,7 @@ namespace APICarData.Services
             try
             {
                 var currentUser = GetCurrentUser();
-                var reservations = await _DAL.GetReservationsByUser(currentUser.userId);
+                var reservations = await _DAL.GetReservationsByUser(currentUser.UserId);
                 var reservationsMapped = _mapper.Map<IEnumerable<Reservation>, IEnumerable<ReservationModel>>(reservations);
                 return reservationsMapped;
             }
@@ -76,7 +76,7 @@ namespace APICarData.Services
         {
             try
             {
-                if (reservation.reservationId == id)
+                if (reservation.ReservationId == id)
                 {
                     var reservationMapped = _mapper.Map<ReservationModel, Reservation>(reservation);
                     _DAL.UpdateReservation(reservationMapped);
@@ -114,9 +114,9 @@ namespace APICarData.Services
 
                 return new User
                 {
-                    email = userClaims.FirstOrDefault(o =>
+                    Email = userClaims.FirstOrDefault(o =>
                         o.Type == ClaimTypes.Email)?.Value,
-                    role = userClaims.FirstOrDefault(o =>
+                    Role = userClaims.FirstOrDefault(o =>
                         o.Type == ClaimTypes.Role)?.Value
                 };
             }

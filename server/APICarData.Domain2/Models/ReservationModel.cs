@@ -6,17 +6,20 @@ namespace APICarData.Domain.Models
     public class ReservationModel
     {
         [Key]
-        public int reservationId {get; set; }
+        public int ReservationId {get; set; }
         [Required]
-        public int userId {get; set; }
+        public int UserId {get; set; }
         [Required]
-        public int vin {get; set; }
+        [StringLength(21)]
+        public string VIN {get; set; }
         [Required]
-        public DateTime fromDate {get; set; }
+        [RegularExpression(@"^[0-3][0-9]-(1[0-2]|0[0-9])-2[0-9]{3}$")]
+        public string FromDate {get; set; }
         [Required]
-        public DateTime toDate {get; set; }
+        [RegularExpression(@"^[0-3][0-9]-(1[0-2]|0[0-9])-2[0-9]{3}$")]
+        public string ToDate {get; set; }
         [Required]
         [StringLength(7)] // personal/shared
-        public string carUse {get; set; }
+        public string CarUse {get; set; }
     }
 }

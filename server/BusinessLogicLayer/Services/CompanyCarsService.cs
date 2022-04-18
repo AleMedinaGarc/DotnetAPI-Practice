@@ -31,7 +31,7 @@ namespace APICarData.Services
             try
             {
                 var allCars = await _DAL.GetAllCompanyCars();
-                return _mapper.Map< IEnumerable<CompanyCarModel>>(allCars); ;
+                return _mapper.Map< IEnumerable<CompanyCarModel>>(allCars);
             }
             catch (Exception e)
             {

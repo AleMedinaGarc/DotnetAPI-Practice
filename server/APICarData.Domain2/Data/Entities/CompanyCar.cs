@@ -7,12 +7,13 @@ namespace APICarData.Domain.Data.Entities
         [Key]
         public string VIN { get; set; }
         [Required]
-        public string numberPlate {get; set; }
+        public string NumberPlate {get; set; }
         [Required]
-        public int fabricationYear {get; set; }
+        public int FabricationYear {get; set; }
         [Required]
-        public string nextITV {get; set; }
+        public string NextITV {get; set; }
         [Required]
-        public string nextCarInspection { get; set; }
+        public string NextCarInspection { get; set; }
+
     }
 }

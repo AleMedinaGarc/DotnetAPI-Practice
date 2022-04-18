@@ -17,6 +17,7 @@ using AutoMapper;
 using APICarData.Services.Mapper;
 using StackExchange.Redis;
 using APICarData.Domain.Interfaces.CompanyCars;
+using APICarData.Domain.Interfaces.UserData;
 
 namespace APICarData.Api
 {
@@ -36,6 +37,8 @@ namespace APICarData.Api
             // Interfaces declaration
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<ILoginDAL, LoginDAL>();
+            services.AddScoped<IUserDataService, UserDataService>();
+            services.AddScoped<IUserDataDAL, UserDataDAL>();
             services.AddScoped<ICompanyCarsService, CompanyCarsService>();
             services.AddScoped<ICompanyCarsDAL, CompanyCarsDAL>();
             services.AddScoped<IApiContext, ApiContext>();
