@@ -1,0 +1,43 @@
+@startuml
+class DGTCar{
+ vin
+ ...
+}
+
+class User{
+ address
+ role
+ creationDate
+ lastLogin
+ department
+ phoneNumber
+}
+
+class CompanyCar{
+ numberPlate
+ fabricationYear
+ nextITV
+ nextCarInspection
+}
+
+class Reservation{
+ id
+ fromDate
+ toDate
+ carUse
+}
+
+class GoogleUserData{
+ id
+ fullName
+ givenName
+ familyName
+ imageURL
+ email
+}
+
+User --|> GoogleUserData 
+CompanyCar --|> DGTCar 
+User "1"--"many" Reservation : perform >
+CompanyCar "1"--"1" Reservation
+@enduml
