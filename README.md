@@ -22,10 +22,10 @@
     - [x] Delete car
   - [ ] Reservation controller
     - [ ] Get my reservations
-    - [ ] Get all reservations
-    - [ ] Add reservation
-    - [ ] Update reservation
-    - [ ] Delete reservation
+    - [x] Get all reservations
+    - [x] Add reservation
+    - [x] Update reservation
+    - [x] Delete reservation
 - [ ] API error handling
 - [x] Db Running
 - [x] Docker SQL Server container
