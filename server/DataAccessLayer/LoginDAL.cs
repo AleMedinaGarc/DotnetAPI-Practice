@@ -20,7 +20,7 @@ namespace APICarData.Dal
         {
             try
             {
-                _context.InsertUser(user);
+                _context.Insert(user);
             }
             catch (Exception e)
             {
@@ -48,7 +48,7 @@ namespace APICarData.Dal
         {
             try
             {
-                _context.UpdateUser(user);
+                _context.UpdateEntry(user);
             }
             catch (Exception e)
             {

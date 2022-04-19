@@ -28,17 +28,8 @@ namespace APICarData.Services
 
         public async Task<IEnumerable<CompanyCarModel>> GetAllCompanyCars()
         {
-            try
-            {
-                var allCars = await _DAL.GetAllCompanyCars();
-                return _mapper.Map< IEnumerable<CompanyCarModel>>(allCars);
-            }
-            catch (Exception e)
-            {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
-            }
+            var allCars = await _DAL.GetAllCompanyCars();
+            return _mapper.Map<IEnumerable<CompanyCarModel>>(allCars);
         }
 
         public async Task<IEnumerable<DGTCarModel>> GetAllCompanyCarsExtended(IEnumerable<CompanyCarModel> allCompanyCars)
@@ -58,20 +49,12 @@ namespace APICarData.Services
 
         public void AddCompanyCar(CompanyCarModel car)
         {
-            // ITS NOT NEEDED THE EXTENDED CAR INFO
-            // TO STORE THE COMPANY CAR DATA
-            try
+            // Check if car exist in redis database
+            if (_DAL.CompanyCarExistById(car.VIN))
             {
                 CompanyCar carToAdd = _mapper.Map<CompanyCar>(car);
                 _DAL.AddCompanyCar(carToAdd);
             }
-            catch (Exception e)
-            { 
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
-            }
-
         }
 
         public void UpdateCompanyCar(CompanyCarModel car, string id)
@@ -83,18 +66,8 @@ namespace APICarData.Services
 
         public void DeleteCompanyCarById(string id)
         {
-            try
-            {
+            if (_DAL.CompanyCarExistById(id))
                 _DAL.DeleteCompanyCar(id);
-            }
-            catch (Exception e)
-            {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
-            }
         }
-
-         
     }
 }

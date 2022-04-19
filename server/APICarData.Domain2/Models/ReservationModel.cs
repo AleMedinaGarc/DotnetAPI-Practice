@@ -19,7 +19,7 @@ namespace APICarData.Domain.Models
         [RegularExpression(@"^[0-3][0-9]-(1[0-2]|0[0-9])-2[0-9]{3}$")]
         public string ToDate {get; set; }
         [Required]
-        [StringLength(7)] // personal/shared
+        [StringLength(8)] // personal/shared
         public string CarUse {get; set; }
     }
 }

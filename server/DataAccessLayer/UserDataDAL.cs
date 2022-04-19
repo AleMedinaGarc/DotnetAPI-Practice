@@ -68,7 +68,7 @@ namespace APICarData.Dal
         {
             try
             {
-                _context.UpdateUser(user);
+                _context.UpdateEntry(user);
             }
             catch (Exception e)
             {
@@ -83,7 +83,7 @@ namespace APICarData.Dal
             try
             {
                 var user = _context.Users.FirstOrDefault(p => p.UserId == userId);
-                _context.DeleteUser(user);
+                _context.Delete(user);
             }
             catch (Exception ex)
             {

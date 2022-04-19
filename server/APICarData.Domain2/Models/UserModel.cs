@@ -14,7 +14,7 @@ namespace APICarData.Domain.Models
         [StringLength(13)]
         public string Role {get; set; } // administrator/employee
         [Required]
-        public DateTime CreationDate{get; set; }
+        public DateTime CreationDate {get; set; }
         [Required]
         public DateTime LastLogin {get; set; }
     }

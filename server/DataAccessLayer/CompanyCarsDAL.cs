@@ -45,7 +45,7 @@ namespace APICarData.Dal
         {
             try
             {
-                _context.InsertCar(car);
+                _context.Insert(car);
             }
             catch (Exception ex)
             {
@@ -59,7 +59,7 @@ namespace APICarData.Dal
         {
             try
             {
-                    _context.UpdateCar(car);
+                    _context.UpdateEntry(car);
             }
             catch (Exception ex)
             {
@@ -75,23 +75,9 @@ namespace APICarData.Dal
             try
             {
                 var car = _context.CompanyCars.FirstOrDefault(p => p.VIN == id);
-                _context.DeleteCar(car);
+                _context.Delete(car);
             }
             catch (Exception ex)
-            {
-                if (ex.Source != null)
-                    Console.WriteLine("Exception source:", ex.Source);
-                throw;
-            }
-        }
-
-        public bool CompanyCarsAny()
-        {
-            try
-            {
-                return _context.CompanyCars.Any();
-            }
-            catch (ArgumentNullException ex)
             {
                 if (ex.Source != null)
                     Console.WriteLine("Exception source:", ex.Source);
@@ -106,6 +92,19 @@ namespace APICarData.Dal
                 return _context.CompanyCars.Any();
             }
             catch (ArgumentNullException ex)
+            {
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
+                throw;
+            }
+        }
+        public bool CompanyCarExistById(string id)
+        {
+            try
+            {
+                return _context.CompanyCars.Any(p => p.VIN == id);
+            }
+            catch (Exception ex)
             {
                 if (ex.Source != null)
                     Console.WriteLine("Exception source:", ex.Source);

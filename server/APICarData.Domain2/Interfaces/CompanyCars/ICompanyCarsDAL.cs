@@ -11,7 +11,7 @@ namespace APICarData.Domain.Interfaces.CompanyCars
         void AddCompanyCar(CompanyCar car);
         void UpdateCompanyCar(CompanyCar car);
         void DeleteCompanyCar(string id);
-        bool CompanyCarsAny();
         bool CompanyCarsIsEmpty();
+        bool CompanyCarExistById(string id);
     }
 }

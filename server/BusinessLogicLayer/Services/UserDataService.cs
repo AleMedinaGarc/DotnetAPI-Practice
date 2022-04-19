@@ -98,8 +98,8 @@ namespace APICarData.Services
                         if (parentProperty.Name == childProperty.Name && 
                             parentProperty.PropertyType == childProperty.PropertyType && 
                             parentProperty.GetValue(parent) != null &&
-                            parentProperty.Name != "lastLogin" &&
-                            parentProperty.Name != "creationDate")
+                            parentProperty.Name != "LastLogin" &&
+                            parentProperty.Name != "CreationDate")
                         {
                             childProperty.SetValue(child, parentProperty.GetValue(parent));
                             break;

@@ -18,6 +18,8 @@ using APICarData.Services.Mapper;
 using StackExchange.Redis;
 using APICarData.Domain.Interfaces.CompanyCars;
 using APICarData.Domain.Interfaces.UserData;
+using APICarData.Domain.Interfaces.Reservations;
+using System;
 
 namespace APICarData.Api
 {
@@ -31,17 +33,36 @@ namespace APICarData.Api
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
-        {
-            // MSSQL connection 
-            services.AddDbContext<ApiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("testdb")));
+        {            
+            try
+            {
+                // MSSQL connection 
+                services.AddDbContext<ApiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("testdb")));
+                // Redis connection
+                var multiplexer = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("redisdb"));
+                services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
             // Interfaces declaration
+            services.AddScoped<IApiContext, ApiContext>();
+
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<ILoginDAL, LoginDAL>();
+
             services.AddScoped<IUserDataService, UserDataService>();
             services.AddScoped<IUserDataDAL, UserDataDAL>();
+
             services.AddScoped<ICompanyCarsService, CompanyCarsService>();
             services.AddScoped<ICompanyCarsDAL, CompanyCarsDAL>();
-            services.AddScoped<IApiContext, ApiContext>();
+
+            services.AddScoped<IReservationsService, ReservationsService>();
+            services.AddScoped<IReservationsDAL, ReservationsDAL>();
+
             // Mapper configuration
             var mapperConfig = new MapperConfiguration(mc =>
             {
@@ -50,9 +71,6 @@ namespace APICarData.Api
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-            // Redis connection
-            var multiplexer = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("redisdb"));
-            services.AddSingleton<IConnectionMultiplexer>(multiplexer);
 
             services.AddMvc();
 

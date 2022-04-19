@@ -1,5 +1,7 @@
 ﻿using APICarData.Domain.Data;
 using APICarData.Domain.Data.Entities;
+using APICarData.Domain.Interfaces;
+using APICarData.Domain.Interfaces.Reservations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,47 +13,167 @@ using System.Threading.Tasks;
 
 namespace APICarData.Dal
 {
-    public class ReservationsDAL
+    public class ReservationsDAL : IReservationsDAL
     {
-        private readonly ApiContext _context;
-        public ReservationsDAL(ApiContext context)
+        private readonly IApiContext _context;
+        public ReservationsDAL(IApiContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<Reservation>> GetReservationsByUser(int userId)
+        public async Task<IEnumerable<Reservation>> GetUserReservations(int userId)
         {
-            return await _context.Reservations.Where(p =>
-                p.UserId == userId).ToListAsync();
+            try
+            {
+                return await _context.Reservations.Where(p =>
+                    p.UserId == userId).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
+        }
+        public Reservation GetReservationById(int id)
+        {
+            try
+            {
+                return _context.Reservations.FirstOrDefault(p => p.ReservationId == id);
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Reservation>> GetAllReservations()
         {
-            return await _context.Reservations.ToListAsync();
+            try
+            {
+                return await _context.Reservations.ToListAsync();
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
         }
 
         public void AddReservation(Reservation reservation)
         {
-            _context.Reservations.Add(reservation);
-            _context.SaveChanges();
+            try
+            {
+                _context.Insert(reservation);
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
         }
         public void UpdateReservation(Reservation reservation)
         {
-            _context.Entry(reservation).State = EntityState.Modified;
-            _context.SaveChanges();
+            try
+            {
+                _context.UpdateEntry(reservation);
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
         }
 
-        public void DeleteReservation(Reservation reservation)
+        public void DeleteReservationById(int id)
         {
-            _context.Reservations.Remove(reservation);
-            _context.SaveChanges();
-
+            try
+            {
+                var reservation = _context.Reservations.FirstOrDefault(p => p.ReservationId == id);
+                _context.Delete(reservation);
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
         }
 
-        public Reservation GetReservationById (int id)
+        public bool ReservationExistById(int id)
         {
-            return _context.Reservations.FirstOrDefault(p => p.ReservationId == id);
+            try
+            {
+                return _context.Reservations.Any(p => p.ReservationId == id);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
+                throw;
+            }
         }
+
+        public bool CarAlreadyTaken(string VIN)
+        {
+            try
+            {
+                return _context.Reservations.Any(p => p.VIN == VIN);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
+                throw;
+            }
+        }
+
+        public bool UserHasReservations(int userId)
+        {
+            try
+            {
+                return _context.Reservations.Any(p => p.UserId == userId);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
+                throw;
+            }
+        }
+
+        public bool ReservationsIsNotEmpty()
+        {
+            try
+            {
+                return _context.Reservations.Any();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
+                throw;
+            }
+        }
+        public bool ReservationExist(int id)
+        {
+            try
+            {
+                return _context.Reservations.Any(p => p.ReservationId== id);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
+                throw;
+            }
+        }
+
     }
 
 }

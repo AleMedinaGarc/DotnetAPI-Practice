@@ -20,16 +20,13 @@ namespace APICarData.Services
     {
         private readonly ILoginDAL _DAL;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _config;
-        private readonly IHttpContextAccessor _httpContextAccessor;        
+        private readonly IConfiguration _config;    
 
-        public LoginService(ILoginDAL DAL, IMapper mapper, IConfiguration config, IHttpContextAccessor httpContextAccessor)
+        public LoginService(ILoginDAL DAL, IMapper mapper, IConfiguration config)
         {
             _mapper = mapper;
             _DAL = DAL;
             _config = config;
-            _httpContextAccessor = httpContextAccessor;
-
         }
 
         public string Login(GoogleUserDataModel googleUserDataModel)
