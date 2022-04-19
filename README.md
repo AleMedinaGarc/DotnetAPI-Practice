@@ -29,7 +29,7 @@
 - [ ] API error handling
 - [x] Db Running
 - [x] Docker SQL Server container
-- [ ] Dockerize API
+- [x] Dockerize API
 - [x] Data modeling
 - [ ] Data filter script
 - [x] Database Tables
@@ -48,7 +48,7 @@
   - [ ] Detailed car page
 - [X] Console App .txt to car Object
 - [X] Redis running
-- [ ] Layered API
+- [x] Layered API
 
 ## External documentation
 
