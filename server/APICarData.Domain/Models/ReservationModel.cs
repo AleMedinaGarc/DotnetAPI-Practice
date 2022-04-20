@@ -8,7 +8,7 @@ namespace APICarData.Domain.Models
         [Key]
         public int ReservationId {get; set; }
         [Required]
-        public int UserId {get; set; }
+        public string UserId {get; set; }
         [Required]
         [StringLength(21)]
         public string VIN {get; set; }

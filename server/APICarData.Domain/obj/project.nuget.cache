@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "3uXDbriXYJ0dAuvxlejZcnqU18+NlplT1s+sAg95XF0AtMn7KDBGL9xQaWU2U3jtrnjZ4oPYTl1KgWbAndZYRg==",
+  "dgSpecHash": "LX/boG4kWW82U897F0nhE7QAAsT9gn0gCqYVr073kZ7+a0f7BcqY/dg9iQvdG03zafkntUdIX4W/c9Qei41eJQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\alme\\Documents\\APICarData\\server\\APICarData.Domain\\APICarData.Domain.csproj",
   "expectedPackageFiles": [
@@ -24,9 +24,23 @@
     "C:\\Users\\alme\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\3.1.23\\microsoft.extensions.logging.abstractions.3.1.23.nupkg.sha512",
     "C:\\Users\\alme\\.nuget\\packages\\microsoft.extensions.options\\3.1.23\\microsoft.extensions.options.3.1.23.nupkg.sha512",
     "C:\\Users\\alme\\.nuget\\packages\\microsoft.extensions.primitives\\3.1.23\\microsoft.extensions.primitives.3.1.23.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\pipelines.sockets.unofficial\\2.2.2\\pipelines.sockets.unofficial.2.2.2.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\stackexchange.redis\\2.5.61\\stackexchange.redis.2.5.61.nupkg.sha512",
     "C:\\Users\\alme\\.nuget\\packages\\system.collections.immutable\\1.7.1\\system.collections.immutable.1.7.1.nupkg.sha512",
     "C:\\Users\\alme\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512",
-    "C:\\Users\\alme\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512"
+    "C:\\Users\\alme\\.nuget\\packages\\system.configuration.configurationmanager\\5.0.0\\system.configuration.configurationmanager.5.0.0.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\system.diagnostics.performancecounter\\5.0.0\\system.diagnostics.performancecounter.5.0.0.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\system.drawing.common\\5.0.0\\system.drawing.common.5.0.0.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\system.security.accesscontrol\\5.0.0\\system.security.accesscontrol.5.0.0.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\system.security.cryptography.protecteddata\\5.0.0\\system.security.cryptography.protecteddata.5.0.0.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\system.security.permissions\\5.0.0\\system.security.permissions.5.0.0.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
+    "C:\\Users\\alme\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512"
   ],
   "logs": []
 }

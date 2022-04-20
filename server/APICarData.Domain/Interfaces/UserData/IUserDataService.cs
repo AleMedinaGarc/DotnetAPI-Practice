@@ -8,9 +8,9 @@ namespace APICarData.Domain.Interfaces.UserData
     public interface IUserDataService
     {
         UserModel GetCurrentUserData();
-        UserModel GetUserDataById(int userId);
+        UserModel GetUserDataById(string userId);
         Task<IEnumerable<UserModel>> GetAllUsers();
-        void UpdateUser(UserModel userModel);
-        void DeleteUserById(int userId);
+        bool UpdateUser(UserModel userModel);
+        bool DeleteUserById(string userId);
     }
 }

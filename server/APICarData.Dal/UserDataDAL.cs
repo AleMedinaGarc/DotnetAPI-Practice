@@ -16,7 +16,7 @@ namespace APICarData.Dal
         {
             _context = context;
         }
-        public User GetUserDataById(int id)
+        public User GetUserDataById(string id)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace APICarData.Dal
             }
         }
 
-        public void DeleteUserById (int userId)
+        public void DeleteUserById (string userId)
         {
             try
             {
@@ -89,6 +89,34 @@ namespace APICarData.Dal
             {
                 if (ex.Source != null)
                     Console.WriteLine("Exception source:", ex.Source);
+                throw;
+            }
+        }
+
+        public bool UserExist(string userId)
+        {
+            try
+            {
+                return _context.Users.Any(p => p.UserId == userId);
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
+        }
+
+        public bool UsersEmpty()
+        {
+            try
+            {
+                return !_context.Users.Any();
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
                 throw;
             }
         }

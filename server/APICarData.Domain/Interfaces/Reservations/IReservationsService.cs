@@ -9,9 +9,10 @@ namespace APICarData.Domain.Interfaces.Reservations
     public interface IReservationsService        
     {
         Task<IEnumerable<ReservationModel>> GetCurrentUserReservations();
+        Task<IEnumerable<ReservationModel>> GetUserReservations(string userId);
         Task<IEnumerable<ReservationModel>> GetAllReservations();
-        void AddReservation(ReservationModel reservation);
-        void UpdateReservationById(ReservationModel reservation, int id);
-        void DeleteReservationById(int id);
+        bool AddReservation(ReservationModel reservation);
+        bool UpdateReservation(ReservationModel reservation);
+        bool DeleteReservation(int id);
     }
 }

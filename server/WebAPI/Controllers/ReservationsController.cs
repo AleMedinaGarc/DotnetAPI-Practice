@@ -26,7 +26,28 @@ namespace APICarData.Api.Controllers
             try
             {
                 var reservations = await _service.GetCurrentUserReservations();
-                return Ok(reservations);
+                if (reservations != null)
+                    return Ok(reservations);
+                return NotFound("You have no reservations in the database.");
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
+        }
+
+        [HttpGet("userReservations/{id}")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult<IEnumerable<ReservationModel>>> GetUserReservations(string id)
+        {
+            try
+            {
+                var reservations = await _service.GetUserReservations(id);
+                if (reservations != null)
+                    return Ok(reservations);
+                return NotFound("The user has no reservations in the database.");
             }
             catch (Exception e)
             {
@@ -43,7 +64,9 @@ namespace APICarData.Api.Controllers
             try
             {
                 var reservations = await _service.GetAllReservations();
-                return Ok(reservations);
+                if (reservations != null)
+                    return Ok(reservations);
+                return NotFound("There is no reservations in the database.");
             }
             catch (Exception e)
             {
@@ -60,8 +83,10 @@ namespace APICarData.Api.Controllers
         {
             try
             {
-                _service.AddReservation(reservation);
-                return Ok();
+                bool result = _service.AddReservation(reservation);
+                if (result)
+                    return Ok("Entry added.");
+                return BadRequest("Permission denied or car already taken.");
             }
             catch (Exception e)
             {
@@ -71,14 +96,16 @@ namespace APICarData.Api.Controllers
             }
         }
 
-        [HttpPut("updateReservation/{id}")]
+        [HttpPut("updateReservation")]
         [Authorize(Roles = "Administrator,GeneralUser")]
-        public IActionResult UpdateReservationById([FromBody] ReservationModel reservation, int id)
+        public IActionResult UpdateReservation([FromBody] ReservationModel reservation)
         {
             try
             {
-                _service.UpdateReservationById(reservation, id);
-                return Ok();
+                bool result = _service.UpdateReservation(reservation);
+                if (result)
+                    return Ok("Entry Updated.");
+                return BadRequest("Permission denied or entry missmatch.");
             }
             catch (Exception e)
             {
@@ -90,12 +117,14 @@ namespace APICarData.Api.Controllers
 
         [HttpDelete("deleteReservation/{id}")]
         [Authorize(Roles = "Administrator,GeneralUser")]
-        public IActionResult DeleteReservationById(int id)
+        public IActionResult DeleteReservation(int id)
         {
             try
             {
-                _service.DeleteReservationById(id);
-                return Ok();
+                bool result = _service.DeleteReservation(id);
+                if (result)
+                    return Ok("Entry removed.");
+                return BadRequest("Permission denied.");
             }
             catch (Exception e)
             {

@@ -81,5 +81,10 @@ namespace APICarData.Domain.Data
                 throw;
             }
         }
+
+        public void Detach<T>(T value)
+        {
+            Entry(value).State = EntityState.Detached;
+        }
     }
 }

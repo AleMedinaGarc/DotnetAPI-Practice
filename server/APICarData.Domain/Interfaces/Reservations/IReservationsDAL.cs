@@ -8,16 +8,16 @@ namespace APICarData.Domain.Interfaces.Reservations
 {
     public interface IReservationsDAL
     {
-        Task<IEnumerable<Reservation>> GetUserReservations(int userId);
+        Task<IEnumerable<Reservation>> GetUserReservations(string userId);
         Reservation GetReservationById(int id);
         Task<IEnumerable<Reservation>> GetAllReservations();
         void AddReservation(Reservation reservation);
-        void UpdateReservation(Reservation reservation);
+        void UpdateReservation(Reservation reservation, Reservation oldReservation);
         void DeleteReservationById(int id);
         bool ReservationExistById(int id);
         bool CarAlreadyTaken(string VIN);
-        bool UserHasReservations(int userId);
-        bool ReservationsIsNotEmpty();
+        bool UserHasReservations(string userId);
+        bool ReservationsEmpty();
         bool ReservationExist(int id);
     }
 }

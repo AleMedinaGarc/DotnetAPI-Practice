@@ -3,6 +3,7 @@ using APICarData.Domain.Data.Entities;
 using APICarData.Domain.Interfaces;
 using APICarData.Domain.Interfaces.CompanyCars;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,11 @@ namespace APICarData.Dal
     public class CompanyCarsDAL : ICompanyCarsDAL
     {
         private readonly IApiContext _context;
-        public CompanyCarsDAL(/*IConnectionMultiplexer redis, */IApiContext context)
+        private readonly IConnectionMultiplexer _redis;
+        public CompanyCarsDAL(IConnectionMultiplexer redis, IApiContext context)
         {
             _context = context;
-            // _redis = redis;
+            _redis = redis;
         }
 
         public async Task<IEnumerable<CompanyCar>> GetAllCompanyCars()
@@ -36,10 +38,19 @@ namespace APICarData.Dal
             }
         }
 
-        //public async Task GetRedisCarById(string id)
-        //{
-        //    return await _redis.GetDatabase().StringGetAsync(id);
-        //}
+        public async Task<RedisValue> GetDGTCar(string id)
+        {
+            try
+            {
+                return await _redis.GetDatabase().StringGetAsync(id);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
+                throw;
+            }
+        }
 
         public void AddCompanyCar(CompanyCar car)
         {
@@ -89,7 +100,7 @@ namespace APICarData.Dal
         {
             try
             {
-                return _context.CompanyCars.Any();
+                return !_context.CompanyCars.Any();
             }
             catch (ArgumentNullException ex)
             {
@@ -98,7 +109,7 @@ namespace APICarData.Dal
                 throw;
             }
         }
-        public bool CompanyCarExistById(string id)
+        public bool CompanyCarExist(string id)
         {
             try
             {

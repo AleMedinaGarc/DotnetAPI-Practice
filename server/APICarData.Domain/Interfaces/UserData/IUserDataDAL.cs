@@ -9,10 +9,11 @@ namespace APICarData.Domain.Interfaces.UserData
 {
     public interface IUserDataDAL
     {
-        User GetUserDataById(int id);
-        User GetUserDataByEmail(string email);
+        User GetUserDataById(string id);
         Task<IEnumerable<User>> GetAllUsers();
         void UpdateUser(User user);
-        void DeleteUserById(int userId);
+        void DeleteUserById(string userId);
+        bool UserExist(string userId);
+        bool UsersEmpty();
     }
 }

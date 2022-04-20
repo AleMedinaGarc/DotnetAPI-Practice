@@ -3,10 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-
 using APICarData.Domain.Models;
 using APICarData.Domain.Data.Entities;
-using StackExchange.Redis;
 using APICarData.Domain.Interfaces.CompanyCars;
 using System.Text.Json;
 using System.Linq;
@@ -17,57 +15,79 @@ namespace APICarData.Services
     {
         private readonly ICompanyCarsDAL _DAL;
         private readonly IMapper _mapper;
-        private readonly IConnectionMultiplexer _redis;
 
-        public CompanyCarsService(ICompanyCarsDAL DAL, IMapper mapper, IConnectionMultiplexer redis)
+        public CompanyCarsService(ICompanyCarsDAL DAL, IMapper mapper)
         {
             _mapper = mapper;
             _DAL = DAL;
-            _redis = redis;
         }
 
         public async Task<IEnumerable<CompanyCarModel>> GetAllCompanyCars()
         {
-            var allCars = await _DAL.GetAllCompanyCars();
-            return _mapper.Map<IEnumerable<CompanyCarModel>>(allCars);
+            if (!_DAL.CompanyCarsIsEmpty())
+            {
+                var allCars = await _DAL.GetAllCompanyCars();
+                return _mapper.Map<IEnumerable<CompanyCarModel>>(allCars);
+            }
+            return null;
         }
 
         public async Task<IEnumerable<DGTCarModel>> GetAllCompanyCarsExtended(IEnumerable<CompanyCarModel> allCompanyCars)
         {
-            List<CompanyCarModel> companyCarList = allCompanyCars.ToList();
-            List<DGTCarModel> dgtCarList = new List<DGTCarModel>();
-            foreach (CompanyCarModel item in companyCarList)
+            if (!_DAL.CompanyCarsIsEmpty())
             {
-                // var extendedCarData = await _DAL.GetRedisCarById(item.VIN);
-                var extendedCarData = await _redis.GetDatabase().StringGetAsync(item.VIN);
-                var dgtCar = JsonSerializer.Deserialize<DGTCar>(extendedCarData);
-                var dgtCarModeled = _mapper.Map<DGTCarModel>(dgtCar);
-                dgtCarList.Add(dgtCarModeled);
+                List<CompanyCarModel> companyCarList = allCompanyCars.ToList();
+                List<DGTCarModel> dgtCarList = new List<DGTCarModel>();
+                foreach (CompanyCarModel item in companyCarList)
+                {
+                    var extendedCarData = await _DAL.GetDGTCar(item.VIN);
+                    if (extendedCarData.HasValue)
+                    {
+                        var dgtCar = JsonSerializer.Deserialize<DGTCar>(extendedCarData);
+                        var dgtCarModeled = _mapper.Map<DGTCarModel>(dgtCar);
+                        dgtCarList.Add(dgtCarModeled);
+                    }
+                }
+
+                return dgtCarList.AsEnumerable();
             }
-            return dgtCarList.AsEnumerable();
+            return null;
         }
 
-        public void AddCompanyCar(CompanyCarModel car)
+        public async Task<bool> AddCompanyCar(CompanyCarModel car)
         {
-            // Check if car exist in redis database
-            if (_DAL.CompanyCarExistById(car.VIN))
+            var extendedCarData = await _DAL.GetDGTCar(car.VIN);
+            if (extendedCarData.HasValue)
             {
-                CompanyCar carToAdd = _mapper.Map<CompanyCar>(car);
-                _DAL.AddCompanyCar(carToAdd);
+                if (!_DAL.CompanyCarExist(car.VIN))
+                {
+                    CompanyCar carToAdd = _mapper.Map<CompanyCar>(car);
+                    _DAL.AddCompanyCar(carToAdd);
+                    return true;
+                }
             }
+            return false;
         }
 
-        public void UpdateCompanyCar(CompanyCarModel car, string id)
+        public bool UpdateCompanyCar(CompanyCarModel car)
         {
-            var carToUpdate = _mapper.Map<CompanyCar>(car);
-            if (car.VIN == id)
+            if (_DAL.CompanyCarExist(car.VIN))
+            {
+                var carToUpdate = _mapper.Map<CompanyCar>(car);
                 _DAL.UpdateCompanyCar(carToUpdate);
+                return true;
+            }
+            return false;
         }
 
-        public void DeleteCompanyCarById(string id)
+        public bool DeleteCompanyCarById(string id)
         {
-            if (_DAL.CompanyCarExistById(id))
+            if (_DAL.CompanyCarExist(id))
+            {
                 _DAL.DeleteCompanyCar(id);
+                return true;
+            }
+            return false;
         }
     }
 }
