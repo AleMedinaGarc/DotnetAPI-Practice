@@ -8,11 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using APICarData.Domain.Interfaces.Login;
-using APICarData.Domain.Interfaces;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+using APICarData.Domain.Interfaces.UserData;
 
 namespace APICarData.Services
 {
@@ -20,23 +16,30 @@ namespace APICarData.Services
     {
         private readonly ILoginDAL _DAL;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _config;    
+        private readonly IConfiguration _config;
+        private readonly IUserDataDAL _userData;
 
-        public LoginService(ILoginDAL DAL, IMapper mapper, IConfiguration config)
+        public LoginService(
+            ILoginDAL DAL, 
+            IMapper mapper, 
+            IConfiguration config,
+            IUserDataDAL userData
+            )
         {
             _mapper = mapper;
             _DAL = DAL;
             _config = config;
+            _userData = userData;
         }
 
         public string Login(GoogleUserDataModel googleUserDataModel)
         {
             GoogleUserData googleUserData = _mapper.Map<GoogleUserData>(googleUserDataModel);
-            if (_DAL.CheckUserExist(googleUserData))
+            if (_userData.UserExist(googleUserData.UserId))
             {
-                User existingUser = _DAL.GetUserDataById(googleUserData.UserId);
+                User existingUser = _userData.GetUserDataById(googleUserData.UserId);
                 existingUser.LastLogin = DateTime.Now;
-                _DAL.UpdateUser(existingUser);
+                _userData.UpdateUser(existingUser);
                 return GenerateUserToken(existingUser);
 
             }
@@ -64,7 +67,7 @@ namespace APICarData.Services
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId),
                 new Claim(ClaimTypes.Role, user.Role)
             };
 
@@ -76,32 +79,5 @@ namespace APICarData.Services
             Console.Write("Access granted to {0} with {1} permissions\n", user.GivenName, user.Role);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
-        public class PropertyCopier<TParent, TChild> where TParent : class
-                                                         where TChild : class
-        {
-            public static void Copy(TParent parent, TChild child)
-            {
-                var parentProperties = parent.GetType().GetProperties();
-                var childProperties = child.GetType().GetProperties();
-
-                foreach (var parentProperty in parentProperties)
-                {
-                    foreach (var childProperty in childProperties)
-                    {
-                        if (parentProperty.Name == childProperty.Name && 
-                            parentProperty.PropertyType == childProperty.PropertyType && 
-                            parentProperty.GetValue(parent) != null &&
-                            parentProperty.Name != "lastLogin" &&
-                            parentProperty.Name != "creationDate")
-                        {
-                            childProperty.SetValue(child, parentProperty.GetValue(parent));
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
     }
 }

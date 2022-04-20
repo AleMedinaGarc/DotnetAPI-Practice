@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using APICarData.Domain.Models;
 using System;
 using APICarData.Domain.Interfaces.CompanyCars;
+using System.Dynamic;
 
 namespace APICarData.Api.Controllers
 {
@@ -26,9 +27,15 @@ namespace APICarData.Api.Controllers
             try
             {
                 var allCompanyCars = await _service.GetAllCompanyCars();
+                if (allCompanyCars == null)
+                    return BadRequest("There is no cars in the database.");
+
                 var allCompanyCarsExtended = await _service.GetAllCompanyCarsExtended(allCompanyCars);
-                object[] array = { allCompanyCars, allCompanyCarsExtended };
-                return Ok(array);
+                if (allCompanyCarsExtended == null)
+                    return BadRequest("The cars registered has no extended DGT information.");
+
+                object[] merge = { allCompanyCars, allCompanyCarsExtended };
+                return Ok(merge);
             }
             catch (Exception e)
             {
@@ -41,12 +48,14 @@ namespace APICarData.Api.Controllers
 
         [HttpPost("addCar")]
         [Authorize(Roles = "Administrator")]
-        public IActionResult AddCompanyCar([FromBody] CompanyCarModel car)
+        public async Task<IActionResult> AddCompanyCar([FromBody] CompanyCarModel car)
         {
             try
             {
-                _service.AddCompanyCar(car);
-                return Ok();
+                bool result = await _service.AddCompanyCar(car);
+                if (result)
+                    return Ok("Entry added.");
+                return Conflict("Entry doesnt exist in the DGT or already in the database.");
             }
 
             catch (Exception e)
@@ -58,14 +67,16 @@ namespace APICarData.Api.Controllers
 
         }
 
-        [HttpPut("updateCar/{id}")]
+        [HttpPut("updateCar")]
         [Authorize(Roles = "Administrator")]
-        public IActionResult UpdateCompanyCar([FromBody] CompanyCarModel car, string id)
+        public IActionResult UpdateCompanyCar([FromBody] CompanyCarModel car)
         {
             try
             {
-                _service.UpdateCompanyCar(car, id);
-                return Ok();
+                bool result = _service.UpdateCompanyCar(car);
+                if (result)
+                    return Ok("Car updated.");
+                return NotFound("Car not found in the database.");
             }
             catch (Exception e)
             {
@@ -82,8 +93,11 @@ namespace APICarData.Api.Controllers
         {
             try
             {
-                _service.DeleteCompanyCarById(id);
-                return Ok();
+                bool result = _service.DeleteCompanyCarById(id);
+                if (result)
+                    return Ok("Car updated.");
+                return NotFound("Car not found in the database.");
+
             }
             catch (Exception e)
             {

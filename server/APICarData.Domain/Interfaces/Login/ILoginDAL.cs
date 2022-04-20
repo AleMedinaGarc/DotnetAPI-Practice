@@ -10,8 +10,5 @@ namespace APICarData.Domain.Interfaces.Login
     public interface ILoginDAL
     {
         void RegisterUser(User user);
-        bool CheckUserExist(GoogleUserData googleUserData);
-        User GetUserDataById(int id);
-        void UpdateUser(User user);
     }
 }

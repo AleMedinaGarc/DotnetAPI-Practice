@@ -7,7 +7,7 @@
   - [x] Learn about C# basics
   - [x] Project initialized
 - [x] Swagger running
-- [ ] API controllers
+- [x] API controllers
   - [x] Login controller
     - [x] Login
     - [x] Get all users
@@ -20,8 +20,9 @@
     - [x] Add car
     - [x] Update car
     - [x] Delete car
-  - [ ] Reservation controller
-    - [ ] Get my reservations
+  - [x] Reservation controller
+    - [x] Get my reservations
+    - [x] Get user reservations
     - [x] Get all reservations
     - [x] Add reservation
     - [x] Update reservation
@@ -48,7 +49,6 @@
   - [ ] Detailed car page
 - [X] Console App .txt to car Object
 - [X] Redis running
-- [x] Layered API
 
 ## External documentation
 

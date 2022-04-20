@@ -5,7 +5,7 @@ using System.Text;
 namespace APICarData.Services
 {
     public class PropertyCopier<TParent, TChild> where TParent : class
-                                                          where TChild : class
+                                                 where TChild : class
     {
         public static void Copy(TParent parent, TChild child)
         {
@@ -19,8 +19,8 @@ namespace APICarData.Services
                     if (parentProperty.Name == childProperty.Name &&
                         parentProperty.PropertyType == childProperty.PropertyType &&
                         parentProperty.GetValue(parent) != null &&
-                        parentProperty.Name != "lastLogin" &&
-                        parentProperty.Name != "creationDate")
+                        parentProperty.Name != "LastLogin" &&
+                        parentProperty.Name != "CreationDate")
                     {
                         childProperty.SetValue(child, parentProperty.GetValue(parent));
                         break;

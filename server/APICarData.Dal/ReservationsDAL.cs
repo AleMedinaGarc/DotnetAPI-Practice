@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace APICarData.Dal
 {
@@ -21,7 +22,7 @@ namespace APICarData.Dal
             _context = context;
         }
 
-        public async Task<IEnumerable<Reservation>> GetUserReservations(int userId)
+        public async Task<IEnumerable<Reservation>> GetUserReservations(string userId)
         {
             try
             {
@@ -35,6 +36,7 @@ namespace APICarData.Dal
                 throw;
             }
         }
+
         public Reservation GetReservationById(int id)
         {
             try
@@ -76,10 +78,11 @@ namespace APICarData.Dal
                 throw;
             }
         }
-        public void UpdateReservation(Reservation reservation)
+        public void UpdateReservation(Reservation reservation, Reservation oldReservation)
         {
             try
             {
+                _context.Detach(oldReservation); 
                 _context.UpdateEntry(reservation);
             }
             catch (Exception e)
@@ -133,7 +136,7 @@ namespace APICarData.Dal
             }
         }
 
-        public bool UserHasReservations(int userId)
+        public bool UserHasReservations(string userId)
         {
             try
             {
@@ -147,11 +150,11 @@ namespace APICarData.Dal
             }
         }
 
-        public bool ReservationsIsNotEmpty()
+        public bool ReservationsEmpty()
         {
             try
             {
-                return _context.Reservations.Any();
+                return !_context.Reservations.Any();
             }
             catch (Exception ex)
             {
@@ -160,11 +163,39 @@ namespace APICarData.Dal
                 throw;
             }
         }
+
         public bool ReservationExist(int id)
         {
             try
             {
                 return _context.Reservations.Any(p => p.ReservationId== id);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
+                throw;
+            }
+        }
+
+        public bool CarExist(string VIN)
+        {
+            try
+            {
+                return _context.CompanyCars.Any(p => p.VIN == VIN);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Source != null)
+                    Console.WriteLine("Exception source:", ex.Source);
+                throw;
+            }
+        }
+        public bool UserExist(string id)
+        {
+            try
+            {
+                return _context.Users.Any(p => p.UserId == id);
             }
             catch (Exception ex)
             {

@@ -9,9 +9,10 @@ namespace APICarData.Domain.Interfaces
         DbSet<CompanyCar> CompanyCars { get; set; }
         DbSet<User> Users { get; set; }
         DbSet<Reservation> Reservations { get; set; }
-        //Login
+       
         void Insert<T>(T value);
         void UpdateEntry<T>(T value);
         void Delete<T>(T value);
+        void Detach<T>(T value);
     }
 }

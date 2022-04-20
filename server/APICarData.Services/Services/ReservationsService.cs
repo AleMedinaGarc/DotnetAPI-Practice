@@ -8,77 +8,127 @@ using System.Threading.Tasks;
 using APICarData.Domain.Models;
 using APICarData.Domain.Data.Entities;
 using APICarData.Domain.Interfaces.Reservations;
+using APICarData.Domain.Interfaces.CompanyCars;
+using APICarData.Domain.Interfaces.UserData;
 
 namespace APICarData.Services
 {
     public class ReservationsService : IReservationsService
     {
-        private readonly IReservationsDAL _DAL;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IReservationsDAL _DAL;
+        private readonly IUserDataDAL _users;
+        private readonly ICompanyCarsDAL _cars;
 
-        public ReservationsService(IReservationsDAL DAL, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public ReservationsService(
+            IMapper mapper,
+            IHttpContextAccessor httpContextAccessor,
+            IReservationsDAL DAL,
+            IUserDataDAL users,
+            ICompanyCarsDAL cars
+            )
         {
             _mapper = mapper;
-            _DAL = DAL;
             _httpContextAccessor = httpContextAccessor;
+            _DAL = DAL;
+            _users = users;
+            _cars = cars;
         }
 
         public async Task<IEnumerable<ReservationModel>> GetCurrentUserReservations()
         {
-            
             var currentUser = GetCurrentUser();
-            // get the UserId
-            // check if user has reservations
-            var reservations = await _DAL.GetUserReservations(currentUser.UserId);
-            var reservationsMapped = _mapper.Map<IEnumerable<Reservation>, IEnumerable<ReservationModel>>(reservations);
-            return reservationsMapped;
+            if (_DAL.UserHasReservations(currentUser.UserId))
+            {
+                var reservations = await _DAL.GetUserReservations(currentUser.UserId);
+                var reservationsMapped = _mapper.Map<IEnumerable<ReservationModel>>(reservations);
+                return reservationsMapped;
+            }
+            return null;
         }
+
+        public async Task<IEnumerable<ReservationModel>> GetUserReservations(string userId)
+        {
+            if (_DAL.UserHasReservations(userId))
+            {
+                var reservations = await _DAL.GetUserReservations(userId);
+                var reservationsMapped = _mapper.Map<IEnumerable<ReservationModel>>(reservations);
+                return reservationsMapped;
+            }
+            return null;
+        }
+
 
         public async Task<IEnumerable<ReservationModel>> GetAllReservations()
         {
-            if (_DAL.ReservationsIsNotEmpty())
+            if (!_DAL.ReservationsEmpty())
             {
                 var reservations = await _DAL.GetAllReservations();
-                var reservationsMapped = _mapper.Map<IEnumerable<Reservation>, IEnumerable<ReservationModel>>(reservations);
+                var reservationsMapped = _mapper.Map<IEnumerable<ReservationModel>>(reservations);
                 return reservationsMapped;
             }
-            else { 
-                return Enumerable.Empty<ReservationModel>();
+            else
+            {
+                return null;
             }
         }
 
-        public void AddReservation(ReservationModel reservation)
+        public bool AddReservation(ReservationModel reservation)
         {
-            // check if body user exist
-            // check if body car exist
-            // check if body userId is (the same as the loged user) || admin
-            if (!_DAL.CarAlreadyTaken(reservation.VIN))
+            var currentUser = GetCurrentUser();
+            if (_cars.CompanyCarExist(reservation.VIN) &&
+                _users.UserExist(reservation.UserId))
             {
-                var reservationMapped = _mapper.Map<ReservationModel, Reservation>(reservation);
-                _DAL.AddReservation(reservationMapped);
-            }
-        }
-
-        public void UpdateReservationById(ReservationModel reservation, int id)
-        {
-            if (reservation.ReservationId == id)
-            {
-                if (_DAL.ReservationExist(id))
+                if (currentUser.UserId == reservation.UserId ||
+                    currentUser.Role == "Administrator")
                 {
-                // check if user id is (the same as the loged user) || admin
-                // check if body user exist
-                var reservationMapped = _mapper.Map<ReservationModel, Reservation>(reservation);
-                _DAL.UpdateReservation(reservationMapped);
+                    if (!_DAL.CarAlreadyTaken(reservation.VIN))
+                    {
+                        var reservationMapped = _mapper.Map<Reservation>(reservation);
+                        _DAL.AddReservation(reservationMapped);
+                        return true;
+                    }
                 }
             }
+            return false;
         }
 
-        public void DeleteReservationById(int id)
+        public bool UpdateReservation(ReservationModel reservation)
         {
+            var currentUser = GetCurrentUser();
+            if (_DAL.ReservationExist(reservation.ReservationId))
+            {
+                if (currentUser.UserId == reservation.UserId ||
+                           currentUser.Role == "Administrator")
+                {
+                    var oldReservation = _DAL.GetReservationById(reservation.ReservationId);
+                    if (oldReservation.UserId == reservation.UserId &&
+                        oldReservation.VIN == reservation.VIN)
+                    {
+                        var reservationMapped = _mapper.Map<Reservation>(reservation);
+                        _DAL.UpdateReservation(reservationMapped, oldReservation);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool DeleteReservation(int id)
+        {
+            var currentUser = GetCurrentUser();
             if (_DAL.ReservationExistById(id))
-                // check if the reservation userId is (the same as the loged user) || admin
-                _DAL.DeleteReservationById(id);
+            {
+                var reservation = _DAL.GetReservationById(id);
+                if (currentUser.UserId == reservation.UserId ||
+                               currentUser.Role == "Administrator")
+                {
+                    _DAL.DeleteReservationById(id);
+                    return true;
+                }
+            }
+            return false;
         }
         private User GetCurrentUser()
         {
@@ -87,8 +137,8 @@ namespace APICarData.Services
                 var userClaims = identity.Claims;
                 return new User
                 {
-                    Email = userClaims.FirstOrDefault(o =>
-                        o.Type == ClaimTypes.Email)?.Value,
+                    UserId = userClaims.FirstOrDefault(o =>
+                        o.Type == ClaimTypes.NameIdentifier)?.Value,
                     Role = userClaims.FirstOrDefault(o =>
                         o.Type == ClaimTypes.Role)?.Value
                 };

@@ -1,11 +1,8 @@
 ﻿using APICarData.Domain.Data.Entities;
-using System;
 using AutoMapper;
 using APICarData.Domain.Models;
-using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using APICarData.Domain.Interfaces.UserData;
-using APICarData.Domain.Interfaces;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
@@ -17,7 +14,7 @@ namespace APICarData.Services
     {
         private readonly IUserDataDAL _DAL;
         private readonly IMapper _mapper;
-        private readonly IHttpContextAccessor _httpContextAccessor;        
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UserDataService(IUserDataDAL DAL, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
@@ -28,42 +25,63 @@ namespace APICarData.Services
         }
         public UserModel GetCurrentUserData()
         {
-            var currentEmail = GetCurrentUser().Email;
-            var user = _DAL.GetUserDataByEmail(currentEmail);
-            return _mapper.Map<UserModel>(user);
+            var currentUser = GetCurrentUser();
+            if (_DAL.UserExist(currentUser.UserId))
+            {
+                var user = _DAL.GetUserDataById(currentUser.UserId);
+                return _mapper.Map<UserModel>(user);
+            }
+            return null;
         }
 
-        public UserModel GetUserDataById(int userId)
+        public UserModel GetUserDataById(string userId)
         {
-            var user = _DAL.GetUserDataById(userId);
-            return _mapper.Map<UserModel>(user);
+            if (_DAL.UserExist(userId))
+            {
+                var user = _DAL.GetUserDataById(userId);
+                return _mapper.Map<UserModel>(user);
+            }
+            return null;
         }
-        
+
         public async Task<IEnumerable<UserModel>> GetAllUsers()
         {
-            var allUsers = await _DAL.GetAllUsers();
-            return _mapper.Map<IEnumerable<UserModel>>(allUsers);
+            if (!_DAL.UsersEmpty())
+            {
+                var allUsers = await _DAL.GetAllUsers();
+                return _mapper.Map<IEnumerable<UserModel>>(allUsers);
+            }
+            return null;
         }
 
-        public void UpdateUser(UserModel userModel)
+        public bool UpdateUser(UserModel userModel)
         {
             var currentUser = GetCurrentUser();
-            if (currentUser.Email == userModel.Email ||
-                currentUser.Role == "Administrator")
+            if (_DAL.UserExist(currentUser.UserId) &&
+                (currentUser.UserId == userModel.UserId ||
+                currentUser.Role == "Administrator"))
             {
-                User user = _mapper.Map<User>(userModel);                
+                User user = _mapper.Map<User>(userModel);
                 var dbUser = _DAL.GetUserDataById(userModel.UserId);
                 PropertyCopier<User, User>.Copy(user, dbUser);
-                
-                _DAL.UpdateUser(dbUser);
 
-                // maybe relogin needed because of the email identity
+                _DAL.UpdateUser(dbUser);
+                return true;
             }
+            return false;
         }
 
-        public void DeleteUserById(int userId)
+        public bool DeleteUserById(string userId)
         {
-            _DAL.DeleteUserById(userId);
+            var currentUser = GetCurrentUser();
+            if (_DAL.UserExist(currentUser.UserId) &&
+                (currentUser.UserId == userId ||
+                currentUser.Role == "Administrator"))
+            {
+                _DAL.DeleteUserById(userId);
+                return true;
+            }
+            return false;
         }
 
         private User GetCurrentUser()
@@ -74,40 +92,13 @@ namespace APICarData.Services
 
                 return new User
                 {
-                    Email = userClaims.FirstOrDefault(o =>
-                        o.Type == ClaimTypes.Email)?.Value,
+                    UserId = userClaims.FirstOrDefault(o =>
+                        o.Type == ClaimTypes.NameIdentifier)?.Value,
                     Role = userClaims.FirstOrDefault(o =>
                         o.Type == ClaimTypes.Role)?.Value
                 };
             }
             return null;
         }
-
-        public class PropertyCopier<TParent, TChild> where TParent : class
-                                                         where TChild : class
-        {
-            public static void Copy(TParent parent, TChild child)
-            {
-                var parentProperties = parent.GetType().GetProperties();
-                var childProperties = child.GetType().GetProperties();
-
-                foreach (var parentProperty in parentProperties)
-                {
-                    foreach (var childProperty in childProperties)
-                    {
-                        if (parentProperty.Name == childProperty.Name && 
-                            parentProperty.PropertyType == childProperty.PropertyType && 
-                            parentProperty.GetValue(parent) != null &&
-                            parentProperty.Name != "LastLogin" &&
-                            parentProperty.Name != "CreationDate")
-                        {
-                            childProperty.SetValue(child, parentProperty.GetValue(parent));
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
     }
 }

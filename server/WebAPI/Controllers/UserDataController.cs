@@ -26,7 +26,9 @@ namespace APICarData.Api.Controllers
             try
             {
                 var user = _service.GetCurrentUserData();
-                return Ok(user);
+                if (user != null)
+                    return Ok(user);
+                return BadRequest("User not found.");
             }
             catch (Exception e)
             {
@@ -39,12 +41,14 @@ namespace APICarData.Api.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Administrator")]
-        public ActionResult<UserModel> GetUserDataById(int id)
+        public ActionResult<UserModel> GetUserDataById(string id)
         {
             try
             {
                 var user = _service.GetUserDataById(id);
-                return Ok(user);
+                if (user != null)
+                    return Ok(user);
+                return BadRequest("User not found.");
             }
             catch (Exception e)
             {
@@ -62,7 +66,9 @@ namespace APICarData.Api.Controllers
             try
             {
                 var allUsers = await _service.GetAllUsers();
-                return Ok(allUsers);
+                if (allUsers != null)
+                    return Ok(allUsers);
+                return NotFound("User not found.");
             }
             catch (Exception e)
             {
@@ -73,14 +79,16 @@ namespace APICarData.Api.Controllers
 
         }
 
-        [HttpPut("updateUser/{id}")]
+        [HttpPut("updateUser")]
         [Authorize(Roles = "Administrator, Employee")]
         public IActionResult UpdateUser([FromBody] UserModel userModel)
         {
             try
             {
-                _service.UpdateUser(userModel);
-                return Ok();
+                bool result = _service.UpdateUser(userModel);
+                if (result)
+                    return Ok("User updated.");
+                return BadRequest("User not found or permission denied.");
             }
             catch (Exception e)
             {
@@ -92,12 +100,14 @@ namespace APICarData.Api.Controllers
 
         [HttpDelete("delete/{id}")]
         [Authorize(Roles = "Administrator")]
-        public IActionResult DeleteUserById(int id)
+        public IActionResult DeleteUserById(string id)
         {
             try
             {
-                _service.DeleteUserById(id);
-                return Ok();
+                bool result = _service.DeleteUserById(id);
+                if (result)
+                    return Ok("User removed from database");
+                return BadRequest("User not found or permission denied.");
             }
             catch (Exception e)
             {
