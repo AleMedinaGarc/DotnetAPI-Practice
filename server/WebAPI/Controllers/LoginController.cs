@@ -27,7 +27,7 @@ namespace APICarData.Api.Controllers
             try
             {
                 string _JWT = _service.Login(googleUserDataModel);
-                return Ok(_JWT);
+                return Ok(new { Token =_JWT});
             }
             catch (Exception e)
             {

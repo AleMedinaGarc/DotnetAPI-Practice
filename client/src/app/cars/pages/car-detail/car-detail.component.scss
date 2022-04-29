@@ -1,0 +1,10 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 380px);
+    padding-bottom: 10%;
+}
+
+.detailCard {
+    margin: auto;
+    width: 95%;
+}

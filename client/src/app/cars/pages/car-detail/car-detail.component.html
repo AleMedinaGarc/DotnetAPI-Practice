@@ -1,0 +1,86 @@
+<app-header></app-header>
+<div class="detailCard">
+    <p-breadcrumb [model]="items" style="padding: 10%; margin: 20px;"></p-breadcrumb>
+    <p-card [style]="{'width': '50rem', 'margin-bottom': '2em', 'margin':'0 auto'}">
+        <h2>Car {{cardata.vin}} details</h2>
+        <div class="wrapper">
+            <div>
+                <p *ngIf="cardata.brand">Brand: {{cardata.brand}}</p>
+                <p *ngIf="cardata.model">Model: {{cardata.model}}</p>
+                <p *ngIf="cardata.bodyStyleCode">{{cardata.bodyStyleCode}}</p>
+                <p *ngIf="cardata.cO2Emissions">{{cardata.cO2Emissions}}</p>
+                <p *ngIf="cardata.cc">{{cardata.cc}}</p>
+                <p *ngIf="cardata.chassisBrand">{{cardata.chassisBrand}}</p>
+                <p *ngIf="cardata.chassisManufacturer">{{cardata.chassisManufacturer}}</p>
+                <p *ngIf="cardata.chassisVehicleBase">{{cardata.chassisVehicleBase}}</p>
+                <p *ngIf="cardata.chassisVehicleType">{{cardata.chassisVehicleType}}</p>
+                <p *ngIf="cardata.chassisVehicleVariant">{{cardata.chassisVehicleVariant}}</p>
+                <p *ngIf="cardata.curbWeigh">{{cardata.curbWeigh}}</p>
+                <p *ngIf="cardata.ecoCode">{{cardata.ecoCode}}</p>
+                <p *ngIf="cardata.ecoInnovation">{{cardata.ecoInnovation}}</p>
+                <p *ngIf="cardata.ecoReduction">{{cardata.ecoReduction}}</p>
+                <p *ngIf="cardata.electricPowerConsumption">{{cardata.electricPowerConsumption}}</p>
+                <p *ngIf="cardata.electricVehicleAutonomy">{{cardata.electricVehicleAutonomy}}</p>
+                <p *ngIf="cardata.electricVehicleCategory">{{cardata.electricVehicleCategory}}</p>
+                <p *ngIf="cardata.engineIntakeType">{{cardata.engineIntakeType}}</p>
+                <p *ngIf="cardata.enrollmentDate">{{cardata.enrollmentDate}}</p>
+                <p *ngIf="cardata.euroEmissionLevel">{{cardata.euroEmissionLevel}}</p>
+                <p *ngIf="cardata.fabricationYear">{{cardata.fabricationYear}}</p>
+                <p *ngIf="cardata.firstRegistrationDate">{{cardata.firstRegistrationDate}}</p>
+                <p *ngIf="cardata.frontAxleTrack">{{cardata.frontAxleTrack}}</p>
+                <p *ngIf="cardata.fuelType">{{cardata.fuelType}}</p>
+                <p *ngIf="cardata.geoLocationCode">{{cardata.geoLocationCode}}</p>
+                <p *ngIf="cardata.geoRegistrationCode">{{cardata.geoRegistrationCode}}</p>
+                <p *ngIf="cardata.grossWeight">{{cardata.grossWeight}}</p>
+                <p *ngIf="cardata.horsePower">{{cardata.horsePower}}</p>
+                <p *ngIf="cardata.ineCode">{{cardata.ineCode}}</p>
+                <p *ngIf="cardata.isGPSGPRSUnregistered">{{cardata.isGPSGPRSUnregistered}}</p>
+                <p *ngIf="cardata.isNew">{{cardata.isNew}}</p>
+                <p *ngIf="cardata.isRental">{{cardata.isRental}}</p>
+                <p *ngIf="cardata.isSealed">{{cardata.isSealed}}</p>
+            </div>
+            <div>
+                <p *ngIf="cardata.isSeized">{{cardata.isSeized}}</p>
+                <p *ngIf="cardata.isStolen">{{cardata.isStolen}}</p>
+                <p *ngIf="cardata.isTemporarilyDeregistered">{{cardata.isTemporarilyDeregistered}}</p>
+                <p *ngIf="cardata.itvCode">{{cardata.itvCode}}</p>
+                <p *ngIf="cardata.itvType">{{cardata.itvType}}</p>
+                <p *ngIf="cardata.location">{{cardata.location}}</p>
+                <p *ngIf="cardata.manufacturer">{{cardata.manufacturer}}</p>
+                <p *ngIf="cardata.maxCurbWeight">{{cardata.maxCurbWeight}}</p>
+                <p *ngIf="cardata.maxSeats">{{cardata.maxSeats}}</p>
+                <p *ngIf="cardata.municipality">{{cardata.municipality}}</p>
+                <p *ngIf="cardata.nextCarInspection">{{cardata.nextCarInspection}}</p>
+                <p *ngIf="cardata.nextITV">{{cardata.nextITV}}</p>
+                <p *ngIf="cardata.numberPlate">{{cardata.numberPlate}}</p>
+                <p *ngIf="cardata.originClass">{{cardata.originClass}}</p>
+                <p *ngIf="cardata.ownerHasTitle">{{cardata.ownerHasTitle}}</p>
+                <p *ngIf="cardata.ownerType">{{cardata.ownerType}}</p>
+                <p *ngIf="cardata.owners">{{cardata.owners}}</p>
+                <p *ngIf="cardata.ownershipTypeCode">{{cardata.ownershipTypeCode}}</p>
+                <p *ngIf="cardata.passengersPerSquareMeter">{{cardata.passengersPerSquareMeter}}</p>
+                <p *ngIf="cardata.permanentlyUnregistered">{{cardata.permanentlyUnregistered}}</p>
+                <p *ngIf="cardata.postalCode">{{cardata.postalCode}}</p>
+                <p *ngIf="cardata.processingDate">{{cardata.processingDate}}</p>
+                <p *ngIf="cardata.productionModelCode">{{cardata.productionModelCode}}</p>
+                <p *ngIf="cardata.productionModelPassword">{{cardata.productionModelPassword}}</p>
+                <p *ngIf="cardata.rearAxleTrack">{{cardata.rearAxleTrack}}</p>
+                <p *ngIf="cardata.registrationClass">{{cardata.registrationClass}}</p>
+                <p *ngIf="cardata.registrationDate">{{cardata.registrationDate}}</p>
+                <p *ngIf="cardata.registrationType">{{cardata.registrationType}}</p>
+                <p *ngIf="cardata.registrationTypeDate">{{cardata.registrationTypeDate}}</p>
+                <p *ngIf="cardata.seats">{{cardata.seats}}</p>
+                <p *ngIf="cardata.serviceCode">{{cardata.serviceCode}}</p>
+                <p *ngIf="cardata.taxableHorsePower">{{cardata.taxableHorsePower}}</p>
+                <p *ngIf="cardata.transmissions">{{cardata.transmissions}}</p>
+                <p *ngIf="cardata.vehicleRegulationClass">{{cardata.vehicleRegulationClass}}</p>
+                <p *ngIf="cardata.vehicleType">{{cardata.vehicleType}}</p>
+                <p *ngIf="cardata.vehicleVariant">{{cardata.vehicleVariant}}</p>
+                <p *ngIf="cardata.vehicleVersion">{{cardata.vehicleVersion}}</p>
+                <p *ngIf="cardata.weightIndicator">{{cardata.weightIndicator}}</p>
+                <p *ngIf="cardata.wheelbase">{{cardata.wheelbase}}</p>
+            </div>
+        </div>
+    </p-card>
+
+</div>

@@ -1,0 +1,6 @@
+<app-header></app-header>
+<div>
+    <p-breadcrumb [model]="items" style="padding: 10%;"></p-breadcrumb>
+    <ag-grid-angular style="width: 100%; height: 500px;" class="ag-theme-alpine" [rowData]="allReservations" [columnDefs]="columnDefs">
+    </ag-grid-angular>
+</div>

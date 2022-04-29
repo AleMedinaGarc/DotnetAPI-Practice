@@ -1,0 +1,17 @@
+<app-header></app-header>
+<div class="profileCard">
+    <p-breadcrumb [model]="items" style="padding: 10%;"></p-breadcrumb>
+    <p-card [style]="{'width': '20rem', 'margin-bottom': '2em', 'margin':'0 auto'}">
+        <p-avatar *ngIf="userdata" styleClass="p-mr-2" image="{{userdata.imageURL}}" severity="danger" size="large" shape="circle"></p-avatar>
+        <p>{{userdata.fullName}}</p>
+        <p>{{userdata.givenName}}</p>
+        <p>{{userdata.familyName}}</p>
+        <p>{{userdata.role}}</p>
+        <p *ngIf="userdata.phoneNumber">{{userdata.phoneNumber}}</p>
+        <p *ngIf="userdata.department">{{userdata.department}}</p>
+        <p *ngIf="userdata.addressFormatted">{{userdata.addressFormatted}}</p>
+        <p>{{userdata.creationDate}}</p>
+        <p>{{userdata.lastLogin}}</p>
+    </p-card>
+
+</div>

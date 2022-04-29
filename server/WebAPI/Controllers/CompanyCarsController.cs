@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using APICarData.Domain.Models;
 using System;
 using APICarData.Domain.Interfaces.CompanyCars;
-using System.Dynamic;
 
 namespace APICarData.Api.Controllers
 {

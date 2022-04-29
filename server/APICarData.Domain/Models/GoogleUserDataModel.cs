@@ -5,6 +5,7 @@ namespace APICarData.Domain.Models
     public class GoogleUserDataModel
     {
         [Key]
+        [StringLength(21)]
         public string UserId {get; set; }
         [Required]
         [StringLength(70)]

@@ -1,0 +1,37 @@
+<app-header></app-header>
+<div>
+    <p-breadcrumb [model]="items" style="padding: 10%; margin: 20px;"></p-breadcrumb>
+    <div class="formContainer">
+        <p-card [style]="{width: '360px'}" styleClass="p-card-shadow">
+            <div [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                <h2>Adding a Car</h2>
+                <div class="formComponent">
+                    <label>VIN code</label>
+                    <br>
+                    <input type="text" pInputText formControlName="vin" class="p-inputtext-sm" [style]="{width: '100%'}">
+                </div>
+                <div class="formComponent">
+                    <label>Number Plate</label>
+                    <br>
+                    <input type="text" pInputText formControlName="numberPlate" class="p-inputtext-sm" [style]="{width: '100%'}">
+                </div>
+                <div class="formComponent">
+                    <label>Fabrication Year</label>
+                    <br>
+                    <input type="text" pInputText formControlName="fabricationYear" class="p-inputtext-sm" [style]="{width: '100%'}">
+                </div>
+                <div class="formComponent">
+                    <label>Next ITV</label>
+                    <br>
+                    <input type="text" pInputText formControlName="nextITV" class="p-inputtext-sm" [style]="{width: '100%'}">
+                </div>
+                <div class="formComponent">
+                    <label>Next Car Inspection</label>
+                    <br>
+                    <input type="text" pInputText formControlName="nextCarInspection" class="p-inputtext-sm" [style]="{width: '100%'}">
+                </div>
+                <button pButton type="submit" [disabled]="!profileForm.valid">Submit</button>
+            </div>
+        </p-card>
+    </div>
+</div>
