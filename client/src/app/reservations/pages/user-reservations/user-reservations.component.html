@@ -1,0 +1,14 @@
+<app-header></app-header>
+
+<div>
+    <p-breadcrumb [model]="items" style="padding: 10%;"></p-breadcrumb>
+    <div *ngIf="allReservations.length == 0;else table">
+        <h2>
+            There is no reservations yet.
+        </h2>
+    </div>
+    <ng-template #table>
+        <ag-grid-angular style="width: 100%; height: 500px;" class="ag-theme-alpine-dark" [rowData]="allReservations" [columnDefs]="columnDefs">
+        </ag-grid-angular>
+    </ng-template>
+</div>

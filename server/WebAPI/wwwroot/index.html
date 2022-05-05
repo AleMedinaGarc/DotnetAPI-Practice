@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Car Api - 1.0.0</title>
+</head>
+
+<body>
+
+    <script type="text/javascript">
+
+        (async () => {
+            const response = await fetch('/api/swagger');
+            const myJson = await response.json();
+            if (myJson.swagger !== "true") {
+                document.getElementById("swagger").style.display = "none";
+            }
+        })().then()
+
+    </script>
+
+    <h1>Car Api - 1.0.0</h1>
+
+        <a id="swagger" href="/swagger/">Swagger - documentation and test client</a>
+
+</body>
+
+</html>

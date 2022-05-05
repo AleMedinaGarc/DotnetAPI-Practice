@@ -80,6 +80,28 @@ namespace APICarData.Services
             return false;
         }
 
+        //public async Task<IEnumerable<DGTCarModel>> GetAllDTGCars()
+        //{
+            //if (!_DAL.CompanyCarsIsEmpty())
+            //{
+            //    List<CompanyCarModel> companyCarList = allCompanyCars.ToList();
+            //    List<DGTCarModel> dgtCarList = new List<DGTCarModel>();
+            //    foreach (CompanyCarModel item in companyCarList)
+            //    {
+            //        var extendedCarData = await _DAL.GetDGTCar(item.VIN);
+            //        if (extendedCarData.HasValue)
+            //        {
+            //            var dgtCar = JsonSerializer.Deserialize<DGTCar>(extendedCarData);
+            //            var dgtCarModeled = _mapper.Map<DGTCarModel>(dgtCar);
+            //            dgtCarList.Add(dgtCarModeled);
+            //        }
+            //    }
+
+            //    return dgtCarList.AsEnumerable();
+            //}
+        //    return null;
+        //}
+
         public bool DeleteCompanyCarById(string id)
         {
             if (_DAL.CompanyCarExist(id))

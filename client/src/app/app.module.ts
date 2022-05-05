@@ -5,41 +5,38 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app.routing.module';
-import { LoginComponent } from './login/login.component';
-
-// Angular material components
-import { FormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatTableModule } from '@angular/material/table';
-
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { MenubarModule } from 'primeng/menubar';
+import { AgGridModule } from 'ag-grid-angular';
+import { SharedModule } from './shared/shared.module';
 import {
   SocialLoginModule,
   SocialAuthServiceConfig,
   GoogleLoginProvider,
-} from 'angularx-social-login';
+} from '@abacritt/angularx-social-login';
+import { CarsModule } from './cars/cars.module';
+import { UsersModule } from './users/users.module';
+import { ReservationsModule } from './reservations/reservations.module';
+import {BreadcrumbModule} from 'primeng/breadcrumb';
+
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent],
+  declarations: [AppComponent],
   imports: [
+    CarsModule,
+    UsersModule,
+    ReservationsModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    MatButtonModule,
-    MatDividerModule,
-    MatFormFieldModule,
-    FormsModule,
-    MatInputModule,
     BrowserAnimationsModule,
-    MatTableModule,
     SocialLoginModule,
-    MatCardModule,
     CommonModule,
+    MenubarModule,
+    AgGridModule,
+    SharedModule,
+    BreadcrumbModule
   ],
   providers: [
     {

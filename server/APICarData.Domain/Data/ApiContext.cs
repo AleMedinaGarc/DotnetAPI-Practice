@@ -19,7 +19,6 @@ namespace APICarData.Domain.Data
         {
             try
             {
-
                 switch (value.GetType().Name)
                 {
                     case "CompanyCar":

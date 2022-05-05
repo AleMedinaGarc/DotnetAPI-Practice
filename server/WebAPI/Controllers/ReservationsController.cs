@@ -44,10 +44,11 @@ namespace APICarData.Api.Controllers
         {
             try
             {
+                String[] empty = Array.Empty<string>();
                 var reservations = await _service.GetUserReservations(id);
                 if (reservations != null)
                     return Ok(reservations);
-                return NotFound("The user has no reservations in the database.");
+                return Ok(empty);
             }
             catch (Exception e)
             {
@@ -74,7 +75,6 @@ namespace APICarData.Api.Controllers
                     Console.WriteLine("Exception source:", e.Source);
                 throw;
             }
-
         }
 
         [HttpPost("addReservation")]
@@ -97,7 +97,7 @@ namespace APICarData.Api.Controllers
         }
 
         [HttpPut("updateReservation")]
-        [Authorize(Roles = "Administrator,GeneralUser")]
+        [Authorize(Roles = "Administrator,Employee")]
         public IActionResult UpdateReservation([FromBody] ReservationModel reservation)
         {
             try
@@ -116,7 +116,7 @@ namespace APICarData.Api.Controllers
         }
 
         [HttpDelete("deleteReservation/{id}")]
-        [Authorize(Roles = "Administrator,GeneralUser")]
+        [Authorize(Roles = "Administrator, Employee")]
         public IActionResult DeleteReservation(int id)
         {
             try
@@ -124,7 +124,7 @@ namespace APICarData.Api.Controllers
                 bool result = _service.DeleteReservation(id);
                 if (result)
                     return Ok("Entry removed.");
-                return BadRequest("Permission denied.");
+                return BadRequest("Permission denied or reservation doesn't exist.");
             }
             catch (Exception e)
             {

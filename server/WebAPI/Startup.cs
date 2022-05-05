@@ -33,7 +33,7 @@ namespace APICarData.Api
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
-        {            
+        {
             try
             {
                 // MSSQL connection 
@@ -92,13 +92,13 @@ namespace APICarData.Api
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                     };
                 });
-            //.AddGoogle("google", opt =>
-            //{
-            //    var googleAuth = Configuration.GetSection("Authentication:Google");
-            //    opt.ClientId = googleAuth["ClientId"];
-            //    opt.ClientSecret = googleAuth["ClientSecret"];
-            //    opt.SignInScheme = IdentityConstants.ExternalScheme;
-            //});
+                //.AddGoogle("google", opt =>
+                //{
+                //    var googleAuth = Configuration.GetSection("Authentication:Google");
+                //    opt.ClientId = googleAuth["ClientId"];
+                //    opt.ClientSecret = googleAuth["ClientSecret"];
+                //    opt.SignInScheme = IdentityConstants.ExternalScheme;
+                //});
 
             services.AddSwaggerGen(option =>
             {
@@ -145,11 +145,15 @@ namespace APICarData.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "JWTAuthDemo v1"));
                 app.UseHttpsRedirection();
             }
-            app.UseRouting();
+            app.UseRouting();                       
 
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseDefaultFiles();
+
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {

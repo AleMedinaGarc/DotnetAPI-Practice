@@ -39,14 +39,14 @@
   - [x] Reservation Table
 - [ ] Deserialize XML
 - [ ] Implement automatic ETL process
-- [ ] Front
-  - [ ] Google oauth login and signup
-  - [ ] Main page
-  - [ ] User page
-  - [ ] Admin allUser page
-  - [ ] AllCars page
-  - [ ] MyCars page
-  - [ ] Detailed car page
+- [x] Front
+  - [x] Google oauth login and signup
+  - [x] Main page
+  - [x] User page
+  - [x] Admin allUser page
+  - [x] AllCars page
+  - [x] MyCars page
+  - [x] Detailed car page
 - [X] Console App .txt to car Object
 - [X] Redis running
 

@@ -1,0 +1,41 @@
+.formContainer {
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    display: block;
+    border-width: 1px;
+    border-color: #8697cf;
+}
+
+.no-show {
+    visibility: hidden;
+}
+
+.formComponent {
+    padding-bottom: 4%;
+}
+
+input {
+    border-width: 1px;
+    border-color: rgb(142, 143, 143);
+    color: #c9c9c9;
+    width: 100%;
+}
+
+input:hover {
+    border-width: 1px !important;
+    border-color: #8697cf !important;
+}
+
+div {
+    margin: auto;
+    width: 95%;
+}
+
+label {
+    font-family: 'Roboto';
+    font-size: large;
+    color: #c9c9c9;
+    margin-bottom: 4%;
+}

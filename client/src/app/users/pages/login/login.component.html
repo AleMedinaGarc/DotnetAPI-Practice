@@ -1,0 +1,12 @@
+<app-header></app-header>
+<div class="loginCard">
+    <p-card header="Login with Google" [style]="{'width': '20rem', 'margin-bottom': '2em'}">
+        <br><br>
+        <p-button styleClass="p-button-outlined" (onClick)="loginWithGoogle()">
+            <ng-template pTemplate="content">
+                <img alt="logo" src="../../../../assets/images/google-login-btn.png" style="width: 1.5rem" />
+                <span class="ml-2 font-bold">Google</span>
+            </ng-template>
+        </p-button>
+    </p-card>
+</div>

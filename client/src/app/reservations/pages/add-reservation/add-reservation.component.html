@@ -1,0 +1,38 @@
+<app-header></app-header>
+<div>
+    <p-breadcrumb [model]="items" style="padding: 10%;"></p-breadcrumb>
+    <div class="formContainer">
+        <p-card [style]="{width: '360px'}" styleClass="p-card-shadow">
+            <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                <h2>Adding a Reservation</h2>
+                <div class="formComponent">
+                    <label>VIN code</label>
+                    <br>
+                    <input id="disabled-input" type="text" pInputText [disabled]="disabled" formControlName="vin">
+                </div>
+                <div class="formComponent">
+                    <div class="p-fluid p-grid p-formgrid">
+                        <div class="p-field p-col-12 p-md-4">
+                            <label>Starting date</label>
+                            <p-calendar formControlName="fromDate" dateFormat="dd.mm.yy"></p-calendar>
+                        </div>
+                    </div>
+                </div>
+                <div class="formComponent">
+                    <div class="p-fluid p-grid p-formgrid">
+                        <div class="p-field p-col-12 p-md-4">
+                            <label>Ending date</label>
+                            <p-calendar formControlName="toDate" dateFormat="dd.mm.yy"></p-calendar>
+                        </div>
+                    </div>
+                </div>
+                <div class="formComponent">
+                    <label>Car use</label>
+                    <br>
+                    <p-selectButton [options]="carUse" formControlName="carUse"></p-selectButton>
+                </div>
+                <button pButton type="submit" [disabled]="!profileForm.valid">Submit</button>
+            </form>
+        </p-card>
+    </div>
+</div>
