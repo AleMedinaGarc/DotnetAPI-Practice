@@ -52,6 +52,33 @@ namespace APICarData.Dal
             }
         }
 
+        //public async Task<List<RedisValue>> GetAllDGTCar()
+        //{
+        //    try
+        //    {
+                //var keys = _redis.SearchKeys("*");
+                //List<string> keyList = new List<string>();
+                //List<RedisValue> carList = new List<RedisValue>();
+                //keyList = server.Keys(_dataCache.Database);
+                //// redisvaluelist
+                //// listkeys= await allrediskeys
+                //foreach (var key in keyList)
+                //{
+                //    carList.Add(await _redis.GetDatabase().StringGetAsync(key));
+                //}
+                //   add to redis value list
+                // return RedisValue value list
+                //return carList;
+        //        return null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (ex.Source != null)
+        //            Console.WriteLine("Exception source:", ex.Source);
+        //        throw;
+        //    }
+        //}
+
         public void AddCompanyCar(CompanyCar car)
         {
             try

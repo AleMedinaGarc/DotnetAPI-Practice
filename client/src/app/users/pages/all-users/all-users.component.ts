@@ -34,7 +34,7 @@ export class AllUsersComponent implements OnInit{
 
   items: MenuItem[] | any;
   ngOnInit() {
-    this.items = [{ label: 'Home', url: '' }, { label: 'All Users' }];
+    this.items = [{ label: 'All Users' }];
     this.FillTable();
   }
 

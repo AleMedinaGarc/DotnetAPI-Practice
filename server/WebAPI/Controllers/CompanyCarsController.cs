@@ -44,6 +44,31 @@ namespace APICarData.Api.Controllers
             }
 
         }
+        [HttpGet("getCar/{id}")]
+        [Authorize(Roles = "Administrator, Employee")]
+        public async Task<ActionResult<IEnumerable<CompanyCarModel>>> GetCarById()
+        {
+            try
+            {
+                var allCompanyCars = await _service.GetAllCompanyCars();
+                if (allCompanyCars == null)
+                    return BadRequest("There is no cars in the database.");
+
+                var allCompanyCarsExtended = await _service.GetAllCompanyCarsExtended(allCompanyCars);
+                if (allCompanyCarsExtended == null)
+                    return BadRequest("The cars registered has no extended DGT information.");
+
+                object[] merge = { allCompanyCars, allCompanyCarsExtended };
+                return Ok(merge);
+            }
+            catch (Exception e)
+            {
+                if (e.Source != null)
+                    Console.WriteLine("Exception source:", e.Source);
+                throw;
+            }
+
+        }
 
         [HttpPost("addCar")]
         [Authorize(Roles = "Administrator")]
@@ -104,7 +129,27 @@ namespace APICarData.Api.Controllers
                     Console.WriteLine("Exception source:", e.Source);
                 throw;
             }
-
         }
+
+
+        //[HttpDelete("getDGTCars")]
+        //[Authorize(Roles = "Administrator")]
+        //public async Task<ActionResult<IEnumerable<DGTCarModel>>> GetAllDGTCars()
+        //{
+            //try
+            //{
+            //    var allCompanyCars = await _service.GetAllDGTCars();
+            //    if (allCompanyCars == null)
+            //        return BadRequest("There is no cars in the database.");
+            //    return Ok(allCompanyCars);
+            //}
+            //catch (Exception e)
+            //{
+            //    if (e.Source != null)
+            //        Console.WriteLine("Exception source:", e.Source);
+            //    throw;
+            //}
+
+        //}
     }
 }

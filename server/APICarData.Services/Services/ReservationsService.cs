@@ -59,7 +59,6 @@ namespace APICarData.Services
             return null;
         }
 
-
         public async Task<IEnumerable<ReservationModel>> GetAllReservations()
         {
             if (!_DAL.ReservationsEmpty())

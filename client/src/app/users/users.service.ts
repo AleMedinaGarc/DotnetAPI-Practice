@@ -55,16 +55,6 @@ export class UserService {
     return this.getResponse!;
   }
 
-  public async postReservationByUser(reservation: {
-    userId: string;
-    vin: string;
-    fromDate: string;
-    toDate: string;
-    carUse: string;
-  }) {
-    await this.postReservation(reservation);
-  }
-
   private async getUsers() {
     const obs = this.http.get(
       'http://localhost:5000/api/UserData/allUsers',
@@ -79,35 +69,6 @@ export class UserService {
       this.getHeaderAuth()
     );
     return this.generatePetition(obs);
-  }
-
-  private async postReservation(reservation: {
-    userId: string;
-    vin: string;
-    fromDate: string;
-    toDate: string;
-    carUse: string;
-  }) {
-    const body = {
-      userId: reservation.userId,
-      fullName: reservation.vin,
-      givenName: reservation.fromDate,
-      familyName: reservation.toDate,
-      imageURL: reservation.carUse,
-    };
-    const obs = this.http.post<any>(
-      'http://localhost:5000/api/Reservations/addReservation',
-      body,
-      this.getHeaderAuth()
-    );
-    try {
-      obs.subscribe((response) => {
-        console.log(response);
-        this.router.navigate(['/myReservations']);
-      });
-    } catch (e) {
-      console.log(e);
-    }
   }
   private generatePetition(obs: any) {
     const promise = new Promise<void>((resolve, reject) => {

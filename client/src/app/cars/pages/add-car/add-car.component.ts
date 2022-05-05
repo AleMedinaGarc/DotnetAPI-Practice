@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
+import { CarsService } from '../../cars.service';
 
 @Component({
   selector: 'add-car',
@@ -9,26 +10,51 @@ import { MenuItem } from 'primeng/api';
 })
 export class AddCarComponent {
   items: MenuItem[] | any;
+  carObject: any;
+  submited: boolean = false;
   
   profileForm = new FormGroup({
-    vin: new FormControl('', Validators.required),
-    numberPlate: new FormControl('', Validators.required),
-    fabricationYear: new FormControl('', Validators.required),
-    nextITV: new FormControl('', Validators.required),
-    nextCarInspection: new FormControl('', Validators.required),
+    vin: new FormControl('RP8MD4100MV109768', Validators.required),
+    numberPlate: new FormControl('4658EGT', Validators.required),
+    fabricationYear: new FormControl(2024, Validators.required),
+    nextITV: new FormControl('09-2024', Validators.required),
+    nextCarInspection: new FormControl('09-2022', Validators.required),
   });
 
   ngOnInit() {
     this.items = [
-      { label: 'Home', url: '' },
       { label: 'All Cars' },
       { label: 'Add Car' },
     ];
+
+  }
+
+  constructor(
+    private carsService: CarsService
+  ) {
+    this.carObject = {
+      vin: '',
+      numberPlate: '',
+      fabricationYear: 0,
+      nextITV: '',
+      nextCarInspection: '',
+    };
   }
 
   onSubmit() {
-    this.profileForm.get('vin');
-    console.log('reactive form submitted');
-    console.log(this.profileForm);
+    console.log("test")
+    for (const field in this.profileForm.controls) {
+      if(field == 'fabricationYear')
+      this.carObject[field] = this.profileForm.controls[field].value as number;
+      else this.carObject[field] = this.profileForm.controls[field].value;
+    }
+    console.log(this.carObject)
+    this.createPost();
+  }
+
+  async createPost() {
+    await this.carsService.addCar(this.carObject).then((res)=>{
+      this.submited = true;
+    });
   }
 }

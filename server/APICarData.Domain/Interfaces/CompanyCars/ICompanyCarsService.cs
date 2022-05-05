@@ -12,5 +12,6 @@ namespace APICarData.Domain.Interfaces.CompanyCars
         bool UpdateCompanyCar(CompanyCarModel car);
         bool DeleteCompanyCarById(string id);
         Task<IEnumerable<DGTCarModel>> GetAllCompanyCarsExtended(IEnumerable<CompanyCarModel> allCompanyCars);
+        // Task<IEnumerable<DGTCarModel>> GetAllDTGCars();
     }
 }

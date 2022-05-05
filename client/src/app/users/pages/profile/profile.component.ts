@@ -13,7 +13,7 @@ export class ProfileComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    this.items = [{ label: 'Home'}, { label: 'Profile' }];
+    this.items = [{ label: 'Profile' }];
     this.getProfile();
   }
 

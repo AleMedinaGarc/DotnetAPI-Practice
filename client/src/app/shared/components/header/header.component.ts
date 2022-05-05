@@ -98,9 +98,6 @@ export class HeaderComponent implements OnInit {
         icon: 'pi pi-fw pi-user',
         routerLink: ['/allUsers'],
       },
-      {
-        separator: true,
-      },
     ];
     return items;
   }
@@ -109,7 +106,7 @@ export class HeaderComponent implements OnInit {
     this.logged = true;
     var items = [
       {
-        label: 'Home(Admin)',
+        label: 'Home',
         icon: 'pi pi-fw pi-home',
         routerLink: [''],
       },

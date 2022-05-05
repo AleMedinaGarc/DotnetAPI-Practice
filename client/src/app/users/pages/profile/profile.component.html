@@ -1,6 +1,9 @@
 <app-header></app-header>
 <div class="profileCard">
     <p-breadcrumb [model]="items" style="padding: 10%;"></p-breadcrumb>
+    <div style="width: 100%;padding-bottom: 2%; padding-left: 45%;">
+        <p-button label="Update Profile" icon="pi pi-fw pi-user-edit"></p-button>
+    </div>
     <p-card [style]="{'width': '20rem', 'margin-bottom': '2em', 'margin':'0 auto'}">
         <p-avatar *ngIf="userdata" styleClass="p-mr-2" image="{{userdata.imageURL}}" severity="danger" size="large" shape="circle"></p-avatar>
         <p>{{userdata.fullName}}</p>

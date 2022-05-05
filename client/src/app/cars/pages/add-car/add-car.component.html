@@ -3,7 +3,7 @@
     <p-breadcrumb [model]="items" style="padding: 10%; margin: 20px;"></p-breadcrumb>
     <div class="formContainer">
         <p-card [style]="{width: '360px'}" styleClass="p-card-shadow">
-            <div [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+            <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
                 <h2>Adding a Car</h2>
                 <div class="formComponent">
                     <label>VIN code</label>
@@ -31,7 +31,10 @@
                     <input type="text" pInputText formControlName="nextCarInspection" class="p-inputtext-sm" [style]="{width: '100%'}">
                 </div>
                 <button pButton type="submit" [disabled]="!profileForm.valid">Submit</button>
-            </div>
+                <div *ngIf="submited">
+                    <p>{{carObject['vin'].value}} submited!</p>
+                </div>
+            </form>
         </p-card>
     </div>
 </div>

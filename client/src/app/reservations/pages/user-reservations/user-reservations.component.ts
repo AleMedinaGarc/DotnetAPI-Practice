@@ -14,6 +14,7 @@ import { ReservationsService } from '../../reservations.service'
 
 export class UserReservationsComponent implements OnInit {
   allReservations: any;
+  items: MenuItem[] | any;
 
   columnDefs: ColDef[] = [
     { field: 'reservationId' },
@@ -28,19 +29,18 @@ export class UserReservationsComponent implements OnInit {
     private reservationsService: ReservationsService
   ){}
 
-  items: MenuItem[] | any;
   ngOnInit() {
-    this.items = [{ label: 'Home', url: '' }, { label: 'User Reservation' }];
-    this.FillTable();
+    this.items = [{ label: 'User Reservation' }];
+    this.fillTable();
   }
 
 
-  async FillTable (){
+  async fillTable (){
     var loggedUser = localStorage.getItem('loggedUser');    
     if (loggedUser) {
       var userid = JSON.parse(loggedUser).id;
-      console.log(userid);
       this.allReservations = await this.reservationsService.getReservationById(userid);
+      console.log(this.allReservations);
     } else console.log('Error: Invalid login detected. Relogin required');
   }
 }

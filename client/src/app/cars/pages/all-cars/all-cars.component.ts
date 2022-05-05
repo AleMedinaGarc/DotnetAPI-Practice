@@ -100,7 +100,7 @@ export class AllCarsComponent implements OnInit {
   ){}
 
   ngOnInit() {
-    this.items = [{ label: 'Home', url: '' }, { label: 'All Cars' }];
+    this.items = [{ label: 'All Cars' }];
     this.FillTable();
   }
 

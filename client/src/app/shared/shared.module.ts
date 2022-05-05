@@ -12,6 +12,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   declarations: [HeaderComponent, FooterComponent],
@@ -24,7 +25,8 @@ import { DividerModule } from 'primeng/divider';
     CommonModule,
     MenubarModule,
     ButtonModule,
-    DividerModule
+    DividerModule,
+    TabViewModule 
   ],
   exports:[
     HeaderComponent,

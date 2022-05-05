@@ -27,7 +27,7 @@ export class AllReservationsComponent implements OnInit {
   constructor(private reservationsService: ReservationsService) {}
 
   ngOnInit() {
-    this.items = [{ label: 'Home', url: '' }, { label: 'All Reservations' }];
+    this.items = [{ label: 'All Reservations' }];
     this.FillTable();
   }
 

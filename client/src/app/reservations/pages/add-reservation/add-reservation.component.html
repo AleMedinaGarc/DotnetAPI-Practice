@@ -4,6 +4,7 @@
     <div class="formContainer">
         <p-card [style]="{width: '360px'}" styleClass="p-card-shadow">
             <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                <h2>Adding a Reservation</h2>
                 <div class="formComponent">
                     <label>VIN code</label>
                     <br>
@@ -28,7 +29,7 @@
                 <div class="formComponent">
                     <label>Car use</label>
                     <br>
-                    <p-selectButton [options]="carUse" formControlName="carUser"></p-selectButton>
+                    <p-selectButton [options]="carUse" formControlName="carUse"></p-selectButton>
                 </div>
                 <button pButton type="submit" [disabled]="!profileForm.valid">Submit</button>
             </form>

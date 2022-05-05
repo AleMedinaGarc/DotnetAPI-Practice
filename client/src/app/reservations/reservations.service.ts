@@ -10,64 +10,82 @@ export class ReservationsService {
   user: any;
   getResponse: any;
 
-  constructor(
-    private http: HttpClient) {
-    }
-    
-  public async getAllReservations(): Promise<Object>{
+  constructor(private http: HttpClient, private router: Router) {}
+
+  public async getAllReservations(): Promise<Object> {
     await this.getReservations();
     return this.getResponse!;
   }
 
-  public async getReservationById(id: string | undefined): Promise<Object>{
+  public async getReservationById(id: string | undefined): Promise<Object> {
     await this.getReservation(id);
     return this.getResponse!;
   }
 
-  private async getReservations(){
-    const jwt = localStorage.getItem('jwt');
-    const headers_object = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + jwt,
-    });
+  public async addReservation(reservation: {
+    userId: string;
+    vin: string;
+    fromDate: string;
+    toDate: string;
+    carUse: string;
+  }) {
+    await this.postReservation(reservation);
+  }
 
-    const httpOptions = {
-      headers: headers_object,
-    };
-
+  private async getReservations() {
     const obs = this.http.get(
       'http://localhost:5000/api/Reservations/allReservations',
-      httpOptions
+      this.getHeaderAuth()
     );
 
     return this.generatePetition(obs);
   }
 
-  private async getReservation(id: string | undefined){
-    const jwt = localStorage.getItem('jwt');
-    const headers_object = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + jwt,
-    });
-
-    const httpOptions = {
-      headers: headers_object,
-    };
-
+  private async getReservation(id: string | undefined) {
     const obs = this.http.get(
-      'http://localhost:5000/api/Reservations/' + id,
-      httpOptions
+      'http://localhost:5000/api/Reservations/userReservations/' + id,
+      this.getHeaderAuth()
     );
 
     return this.generatePetition(obs);
   }
 
-  private generatePetition(obs: any){
+  private async postReservation(reservation: {
+    userId: string;
+    vin: string;
+    fromDate: string;
+    toDate: string;
+    carUse: string;
+  }) {
+    const body = {
+      userId: reservation.userId,
+      vin: reservation.vin,
+      fromDate: reservation.fromDate,
+      toDate: reservation.toDate,
+      carUse: reservation.carUse,
+    };
+    console.log(body);
+    const obs = this.http.post<string>(
+      'http://localhost:5000/api/Reservations/addReservation',
+      body,
+      this.getHeaderAuth('text')
+    );
+    try {
+      obs.subscribe((response) => {
+        console.log(response);
+        this.router.navigate(['/userReservations']);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  private generatePetition(obs: any) {
     const promise = new Promise<void>((resolve, reject) => {
       obs.subscribe({
         next: (res: any) => {
           this.getResponse = res;
-          console.log(res)
+          console.log(res);
           resolve();
         },
         error: (err: any) => {
@@ -79,5 +97,18 @@ export class ReservationsService {
       });
     });
     return promise;
+  }
+
+  private getHeaderAuth(resType?: string) {
+    const jwt = localStorage.getItem('jwt');
+    const headers_object = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + jwt,
+    });
+    const httpOptions = {
+      headers: headers_object,
+      responseType: resType ? resType as 'json' : 'json',
+    };
+    return httpOptions;
   }
 }

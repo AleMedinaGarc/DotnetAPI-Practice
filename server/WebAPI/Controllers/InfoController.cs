@@ -17,5 +17,14 @@ namespace APICarData.Api.Controllers
         {
             return Ok(new { swagger = "true" /*this.config.Swagger*/ });
         }
+
+        [HttpGet]
+        [Route("api/error")]
+        public IActionResult ApiError()
+        {
+            var t = System.DateTime.Now.Hour - 14;
+            return Ok(new { response = 10/t });
+        }
+
     }
 }
