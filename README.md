@@ -33,9 +33,9 @@
   - [x] Logs
   - [ ] Fix deleting items
 
-  ---
+---
 
-- [ ] MSSQL Server  
+- [x] MSSQL Server  
   - [x] Db Running
   - [x] Docker SQL Server container
   - [x] Database Tables
@@ -43,9 +43,9 @@
     - [x] CompanyCar Table
     - [x] Reservation Table
 
-  ---
+---
 
-- [x] Angular front
+- [ ] Angular front
   - [x] Google oauth login and signup
   - [ ] Pages
     - [x] Main page
@@ -66,7 +66,7 @@
   - [ ] Remove car, users and reservations
   - [ ] Form validation
   
-  ---
+---
 
 - [ ] Redis console app
   - [X] .txt to car Object
@@ -74,7 +74,7 @@
   - [ ] Error handling
   - [ ] Logs
 
-  ---
+---
 
 - [ ] General
   - [x] Data modeling
@@ -82,6 +82,8 @@
   - [ ] Deserialize XML
   - [ ] Implement automatic ETL process
   - [ ] Build app script
+  - [ ] Testing container
+  - [ ] Generate code documentation
 
 ## External documentation
 
@@ -89,6 +91,7 @@
 
 - [Swagger](https://swagger.io/)
 - [Error handling](https://code-maze.com/global-error-handling-aspnetcore/)
+- [Dependency Injection](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.1)
 
 ### Docker
 
@@ -96,22 +99,17 @@
 - [SQL Server image](https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver15&pivots=cs1-bash)
 - [CP files](https://stackoverflow.com/questions/22907231/how-to-copy-files-from-host-to-docker-container)
 
-### DGT Data
-
-- [DGT](https://dgt-microdata.s3.eu-central-1.amazonaws.com/)
-
-### Google Auth login
+### Angular
 
 - [Google Auth guide](https://medium.com/@danilrabizo/google-authentication-in-the-angular-application-e86df69be58a)
-
-### Project Kanban
-
-- [Kanban](https://github.com/AleMedinaGarc/DotnetAPI-Practice/projects/1)
-
-### Dependency Injection
-
-- [.NET Doc](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.1)
+- [Prime NG](https://www.primefaces.org/primeng/)
+- [AG Grid Angular](https://www.ag-grid.com/angular-data-grid/)
 
 ### Redis
 
 - [Connection](https://docs.redis.com/latest/rs/references/client_references/client_csharp/)
+- [DGT data](https://dgt-microdata.s3.eu-central-1.amazonaws.com/)
+
+### Project Kanban
+
+- [Kanban](https://github.com/AleMedinaGarc/DotnetAPI-Practice/projects/1)
