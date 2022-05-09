@@ -2,44 +2,50 @@
 
 ## Task list
 
-- [x] Api running
+- [ ].Net API
+  - [x] Api running
   - [x] Learn about .Net Core basics
   - [x] Learn about C# basics
   - [x] Project initialized
-- [x] Swagger running
-- [x] API controllers
-  - [x] Login controller
-    - [x] Login
-    - [x] Get all users
-    - [x] Get user by ID
-    - [x] Update user
-    - [x] Delete user
-  - [x] CompanyCars controller
-    - [x] Get all cars complete info
-    - [x] Get car by id
-    - [x] Add car
-    - [x] Update car
-    - [x] Delete car
-  - [x] Reservation controller
-    - [x] Get my reservations
-    - [x] Get user reservations
-    - [x] Get all reservations
-    - [x] Add reservation
-    - [x] Update reservation
-    - [x] Delete reservation
-- [ ] API error handling
-- [x] Db Running
-- [x] Docker SQL Server container
-- [x] Dockerize API
-- [x] Data modeling
-- [ ] Data filter script
-- [x] Database Tables
-  - [x] User Table
-  - [x] CompanyCar Table
-  - [x] Reservation Table
-- [ ] Deserialize XML
-- [ ] Implement automatic ETL process
-- [x] Front
+  - [x] Swagger running
+  - [x] Dockerized
+  - [x] API controllers
+    - [x] Login controller
+      - [x] Login
+      - [x] Get all users
+      - [x] Get user by ID
+      - [x] Update user
+      - [x] Delete user
+    - [x] CompanyCars controller
+      - [x] Get all cars complete info
+      - [x] Get car by id
+      - [x] Add car
+      - [x] Update car
+      - [x] Delete car
+    - [x] Reservation controller
+      - [x] Get my reservations
+      - [x] Get user reservations
+      - [x] Get all reservations
+      - [x] Add reservation
+      - [x] Update reservation
+      - [x] Delete reservation
+  - [x] Error handling
+  - [x] Logs
+  - [ ] Fix deleting items
+
+---
+
+- [ ] MSSQL Server  
+  - [x] Db Running
+  - [x] Docker SQL Server container
+  - [x] Database Tables
+    - [x] User Table
+    - [x] CompanyCar Table
+    - [x] Reservation Table
+
+---
+
+- [x] Angular front
   - [x] Google oauth login and signup
   - [x] Main page
   - [x] User page
@@ -47,14 +53,33 @@
   - [x] AllCars page
   - [x] MyCars page
   - [x] Detailed car page
-- [X] Console App .txt to car Object
-- [X] Redis running
+  - [ ] Remove car, users and reservations
+  - [ ] Remove car, users and reservations
+  - [ ] Form validation
+  
+---
+
+- [] Redis console app
+  - [X] .txt to car Object
+  - [x] DB running
+  - [ ] Error handling
+  - [ ] Logs
+
+---
+
+- [ ] General
+  - [x] Data modeling
+  - [ ] Data filter script
+  - [ ] Deserialize XML
+  - [ ] Implement automatic ETL process
+  - [ ] Build app script
 
 ## External documentation
 
-### Swagger
+### .Net Core
 
 - [Swagger](https://swagger.io/)
+- [Error handling](https://code-maze.com/global-error-handling-aspnetcore/)
 
 ### Docker
 
