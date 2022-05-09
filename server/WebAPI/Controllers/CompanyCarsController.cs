@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using APICarData.Domain.Models;
 using System;
 using APICarData.Domain.Interfaces.CompanyCars;
+using Serilog;
+using System.Reflection;
 
 namespace APICarData.Api.Controllers
 {
@@ -25,22 +27,18 @@ namespace APICarData.Api.Controllers
         {
             try
             {
+                Log.Debug("Getting all car data from database..");
                 var allCompanyCars = await _service.GetAllCompanyCars();
-                if (allCompanyCars == null)
-                    return BadRequest("There is no cars in the database.");
-
+                Log.Debug("Getting all car data from dgt..");
                 var allCompanyCarsExtended = await _service.GetAllCompanyCarsExtended(allCompanyCars);
-                if (allCompanyCarsExtended == null)
-                    return BadRequest("The cars registered has no extended DGT information.");
-
+                Log.Debug("Merging data..");
                 object[] merge = { allCompanyCars, allCompanyCarsExtended };
-                return Ok(merge);
+                Log.Debug("Done.");
+                return allCompanyCars != null ? Ok(merge) : Ok(Array.Empty<string>());
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while getting all cars data.");
             }
 
         }
@@ -50,22 +48,18 @@ namespace APICarData.Api.Controllers
         {
             try
             {
+                Log.Debug("Getting car data from database..");
                 var allCompanyCars = await _service.GetAllCompanyCars();
-                if (allCompanyCars == null)
-                    return BadRequest("There is no cars in the database.");
-
+                Log.Debug("Getting car data from dgt..");
                 var allCompanyCarsExtended = await _service.GetAllCompanyCarsExtended(allCompanyCars);
-                if (allCompanyCarsExtended == null)
-                    return BadRequest("The cars registered has no extended DGT information.");
-
+                Log.Debug("Merging data..");
                 object[] merge = { allCompanyCars, allCompanyCarsExtended };
-                return Ok(merge);
+                Log.Debug("Done.");
+                return allCompanyCars != null ? Ok(merge) : Ok(Array.Empty<string>());
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while getting car info.");
             }
 
         }
@@ -76,17 +70,14 @@ namespace APICarData.Api.Controllers
         {
             try
             {
-                bool result = await _service.AddCompanyCar(car);
-                if (result)
-                    return Ok("Entry added.");
-                return Conflict("Entry doesnt exist in the DGT or already in the database.");
+                Log.Debug("Adding car to database..");
+                await _service.AddCompanyCar(car);
+                Log.Debug("Done.");
+                return Ok("Entry added.");
             }
-
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while adding car.");
             }
 
         }
@@ -97,18 +88,15 @@ namespace APICarData.Api.Controllers
         {
             try
             {
-                bool result = _service.UpdateCompanyCar(car);
-                if (result)
-                    return Ok("Car updated.");
-                return NotFound("Car not found in the database.");
+                Log.Debug("Updating car from database..");
+                _service.UpdateCompanyCar(car);
+                Log.Debug("Done.");
+                return Ok("Car updated.");
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while updating car.");
             }
-
         }
 
         [HttpDelete("deleteCar/{id}")]
@@ -117,39 +105,16 @@ namespace APICarData.Api.Controllers
         {
             try
             {
-                bool result = _service.DeleteCompanyCarById(id);
-                if (result)
-                    return Ok("Car updated.");
-                return NotFound("Car not found in the database.");
+                Log.Debug("Removing car from database..");
+                _service.DeleteCompanyCarById(id);
+                Log.Debug("Done.");
+                return Ok("Car removed.");
 
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while removing car.");
             }
         }
-
-
-        //[HttpDelete("getDGTCars")]
-        //[Authorize(Roles = "Administrator")]
-        //public async Task<ActionResult<IEnumerable<DGTCarModel>>> GetAllDGTCars()
-        //{
-            //try
-            //{
-            //    var allCompanyCars = await _service.GetAllDGTCars();
-            //    if (allCompanyCars == null)
-            //        return BadRequest("There is no cars in the database.");
-            //    return Ok(allCompanyCars);
-            //}
-            //catch (Exception e)
-            //{
-            //    if (e.Source != null)
-            //        Console.WriteLine("Exception source:", e.Source);
-            //    throw;
-            //}
-
-        //}
     }
 }

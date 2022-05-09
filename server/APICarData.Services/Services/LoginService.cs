@@ -9,6 +9,8 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using APICarData.Domain.Interfaces.Login;
 using APICarData.Domain.Interfaces.UserData;
+using Serilog;
+using System.Net;
 
 namespace APICarData.Services
 {
@@ -43,6 +45,7 @@ namespace APICarData.Services
                 return GenerateUserToken(existingUser);
 
             }
+            Log.Debug("User doesn't exist in the database");
             User newUser = RegisterUser(googleUserData);
             return GenerateUserToken(newUser);
         }        
@@ -57,6 +60,7 @@ namespace APICarData.Services
             };
             PropertyCopier<GoogleUserData, User>.Copy(googleUserData, newUser);
             _DAL.RegisterUser(newUser);
+            Log.Information($"New user {newUser.FullName} registered");
             return newUser;
         }
         
@@ -76,7 +80,8 @@ namespace APICarData.Services
                 claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: credentials);
-            Console.Write("Access granted to {0} with {1} permissions\n", user.GivenName, user.Role);
+
+            Log.Information($"Access granted to {user.FullName} with {user.Role} permissions");
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }

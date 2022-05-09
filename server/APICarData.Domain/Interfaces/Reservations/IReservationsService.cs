@@ -11,8 +11,8 @@ namespace APICarData.Domain.Interfaces.Reservations
         Task<IEnumerable<ReservationModel>> GetCurrentUserReservations();
         Task<IEnumerable<ReservationModel>> GetUserReservations(string userId);
         Task<IEnumerable<ReservationModel>> GetAllReservations();
-        bool AddReservation(ReservationModel reservation);
-        bool UpdateReservation(ReservationModel reservation);
-        bool DeleteReservation(int id);
+        void AddReservation(ReservationModel reservation);
+        void UpdateReservation(ReservationModel reservation);
+        void DeleteReservation(int id);
     }
 }

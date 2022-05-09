@@ -5,6 +5,8 @@ using APICarData.Domain.Models;
 using APICarData.Domain.Interfaces.Reservations;
 using System.Threading.Tasks;
 using System;
+using System.Reflection;
+using Serilog;
 
 namespace APICarData.Api.Controllers
 {
@@ -25,16 +27,14 @@ namespace APICarData.Api.Controllers
         {
             try
             {
+                Log.Debug("Searching for reservations...");
                 var reservations = await _service.GetCurrentUserReservations();
-                if (reservations != null)
-                    return Ok(reservations);
-                return NotFound("You have no reservations in the database.");
+                Log.Debug("Done.");
+                return reservations!=null ? Ok(reservations) : Ok(Array.Empty<string>());
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while fetching user in the database.");
             }
         }
 
@@ -44,17 +44,14 @@ namespace APICarData.Api.Controllers
         {
             try
             {
-                String[] empty = Array.Empty<string>();
+                Log.Debug("Searching for reservations...");
                 var reservations = await _service.GetUserReservations(id);
-                if (reservations != null)
-                    return Ok(reservations);
-                return Ok(empty);
+                Log.Debug("Done.");
+                return reservations != null ? Ok(reservations) : Ok(Array.Empty<string>());
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while fetching user in the database.");
             }
         }
 
@@ -64,16 +61,15 @@ namespace APICarData.Api.Controllers
         {
             try
             {
+                Log.Debug("Searching for reservations...");
                 var reservations = await _service.GetAllReservations();
-                if (reservations != null)
-                    return Ok(reservations);
-                return NotFound("There is no reservations in the database.");
+                Log.Debug("Done.");
+                return reservations != null ? Ok(reservations) : Ok(Array.Empty<string>());
+
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while fetching user in the database.");
             }
         }
 
@@ -83,16 +79,14 @@ namespace APICarData.Api.Controllers
         {
             try
             {
-                bool result = _service.AddReservation(reservation);
-                if (result)
-                    return Ok("Entry added.");
-                return BadRequest("Permission denied or car already taken.");
+                Log.Debug("Adding reservation...");
+                _service.AddReservation(reservation);
+                Log.Debug("Done.");
+                return Ok("Entry added.");
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while fetching user in the database.");
             }
         }
 
@@ -102,16 +96,14 @@ namespace APICarData.Api.Controllers
         {
             try
             {
-                bool result = _service.UpdateReservation(reservation);
-                if (result)
-                    return Ok("Entry Updated.");
-                return BadRequest("Permission denied or entry missmatch.");
+                Log.Debug("Updating reservation...");
+                _service.UpdateReservation(reservation);
+                Log.Debug("Done.");
+                return Ok("Entry Updated.");
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while fetching user in the database.");
             }
         }
 
@@ -121,16 +113,15 @@ namespace APICarData.Api.Controllers
         {
             try
             {
-                bool result = _service.DeleteReservation(id);
-                if (result)
-                    return Ok("Entry removed.");
-                return BadRequest("Permission denied or reservation doesn't exist.");
+                Log.Debug("Removing reservation...");
+                _service.DeleteReservation(id);
+                Log.Debug("Done.");
+                return Ok("Entry removed.");
+                
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while fetching user in the database.");
             }
         }
     }

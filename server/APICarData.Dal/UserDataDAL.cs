@@ -18,108 +18,38 @@ namespace APICarData.Dal
         }
         public User GetUserDataById(string id)
         {
-            try
-            {
-                return _context.Users.FirstOrDefault(p =>
-                    p.UserId == id);
-            }
-            catch (Exception e)
-            {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
-            }
-        }
-
-        // This should be fixed at finail product
-        public User GetUserDataByEmail(string email)
-        {
-            try
-            {
-                return _context.Users.FirstOrDefault(p =>
-                    p.Email == email);
-            }
-            catch (Exception e)
-            {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
-            }
+            return _context.Users.FirstOrDefault(p =>
+                p.UserId == id);
         }
 
         public async Task<IEnumerable<User>> GetAllUsers()
         {
-            try
-            {
-                IEnumerable<User> users = await _context.Users
-                    .OrderBy(x => x.FullName)
-                    .ToListAsync();
-                return users;
-            }
-            catch (Exception ex)
-            {
-                if (ex.Source != null)
-                    Console.WriteLine("Exception source:", ex.Source);
-                throw;
-            }
+            IEnumerable<User> users = await _context.Users
+                .OrderBy(x => x.FullName)
+                .ToListAsync();
+            return users;
         }
 
         public void UpdateUser(User user)
         {
-            try
-            {
-                _context.UpdateEntry(user);
-            }
-            catch (Exception e)
-            {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
-            }
+            _context.UpdateEntry(user);
         }
 
-        public void DeleteUserById (string userId)
+        public void DeleteUserById(string userId)
         {
-            try
-            {
-                var user = _context.Users.FirstOrDefault(p => p.UserId == userId);
-                _context.Delete(user);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Source != null)
-                    Console.WriteLine("Exception source:", ex.Source);
-                throw;
-            }
+            var user = _context.Users.FirstOrDefault(p => p.UserId == userId);
+            _context.Delete(user);
         }
 
         public bool UserExist(string userId)
         {
-            try
-            {
-                return _context.Users.Any(p => p.UserId == userId);
-            }
-            catch (Exception e)
-            {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
-            }
+            var data = _context.Users.Any(p => p.UserId == userId);
+            return data;
         }
 
         public bool UsersEmpty()
         {
-            try
-            {
-                return !_context.Users.Any();
-            }
-            catch (Exception e)
-            {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
-            }
+            return !_context.Users.Any();
         }
-
     }
 }

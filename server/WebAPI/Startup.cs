@@ -20,6 +20,10 @@ using APICarData.Domain.Interfaces.CompanyCars;
 using APICarData.Domain.Interfaces.UserData;
 using APICarData.Domain.Interfaces.Reservations;
 using System;
+using GlobalErrorHandling.Extensions;
+using System.Reflection;
+using Serilog;
+using Microsoft.AspNetCore.Identity;
 
 namespace APICarData.Api
 {
@@ -38,15 +42,15 @@ namespace APICarData.Api
             {
                 // MSSQL connection 
                 services.AddDbContext<ApiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("testdb")));
+                Log.Information("MSSQL Server database up");
                 // Redis connection
                 var multiplexer = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("redisdb"));
                 services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+                Log.Information("Redis database up");
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Connection with DB not established.");
             }
             // Interfaces declaration
             services.AddScoped<IApiContext, ApiContext>();
@@ -91,14 +95,14 @@ namespace APICarData.Api
                         ValidAudience = Configuration["Jwt:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                     };
+                })
+                .AddGoogle("google", opt =>
+                {
+                    var googleAuth = Configuration.GetSection("GoogleAuthSettings");
+                    opt.ClientId = googleAuth["ClientId"];
+                    opt.ClientSecret = googleAuth["ClientSecret"];
+                    opt.SignInScheme = IdentityConstants.ExternalScheme;
                 });
-                //.AddGoogle("google", opt =>
-                //{
-                //    var googleAuth = Configuration.GetSection("Authentication:Google");
-                //    opt.ClientId = googleAuth["ClientId"];
-                //    opt.ClientSecret = googleAuth["ClientSecret"];
-                //    opt.SignInScheme = IdentityConstants.ExternalScheme;
-                //});
 
             services.AddSwaggerGen(option =>
             {
@@ -128,6 +132,7 @@ namespace APICarData.Api
                     }
                 });
             });
+            Log.Information("Ready!");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -145,6 +150,9 @@ namespace APICarData.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "JWTAuthDemo v1"));
                 app.UseHttpsRedirection();
             }
+
+            app.ConfigureCustomExceptionMiddleware();
+
             app.UseRouting();                       
 
             app.UseAuthentication();

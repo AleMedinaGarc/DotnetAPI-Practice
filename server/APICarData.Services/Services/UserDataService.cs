@@ -7,6 +7,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Serilog;
+using System;
 
 namespace APICarData.Services
 {
@@ -23,69 +25,90 @@ namespace APICarData.Services
             _httpContextAccessor = httpContextAccessor;
 
         }
+       
         public UserModel GetCurrentUserData()
         {
             var currentUser = GetCurrentUser();
+            Log.Debug("Checking user exist..");
             if (_DAL.UserExist(currentUser.UserId))
             {
                 var user = _DAL.GetUserDataById(currentUser.UserId);
+                Log.Debug("Data found!");
                 return _mapper.Map<UserModel>(user);
             }
-            return null;
+            throw new KeyNotFoundException("User not found.");
         }
 
         public UserModel GetUserDataById(string userId)
         {
+            Log.Debug("Checking user exist..");
             if (_DAL.UserExist(userId))
             {
                 var user = _DAL.GetUserDataById(userId);
+                Log.Debug("Data found!");
                 return _mapper.Map<UserModel>(user);
             }
-            return null;
+            throw new KeyNotFoundException("User not found.");
         }
 
         public async Task<IEnumerable<UserModel>> GetAllUsers()
         {
+            Log.Debug("Checking any user exist..");
             if (!_DAL.UsersEmpty())
             {
                 var allUsers = await _DAL.GetAllUsers();
+                Log.Debug("Data found!");
                 return _mapper.Map<IEnumerable<UserModel>>(allUsers);
             }
-            return null;
+            throw new KeyNotFoundException("User table is empty.");
         }
 
-        public bool UpdateUser(UserModel userModel)
+        public void UpdateUser(UserModel userModel)
         {
             var currentUser = GetCurrentUser();
-            if (_DAL.UserExist(currentUser.UserId) &&
-                (currentUser.UserId == userModel.UserId ||
-                currentUser.Role == "Administrator"))
+            Log.Debug("Checking user exist..");
+            if (_DAL.UserExist(userModel.UserId))
             {
-                User user = _mapper.Map<User>(userModel);
-                var dbUser = _DAL.GetUserDataById(userModel.UserId);
-                PropertyCopier<User, User>.Copy(user, dbUser);
-
-                _DAL.UpdateUser(dbUser);
-                return true;
+                Log.Debug($"Checking permissions of user {currentUser.UserId}");
+                if (currentUser.UserId == userModel.UserId ||
+                currentUser.Role == "Administrator")
+                {
+                    User user = _mapper.Map<User>(userModel);
+                    Log.Debug("Getting old data..");
+                    var dbUser = _DAL.GetUserDataById(userModel.UserId);
+                    Log.Debug("Data found!");
+                    PropertyCopier<User, User>.Copy(user, dbUser);
+                    Log.Debug("Saving new data data..");
+                    _DAL.UpdateUser(dbUser);
+                }
+                else
+                    throw new UnauthorizedAccessException($"Unauthorized action from {currentUser.UserId} with {currentUser.Role}.");
             }
-            return false;
+            else
+                throw new KeyNotFoundException($"User {userModel.UserId} not found.");
         }
 
-        public bool DeleteUserById(string userId)
+        public void DeleteUserById(string userId)
         {
             var currentUser = GetCurrentUser();
-            if (_DAL.UserExist(currentUser.UserId) &&
-                (currentUser.UserId == userId ||
-                currentUser.Role == "Administrator"))
+            Log.Debug("Checking user exist..");
+            if (_DAL.UserExist(currentUser.UserId))
             {
-                _DAL.DeleteUserById(userId);
-                return true;
+                Log.Debug($"Checking permissions of user {currentUser.UserId}");
+                if (currentUser.UserId == userId ||
+                currentUser.Role == "Administrator")
+                {
+                    Log.Debug("Removing user..");
+                    _DAL.DeleteUserById(userId);
+                }
+                throw new UnauthorizedAccessException($"Unauthorized action from {currentUser.UserId} with {currentUser.Role}.");
             }
-            return false;
+            throw new KeyNotFoundException("User not found.");
         }
 
         private User GetCurrentUser()
         {
+            Log.Debug("Getting logged user data..");
             if (_httpContextAccessor.HttpContext.User.Identity is ClaimsIdentity identity)
             {
                 var userClaims = identity.Claims;
@@ -98,7 +121,7 @@ namespace APICarData.Services
                         o.Type == ClaimTypes.Role)?.Value
                 };
             }
-            return null;
+            throw new UnauthorizedAccessException("Logged user not found");
         }
     }
 }

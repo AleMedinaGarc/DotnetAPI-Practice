@@ -15,8 +15,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    public socialAuthService: SocialAuthService,
-    ) {}
+    public socialAuthService: SocialAuthService
+  ) {}
 
   ngOnInit() {
     this.jwt = localStorage.getItem('jwt');
@@ -26,8 +26,10 @@ export class HeaderComponent implements OnInit {
       let decodedJwtData = JSON.parse(decodedJwtJsonData);
 
       Object.entries(decodedJwtData).forEach(([key, value]) => {
-        if (value == 'Employee' && this.isAuthenticated()) this.items = this.employeeItems();
-        if (value == 'Administrator' && this.isAuthenticated()) this.items = this.adminItems();
+        if (value == 'Employee' && this.isAuthenticated())
+          this.items = this.employeeItems();
+        if (value == 'Administrator' && this.isAuthenticated())
+          this.items = this.adminItems();
       });
     } else this.items = this.unlogedItems();
   }
@@ -39,11 +41,11 @@ export class HeaderComponent implements OnInit {
       .then(() => this.router.navigate(['login']));
   }
 
-  isAuthenticated():boolean {
+  isAuthenticated(): boolean {
     const token = localStorage.getItem('jwt');
-    if (token){
-      var expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
-      return (Math.floor((new Date).getTime() / 1000)) <= expiry;
+    if (token) {
+      var expiry = JSON.parse(atob(token.split('.')[1])).exp;
+      return Math.floor(new Date().getTime() / 1000) <= expiry;
     }
     return false;
   }
@@ -75,23 +77,12 @@ export class HeaderComponent implements OnInit {
             icon: 'pi pi-fw pi-user-edit',
             routerLink: ['/allReservations'],
           },
-        ]
+        ],
       },
       {
         label: 'Profile',
         icon: 'pi pi-fw pi-user',
-        items: [
-          {
-            label: 'See Profile',
-            icon: 'pi pi-fw pi-user',
-            routerLink: ['/profile'],
-          },
-          {
-            label: 'Update Profile',
-            icon: 'pi pi-fw pi-user-edit',
-            //routerLink: ['/AddCar'],
-          },
-        ]
+        routerLink: ['/profile'],
       },
       {
         label: 'Users',
@@ -129,23 +120,12 @@ export class HeaderComponent implements OnInit {
             icon: 'pi pi-fw pi-user-edit',
             routerLink: ['/allReservations'],
           },
-        ]
+        ],
       },
       {
         label: 'Profile',
         icon: 'pi pi-fw pi-user',
-        items: [
-          {
-            label: 'See Profile',
-            icon: 'pi pi-fw pi-user',
-            routerLink: ['/profile'],
-          },
-          {
-            label: 'Update Profile',
-            icon: 'pi pi-fw pi-user-edit',
-            //routerLink: ['/AddCar'],
-          },
-        ]
+        routerLink: ['/profile'],
       },
       {
         label: 'Users',
