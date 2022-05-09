@@ -2,7 +2,7 @@
 
 ## Task list
 
-- [ ].Net API
+- [ ] .Net API
   - [x] Api running
   - [x] Learn about .Net Core basics
   - [x] Learn about C# basics
@@ -33,7 +33,7 @@
   - [x] Logs
   - [ ] Fix deleting items
 
----
+  ---
 
 - [ ] MSSQL Server  
   - [x] Db Running
@@ -43,29 +43,38 @@
     - [x] CompanyCar Table
     - [x] Reservation Table
 
----
+  ---
 
 - [x] Angular front
   - [x] Google oauth login and signup
-  - [x] Main page
-  - [x] User page
-  - [x] Admin allUser page
-  - [x] AllCars page
-  - [x] MyCars page
-  - [x] Detailed car page
-  - [ ] Remove car, users and reservations
+  - [ ] Pages
+    - [x] Main page
+    - [ ] User-related pages
+      - [x] User page
+      - [ ] Update user page
+      - [x] All users grid page
+    - [ ] Cars-related pages
+      - [x] All company cars grid page
+      - [x] Add company cars page
+      - [x] Detailed car info page
+      - [ ] All dgt cars grid page
+      - [ ] Update car page
+    - [ ] Reservations-related pages
+      - [x] User reservations grid page
+      - [x] All reservations grid page
+      - [ ] Update reservations page
   - [ ] Remove car, users and reservations
   - [ ] Form validation
   
----
+  ---
 
-- [] Redis console app
+- [ ] Redis console app
   - [X] .txt to car Object
   - [x] DB running
   - [ ] Error handling
   - [ ] Logs
 
----
+  ---
 
 - [ ] General
   - [x] Data modeling
