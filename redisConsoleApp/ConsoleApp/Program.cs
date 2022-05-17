@@ -1,125 +1,178 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using ConsoleApp.Models;
 using System;
+using System.Xml;
+using System.Collections;
+using static ConsoleApp.XMLReader;
+using static ConsoleApp.CarSerializer;
+using Serilog;
+using System.IO;
+using System.Threading;
+using System.Linq;
+using System.Threading.Tasks;
+using StackExchange.Redis;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ConsoleApp
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            foreach (string line in System.IO.File.ReadLines(@"C:\Users\alme\Documents\ConsoleApp\ConsoleApp\rawData\export_mensual_mat_202112.txt"))
-            {
-                SaveDataToRedis(DGTCarSample: MapCarInfo(line));
-            }
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File("./consoleapp.log")
+                .CreateLogger();
+
+            Console.WriteLine("Redis Console App");
+            Console.WriteLine("----------------------");
+            Console.WriteLine("This console application reads the DGT microdata at: https://dgt-microdata.s3.eu-central-1.amazonaws.com/ and populate a running Redis database in localhost.");
+            Console.WriteLine("It filters the non valid VIN cars and non valid line sizes");
+
+            int numberOfThreads = GetNumberOfThreads();
+
+            Log.Information("Reading DGT microdata.");
+            ReadMicrodataFromDGT();
+            Log.Information("Adding DGT data to the database. This may take a long time.");
+            InitAppThreaded(numberOfThreads);
+            Log.Information("Finished!");
+
+
         }
 
-        public static void SaveDataToRedis(DGTCar DGTCarSample)
+        public static int GetNumberOfThreads()
+        {
+            int numberOfThreads = 10;
+            
+            Console.WriteLine("The Redis SET operation it's made with multithreading");
+            Console.WriteLine("Due the Redis bottleneck, is configured to use 10 threads.");
+            Console.WriteLine("Do you want to change the default configuration? (Y/N)");
+
+            char option = Console.ReadLine()[0];
+            while (option != 'Y' && option != 'N' && option != 'y' && option != 'n')
+            {
+                Console.WriteLine("Do you want to change the default configuration? (Y/N)");
+                option = Console.ReadLine()[0];
+            }
+
+            if (option != 'N')
+            {
+                Console.WriteLine("Introduce a number of threads:");
+                string threadsRaw = Console.ReadLine();
+                while (int.TryParse(threadsRaw, out _) != true || int.Parse(threadsRaw) < 0 || int.Parse(threadsRaw) > 100)
+                {
+                    Console.WriteLine("Number not valid.");
+                    Console.WriteLine("Introduce a number of threads:");
+                    threadsRaw = Console.ReadLine();
+
+                }
+                numberOfThreads = int.Parse(threadsRaw);
+            }
+            return numberOfThreads;
+        }
+
+        public static void InitAppThreaded(int numberOfThreads)
+        {
+            const int kLineSize = 714;
+            Thread[] threadsArray = new Thread[numberOfThreads];
+            const string kDataPath = "C:\\RedisData\\data";
+            string[] files = Directory.GetFiles(kDataPath);
+            double[] lineCount = CountFileLines(files);
+            int[] timeStamps = new int[files.Length];
+            var connection = ConnectionHelper.Connection.GetDatabase();
+            double totalCounter = 0;
+            int addedCounter = 0;
+            int checkedEntrys = 0;
+            int currentFile = 0;
+
+            foreach (string file in files)
+            {
+                Log.Information($"Adding {file} data.. ");
+                for (int currentThread = 0; currentThread < numberOfThreads; currentThread++)
+                {
+                    var linesPerThread = Convert.ToInt32(Math.Floor(lineCount[currentFile] / numberOfThreads));
+                    var localCurrentThread = currentThread;
+                    threadsArray[localCurrentThread] = new Thread(() =>
+                    {
+                        var localCheckedEntrys = 0;
+                        var startingLine = File.ReadLines(file).Skip((localCurrentThread * linesPerThread) - 1);
+                        foreach (string line in startingLine)
+                        {
+                            Interlocked.Increment(ref checkedEntrys);
+                            if (line.Length == kLineSize && SaveDataToRedis(DGTCarSample: MapCarInfo(line), connection))
+                                Interlocked.Increment(ref addedCounter);
+                            localCheckedEntrys++;
+
+                            if ((localCheckedEntrys == linesPerThread && localCurrentThread != (numberOfThreads - 1)) ||
+                                (localCurrentThread == numberOfThreads - 1 && line == null))
+                                break;
+                        }
+                    });
+                }
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
+
+                foreach (var thread in threadsArray)
+                    thread.Start();
+
+                foreach (var thread in threadsArray)
+                    thread.Join();
+
+                stopWatch.Stop();
+                TimeSpan ts = stopWatch.Elapsed;
+                string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+                timeStamps[currentFile] = ts.Minutes;
+
+                Log.Information($"Done. Time taken: {elapsedTime}");
+                Log.Information($"File: {file}");
+                Log.Information($"File entrys: {lineCount[currentFile]}. Checked: {checkedEntrys - 1}. Added: {addedCounter}.");
+                totalCounter = +addedCounter;
+                checkedEntrys = 0;
+                addedCounter = 0;
+                currentFile++;
+
+            }
+            double avg = Queryable.Average(timeStamps.AsQueryable());
+            Console.WriteLine($"Total entrys added: {totalCounter}.");
+            Console.WriteLine($"Total time: {timeStamps.Sum()}. Mean time: {totalCounter}.");
+        }
+
+
+        public static double[] CountFileLines(string[] files)
+        {
+            double[] lineCount = new double[files.Count()];
+            int index = 0;
+
+            Log.Information("Checking files length..");
+
+            foreach (string file in files)
+            {
+                Log.Information($"Checking {file}..");
+                StreamReader sr = new StreamReader(file);
+                string value = sr.ReadLine();
+                while (value != null)
+                {
+                    lineCount[index] = lineCount[index] + 1;
+                    value = sr.ReadLine();
+                }
+                Log.Information($"Done. Entrys found: {lineCount[index]}");
+                index++;
+            }
+
+            return lineCount;
+        }
+
+        public static bool SaveDataToRedis(DGTCar DGTCarSample, IDatabase connection)
         {
             string productCacheKey = DGTCarSample.VIN;
-            var connection = RedisHelper.Connection.GetDatabase();
-            var serializedObject = JsonConvert.SerializeObject(DGTCarSample);
-            Console.WriteLine(serializedObject);
-            connection.StringSet(productCacheKey, serializedObject);
-
-        }
-
-        public static DGTCar MapCarInfo(string line)
-        {
-            DGTCar DGTCarSample = new DGTCar();
-
-            DGTCarSample.RegistrationDate = DateFormatDGT(line.Substring(0, 8).Trim());
-            DGTCarSample.RegistrationClass = line.Substring(8, 1).Trim();
-            DGTCarSample.ProcessingDate = DateFormatDGT(line.Substring(9, 8).Trim());
-            DGTCarSample.Brand = line.Substring(17, 30).Trim();
-            DGTCarSample.Model = line.Substring(47, 22).Trim();
-            DGTCarSample.OriginClass = line.Substring(69, 1).Trim();
-            DGTCarSample.VIN = line.Substring(70, 21).Trim();
-            DGTCarSample.VehicleType = line.Substring(91, 2).Trim();
-            DGTCarSample.FuelType = line.Substring(93, 1).Trim();
-            DGTCarSample.CC = ParseInt(line.Substring(94, 5).Trim());
-            DGTCarSample.TaxableHorsePower = ParseDouble(line.Substring(99, 6).Trim());
-            DGTCarSample.WeightIndicator = ParseDouble(line.Substring(105, 6).Trim());
-            DGTCarSample.GrossWeight = ParseDouble(line.Substring(111, 6).Trim());
-            DGTCarSample.Seats = ParseInt(line.Substring(117, 3).Trim());
-            DGTCarSample.IsSealed = line.Substring(120, 2).Trim();
-            DGTCarSample.IsSeized = line.Substring(122, 2).Trim();
-            DGTCarSample.Transmissions = ParseInt(line.Substring(124, 2).Trim());
-            DGTCarSample.Owners = ParseInt(line.Substring(126, 2).Trim());
-            DGTCarSample.Location = line.Substring(128, 24).Trim();
-            DGTCarSample.GeoLocationCode = line.Substring(152, 2).Trim();
-            DGTCarSample.GeoRegistrationCode = line.Substring(154, 2).Trim();
-            DGTCarSample.RegistrationType = line.Substring(156, 1).Trim();
-            DGTCarSample.RegistrationTypeDate = DateFormatDGT(line.Substring(157, 8).Trim());
-            DGTCarSample.PostalCode = ParseInt(line.Substring(165, 5).Trim());
-            DGTCarSample.FirstRegistrationDate = DateFormatDGT(line.Substring(170, 8).Trim());
-            DGTCarSample.IsNew = line.Substring(178, 1).Trim();
-            DGTCarSample.OwnerType = line.Substring(179, 1).Trim();
-            DGTCarSample.ITVCode = line.Substring(180, 9).Trim();
-            DGTCarSample.ServiceCode = line.Substring(189, 3).Trim();
-            DGTCarSample.INECode = ParseInt(line.Substring(192, 5).Trim());
-            DGTCarSample.Municipality = line.Substring(197, 30).Trim();
-            DGTCarSample.HorsePower = ParseDouble(line.Substring(227, 7).Trim());
-            DGTCarSample.MaxSeats = ParseInt(line.Substring(234, 3).Trim());
-            DGTCarSample.CO2Emissions = ParseInt(line.Substring(237, 5).Trim());
-            DGTCarSample.IsRental = line.Substring(242, 1).Trim();
-            DGTCarSample.OwnerHasTitle = line.Substring(243, 1).Trim();
-            DGTCarSample.OwnershipTypeCode = line.Substring(244, 1).Trim();
-            DGTCarSample.PermanentlyUnregistered = line.Substring(245, 1).Trim();
-            DGTCarSample.IsTemporarilyDeregistered = line.Substring(246, 1).Trim();
-            DGTCarSample.IsStolen = line.Substring(247, 1).Trim();
-            DGTCarSample.IsGPSGPRSUnregistered = line.Substring(248, 11).Trim();
-            DGTCarSample.ITVType = line.Substring(259, 25).Trim();
-            DGTCarSample.VehicleVariant = line.Substring(284, 25).Trim();
-            DGTCarSample.VehicleVersion = line.Substring(309, 35).Trim();
-            DGTCarSample.Manufacturer = line.Substring(344, 70).Trim();
-            DGTCarSample.CurbWeight = ParseInt(line.Substring(414, 6).Trim());
-            DGTCarSample.MaxCurbWeight = ParseInt(line.Substring(420, 6).Trim());
-            DGTCarSample.ProductionModelCode = line.Substring(426, 4).Trim();
-            DGTCarSample.BodyStyleCode = line.Substring(430, 4).Trim();
-            DGTCarSample.PassengersPerSquareMeter = ParseInt(line.Substring(434, 3).Trim());
-            DGTCarSample.EuroEmissionLevel = line.Substring(437, 8).Trim();
-            DGTCarSample.ElectricPowerConsumption = ParseInt(line.Substring(445, 4).Trim());
-            DGTCarSample.VehicleRegulationClass = line.Substring(449, 4).Trim();
-            DGTCarSample.ElectricVehicleCategory = line.Substring(453, 4).Trim();
-            DGTCarSample.ElectricVehicleAutonomy = ParseInt(line.Substring(457, 6).Trim());
-            DGTCarSample.ChassisBrand = line.Substring(463, 30).Trim();
-            DGTCarSample.ChassisManufacturer = line.Substring(493, 50).Trim();
-            DGTCarSample.ChassisVehicleType = line.Substring(543, 35).Trim();
-            DGTCarSample.ChassisVehicleVariant = line.Substring(578, 25).Trim();
-            DGTCarSample.ChassisVehicleBase = line.Substring(603, 35).Trim(); //added
-            DGTCarSample.Wheelbase = ParseInt(line.Substring(638, 4).Trim());
-            DGTCarSample.FrontAxleTrack = ParseInt(line.Substring(642, 4).Trim());
-            DGTCarSample.RearAxleTrack = ParseInt(line.Substring(646, 4).Trim());
-            DGTCarSample.EngineIntakeType = line.Substring(650, 1).Trim();
-            DGTCarSample.ProductionModelPassword = line.Substring(651, 25).Trim();
-            DGTCarSample.EcoInnovation = line.Substring(676, 1).Trim();
-            DGTCarSample.EcoReduction = line.Substring(677, 4).Trim();
-            DGTCarSample.EcoCode = line.Substring(681, 25).Trim();
-            DGTCarSample.EnrollmentDate = DateFormatDGT(line.Substring(706, 8).Trim());
-
-            return DGTCarSample;
-        }
-
-        public static string DateFormatDGT(string date)
-        {
-            return date == "" ? "" : date.Insert(2, "/").Insert(5, "/");
-        }
-
-        public static int ParseInt(string numberS)
-        {
-            int _o1;
-            const int _kEmptyInt = 0;
-
-            return int.TryParse(numberS, out _o1) ? int.Parse(numberS): _kEmptyInt;
-        }
-        public static double ParseDouble(string numberS)
-        {
-            double _o2;
-            const double _kEmptyDouble = 0;
-
-            return double.TryParse(numberS, out _o2) ? double.Parse(numberS) : _kEmptyDouble;
+            if (productCacheKey.Length == 17)
+            {
+                var serializedObject = JsonConvert.SerializeObject(DGTCarSample);
+                connection.StringSet(productCacheKey, serializedObject);
+                return true;
+            }
+            return false;
         }
     }
 }

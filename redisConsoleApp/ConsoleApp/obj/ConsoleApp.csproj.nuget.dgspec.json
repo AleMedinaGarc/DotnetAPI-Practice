@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alme\\Documents\\ConsoleApp\\ConsoleApp\\ConsoleApp.csproj": {}
+    "C:\\Users\\alme\\Documents\\APICarData\\redisConsoleApp\\ConsoleApp\\ConsoleApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\alme\\Documents\\ConsoleApp\\ConsoleApp\\ConsoleApp.csproj": {
+    "C:\\Users\\alme\\Documents\\APICarData\\redisConsoleApp\\ConsoleApp\\ConsoleApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alme\\Documents\\ConsoleApp\\ConsoleApp\\ConsoleApp.csproj",
+        "projectUniqueName": "C:\\Users\\alme\\Documents\\APICarData\\redisConsoleApp\\ConsoleApp\\ConsoleApp.csproj",
         "projectName": "ConsoleApp",
-        "projectPath": "C:\\Users\\alme\\Documents\\ConsoleApp\\ConsoleApp\\ConsoleApp.csproj",
+        "projectPath": "C:\\Users\\alme\\Documents\\APICarData\\redisConsoleApp\\ConsoleApp\\ConsoleApp.csproj",
         "packagesPath": "C:\\Users\\alme\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alme\\Documents\\ConsoleApp\\ConsoleApp\\obj\\",
+        "outputPath": "C:\\Users\\alme\\Documents\\APICarData\\redisConsoleApp\\ConsoleApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -48,6 +48,22 @@
               "target": "Package",
               "version": "[13.0.1, )"
             },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Serilog.Extensions.Logging": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[4.0.1, )"
+            },
+            "Serilog.Sinks.File": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
             "StackExchange.Redis": {
               "target": "Package",
               "version": "[2.5.61, )"
@@ -63,12 +79,18 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.1.24, 3.1.24]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

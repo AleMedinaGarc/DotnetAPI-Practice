@@ -112,12 +112,10 @@ export class HeaderComponent implements OnInit {
         items: [
           {
             label: 'My Reservations',
-            icon: 'pi pi-fw pi-user',
             routerLink: ['/userReservations'],
           },
           {
             label: 'All Reservations',
-            icon: 'pi pi-fw pi-user-edit',
             routerLink: ['/allReservations'],
           },
         ],
@@ -129,7 +127,7 @@ export class HeaderComponent implements OnInit {
       },
       {
         label: 'Users',
-        icon: 'pi pi-fw pi-user',
+        icon: 'pi pi-fw pi-users',
         routerLink: ['/allUsers'],
       },
       {

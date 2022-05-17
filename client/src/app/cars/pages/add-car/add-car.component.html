@@ -1,6 +1,6 @@
 <app-header></app-header>
 <div>
-    <p-breadcrumb [model]="items" style="padding: 10%; margin: 20px;"></p-breadcrumb>
+    <p-breadcrumb [model]="items" (onItemClick)="crumClicked($event)" style="padding: 10%; margin: 20px;"></p-breadcrumb>
     <div class="formContainer">
         <p-card [style]="{width: '360px'}" styleClass="p-card-shadow">
             <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">

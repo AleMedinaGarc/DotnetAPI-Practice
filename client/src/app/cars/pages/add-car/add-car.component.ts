@@ -41,6 +41,9 @@ export class AddCarComponent {
     };
   }
 
+  crumClicked(event: { item: any; }) {
+    console.log(event.item);
+  }
   onSubmit() {
     console.log("test")
     for (const field in this.profileForm.controls) {
@@ -54,7 +57,7 @@ export class AddCarComponent {
 
   async createPost() {
     await this.carsService.addCar(this.carObject).then((res)=>{
-      this.submited = true;
+      //this.submited = true;
     });
   }
 }
