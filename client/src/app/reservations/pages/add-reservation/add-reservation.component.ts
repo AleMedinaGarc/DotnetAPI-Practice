@@ -14,6 +14,7 @@ export class AddReservationComponent {
   carUse: any[];
   reservationObject: any;
   items: MenuItem[] | any;
+  error: string  | any;
 
   profileForm = new FormGroup({
     vin: new FormControl(this.route.snapshot.params['id'], Validators.required),
@@ -57,8 +58,17 @@ export class AddReservationComponent {
     this.createPost();
   }
 
+
   async createPost() {
-    await this.reservationsService.addReservation(this.reservationObject);
+    await this.reservationsService.addReservation(this.reservationObject).then((result: any)=>{
+      console.log(result);     
+    }).catch((err: any)=>{
+      switch (err.status){
+        case 409: this.error="Car already in the database."; break;
+        case 404: this.error="The VIN doesn't exist."; break;
+        default: this.error="Unexpected error."; break;
+      }
+    });  
   }
 
   formatDate(date: any): string {

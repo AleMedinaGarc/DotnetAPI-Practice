@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using APICarData.Domain.Models;
 using APICarData.Domain.Interfaces.Login;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+using Serilog;
+using System.Reflection;
 
 namespace APICarData.Api.Controllers
 {
@@ -26,14 +26,14 @@ namespace APICarData.Api.Controllers
         {
             try
             {
-                string _JWT = _service.Login(googleUserDataModel);
-                return Ok(new { Token =_JWT});
+                Log.Debug("Searching for user...");
+                string jwt = _service.Login(googleUserDataModel);
+                Log.Debug($"Returning token:{jwt}");
+                return Ok(new { token = jwt });
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while fetching user in the database.");
             }
         }
     }

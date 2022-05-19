@@ -5,6 +5,8 @@ using APICarData.Domain.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using APICarData.Domain.Interfaces.UserData;
+using System.Reflection;
+using Serilog;
 
 namespace APICarData.Api.Controllers
 {
@@ -25,18 +27,15 @@ namespace APICarData.Api.Controllers
         {
             try
             {
+                Log.Debug("Getting current user data..");
                 var user = _service.GetCurrentUserData();
-                if (user != null)
-                    return Ok(user);
-                return BadRequest("User not found.");
+                Log.Debug("Done.");
+                return Ok(user);
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while fetching user in the database.");
             }
-
         }
 
         [HttpGet("{id}")]
@@ -45,18 +44,15 @@ namespace APICarData.Api.Controllers
         {
             try
             {
+                Log.Debug("Getting user data..");
                 var user = _service.GetUserDataById(id);
-                if (user != null)
-                    return Ok(user);
-                return BadRequest("User not found.");
+                Log.Debug("Done.");
+                return Ok(user);
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while fetching user in the database.");
             }
-
         }
 
         [HttpGet("allUsers")]
@@ -65,18 +61,15 @@ namespace APICarData.Api.Controllers
         {
             try
             {
+                Log.Debug("Getting all users data..");
                 var allUsers = await _service.GetAllUsers();
-                if (allUsers != null)
-                    return Ok(allUsers);
-                return NotFound("User not found.");
+                Log.Debug("Done.");
+                return Ok(allUsers);
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while fetching users in the database.");
             }
-
         }
 
         [HttpPut("updateUser")]
@@ -85,16 +78,14 @@ namespace APICarData.Api.Controllers
         {
             try
             {
-                bool result = _service.UpdateUser(userModel);
-                if (result)
-                    return Ok("User updated.");
-                return BadRequest("User not found or permission denied.");
+                Log.Debug("Updating user data..");
+                _service.UpdateUser(userModel);
+                Log.Debug("Done.");
+                return Ok("User updated.");
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while updating user.");
             }
         }
 
@@ -104,18 +95,15 @@ namespace APICarData.Api.Controllers
         {
             try
             {
-                bool result = _service.DeleteUserById(id);
-                if (result)
-                    return Ok("User removed from database");
-                return BadRequest("User not found or permission denied.");
+                Log.Debug("Removing user data..");
+                _service.DeleteUserById(id);
+                Log.Debug("Done.");
+                return Ok("User removed from database");
             }
-            catch (Exception e)
+            catch (AmbiguousMatchException)
             {
-                if (e.Source != null)
-                    Console.WriteLine("Exception source:", e.Source);
-                throw;
+                throw new Exception("Exception while removing user.");
             }
-
         }
     }
 }

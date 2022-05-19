@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { CarsService } from '../../cars.service'
@@ -13,6 +13,8 @@ import { MenuItem } from 'primeng/api';
 export class HomeComponent implements OnInit {
   response: Object | undefined;
   carList : any;
+  innerWidth: any;
+  items: MenuItem[] | any;
 
   constructor(
     public socialAuthService: SocialAuthService,
@@ -20,10 +22,10 @@ export class HomeComponent implements OnInit {
     private router: Router
   ) {}
 
-  items: MenuItem[] | any;
   ngOnInit() {
-    this.items = [{ label: 'Home', url: '' }, { label: 'All Reservations' }];
+    this.items = [{ label: 'Home'}, { label: 'All Reservations' }];
     this.GetCarList();
+    this.innerWidth = window.innerWidth;
   }
 
   reserveClick($myParam: string = ''): void {
@@ -53,21 +55,11 @@ export class HomeComponent implements OnInit {
     })
     return target;
   }
-  // allCars = service.getallcars();
-  // allReservations = service.getallreserved()
-  // for all items in allcars
-  // for all items in reservations
-  // if reservations.vin = allcars.vin
-  //remove allCars[0][item.vin]
-  //remove allCars[1][item.vin]
-  // for item in allCars[0]
-  // create card with (new component)
-  // brand
-  // model
-  // fuel type
-  // seats
 
-  printContent(test: any) {
-    console.log(test);
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.innerWidth = window.innerWidth;
+    console.log(this.innerWidth)
   }
+  // 1150
 }

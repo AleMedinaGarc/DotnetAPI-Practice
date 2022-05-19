@@ -10,7 +10,7 @@ namespace APICarData.Domain.Interfaces.UserData
         UserModel GetCurrentUserData();
         UserModel GetUserDataById(string userId);
         Task<IEnumerable<UserModel>> GetAllUsers();
-        bool UpdateUser(UserModel userModel);
-        bool DeleteUserById(string userId);
+        void UpdateUser(UserModel userModel);
+        void DeleteUserById(string userId);
     }
 }

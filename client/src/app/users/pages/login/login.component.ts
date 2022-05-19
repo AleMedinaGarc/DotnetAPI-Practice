@@ -25,6 +25,7 @@ export class LoginComponent {
       .signIn(GoogleLoginProvider.PROVIDER_ID)
       .then(() => {
         this.socialAuthService.authState.subscribe((user) => {
+          console.log(user)
           this.user = user;
           localStorage.setItem('loggedUser', JSON.stringify(user))
         });

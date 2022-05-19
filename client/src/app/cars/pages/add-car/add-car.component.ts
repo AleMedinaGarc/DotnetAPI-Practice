@@ -12,6 +12,7 @@ export class AddCarComponent {
   items: MenuItem[] | any;
   carObject: any;
   submited: boolean = false;
+  error: string  | any;
   
   profileForm = new FormGroup({
     vin: new FormControl('RP8MD4100MV109768', Validators.required),
@@ -41,8 +42,10 @@ export class AddCarComponent {
     };
   }
 
+  crumClicked(event: { item: any; }) {
+    console.log(event.item);
+  }
   onSubmit() {
-    console.log("test")
     for (const field in this.profileForm.controls) {
       if(field == 'fabricationYear')
       this.carObject[field] = this.profileForm.controls[field].value as number;
@@ -53,8 +56,13 @@ export class AddCarComponent {
   }
 
   async createPost() {
-    await this.carsService.addCar(this.carObject).then((res)=>{
-      this.submited = true;
-    });
+    await this.carsService.addCar(this.carObject).then((result)=>{
+      console.log(result);     
+    }).catch((err: any)=>{
+      switch (err.status){
+        case 409: this.error="Car already taken. Please choose another available car."; break;
+        default: this.error="Unexpected error."; break;
+      }
+    }); 
   }
 }

@@ -1,15 +1,21 @@
-<app-header></app-header>
-<div *ngIf="socialAuthService.authState | async as socialUser">
-    <div class="wrapper">
-        <div *ngFor="let car of carList">
-            <p-card header="{{car.brand}}" subheader="{{car.model}}" [style]="{width: '360px'}" styleClass="p-card-shadow">
-                <p>Seats:{{car.seats}} </p>
-                <p>Fabrication Year: {{car.fabricationYear}}</p>
-                <p>Number plate: {{car.numberPlate}}</p>
-                <ng-template pTemplate="footer">
-                    <p-button label="Reserve" icon="pi pi-bookmark" (onClick)="reserveClick(car.vin)"></p-button>
-                </ng-template>
-            </p-card>
+<div class="container">
+    <div class="header">
+        <app-header></app-header>
+    </div>
+    <div class="main">
+        <div *ngIf="socialAuthService.authState | async as socialUser">
+            <div class="wrapper">
+                <div *ngFor="let car of carList" class="cardItem">
+                    <p-card header="{{car.brand}}" subheader="{{car.model}}" [style]="{width: '360px'}" styleClass="p-card-shadow">
+                        <p>Seats:{{car.seats}} </p>
+                        <p>Fabrication Year: {{car.fabricationYear}}</p>
+                        <p>Number plate: {{car.numberPlate}}</p>
+                        <ng-template pTemplate="footer">
+                            <p-button label="Reserve" icon="pi pi-bookmark" (onClick)="reserveClick(car.vin)"></p-button>
+                        </ng-template>
+                    </p-card>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -1,38 +1,53 @@
-<app-header></app-header>
-<div>
-    <p-breadcrumb [model]="items" style="padding: 10%;"></p-breadcrumb>
-    <div class="formContainer">
-        <p-card [style]="{width: '360px'}" styleClass="p-card-shadow">
-            <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-                <h2>Adding a Reservation</h2>
-                <div class="formComponent">
-                    <label>VIN code</label>
-                    <br>
-                    <input id="disabled-input" type="text" pInputText [disabled]="disabled" formControlName="vin">
-                </div>
-                <div class="formComponent">
-                    <div class="p-fluid p-grid p-formgrid">
-                        <div class="p-field p-col-12 p-md-4">
-                            <label>Starting date</label>
-                            <p-calendar formControlName="fromDate" dateFormat="dd.mm.yy"></p-calendar>
+<div class="container">
+    <div class="header">
+        <app-header></app-header>
+    </div>
+    <div class="main">
+        <p-breadcrumb [model]="items" [style]="{'margin-top': '1%', 'margin-bottom': '1%'}"></p-breadcrumb>
+        <div class="formContainer">
+            <div class="cardItem">
+                <p-card [style]="{width: '360px'}" styleClass="p-card-shadow">
+                    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                        <h2>Adding a Reservation</h2>
+                        <div class="formComponent">
+                            <div class="label">
+                                <label>VIN code</label>
+                            </div>
+                            <input id="disabled-input" type="text" pInputText [disabled]="disabled" formControlName="vin">
                         </div>
-                    </div>
-                </div>
-                <div class="formComponent">
-                    <div class="p-fluid p-grid p-formgrid">
-                        <div class="p-field p-col-12 p-md-4">
-                            <label>Ending date</label>
-                            <p-calendar formControlName="toDate" dateFormat="dd.mm.yy"></p-calendar>
+                        <div class="formComponent">
+                            <div class="p-fluid p-grid p-formgrid">
+                                <div class="p-field p-col-12 p-md-4">
+                                    <div class="label">
+                                        <label>Starting date</label>
+                                    </div>
+                                    <p-calendar formControlName="fromDate" dateFormat="dd.mm.yy"></p-calendar>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="formComponent">
-                    <label>Car use</label>
-                    <br>
-                    <p-selectButton [options]="carUse" formControlName="carUse"></p-selectButton>
-                </div>
-                <button pButton type="submit" [disabled]="!profileForm.valid">Submit</button>
-            </form>
-        </p-card>
+                        <div class="formComponent">
+                            <div class="p-fluid p-grid p-formgrid">
+                                <div class="p-field p-col-12 p-md-4">
+                                    <div class="label">
+                                        <label>Ending date</label>
+                                    </div>
+                                    <p-calendar formControlName="toDate" dateFormat="dd.mm.yy"></p-calendar>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="formComponent">
+                            <div class="label">
+                                <label>Car use</label>
+                            </div>
+                            <p-selectButton [options]="carUse" formControlName="carUse"></p-selectButton>
+                        </div>
+                        <button pButton type="submit" [disabled]="!profileForm.valid">Submit</button>
+                        <div class="error" *ngIf="error">
+                            <p class="errorText">{{error}}</p>
+                        </div>
+                    </form>
+                </p-card>
+            </div>
+        </div>
     </div>
 </div>

@@ -23,7 +23,7 @@ namespace APICarData.Api.Controllers
         public IActionResult ApiError()
         {
             var t = System.DateTime.Now.Hour - 14;
-            return Ok(new { response = 10/t });
+            return Ok(new { response = 10 / t });
         }
 
     }
