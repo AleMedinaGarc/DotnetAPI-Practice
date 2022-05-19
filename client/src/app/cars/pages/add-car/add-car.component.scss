@@ -1,11 +1,11 @@
 .formContainer {
-    padding: 0;
-    justify-content: center;
-    align-items: center;
-    width: 40%;
-    display: block;
-    border-width: 1px;
-    border-color: #8697cf;
+    display: grid;
+    grid-template-rows: auto;
+    padding-top: 2%;
+}
+
+.cardItem {
+    grid-area: cardItem;
 }
 
 .no-show {
@@ -13,7 +13,11 @@
 }
 
 .formComponent {
-    padding-bottom: 4%;
+    padding-bottom: 7%;
+}
+
+.label {
+    padding-bottom: 3%;
 }
 
 input {
@@ -28,14 +32,38 @@ input:hover {
     border-color: #8697cf !important;
 }
 
-div {
-    margin: auto;
-    width: 95%;
-}
-
 label {
     font-family: 'Roboto';
     font-size: large;
     color: #c9c9c9;
-    margin-bottom: 4%;
+}
+
+.header {
+    grid-area: header;
+}
+
+.main {
+    grid-area: main;
+    margin: auto;
+    width: 95%;
+}
+
+.error {
+    height: 60px;
+    background-color: rgb(180, 14, 47);
+    text-align: center;
+    display: table;
+    margin-top: 5%;
+}
+
+.errorText {
+    color: #ffffff;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: auto;
+    grid-template-areas: "header header header header" "main main main main";
+    padding-bottom: 5%;
 }

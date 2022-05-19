@@ -68,19 +68,18 @@
   
 ---
 
-- [ ] Redis console app
+- [x] Redis console app
   - [X] .txt to car Object
   - [x] DB running
-  - [ ] Error handling
-  - [ ] Logs
+  - [x] Error handling
+  - [x] Logs
 
 ---
 
 - [ ] General
   - [x] Data modeling
-  - [ ] Data filter script
-  - [ ] Deserialize XML
-  - [ ] Implement automatic ETL process
+  - [x] Deserialize XML
+  - [x] Implement automatic ETL process
   - [ ] Build app script
   - [ ] Testing container
   - [ ] Generate code documentation

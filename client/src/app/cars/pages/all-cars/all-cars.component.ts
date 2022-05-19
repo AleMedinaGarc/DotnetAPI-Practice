@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-import 'ag-grid-enterprise';
 import { MenuItem } from 'primeng/api';
 import { CarsService } from '../../cars.service'
 import { Router } from '@angular/router';

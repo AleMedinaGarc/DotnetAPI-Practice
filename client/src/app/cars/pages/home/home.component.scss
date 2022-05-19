@@ -1,5 +1,6 @@
-div {
-    margin: 20px;
+.cardItem {
+    margin: 1%;
+    margin-top: 2%;
 }
 
 button {
@@ -8,5 +9,25 @@ button {
 
 .wrapper {
     display: grid;
-    grid-template-columns: repeat(3, 380px);
+    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    padding-bottom: 10%;
+}
+
+.header {
+    grid-area: header;
+    margin-bottom: 2%;
+}
+
+.main {
+    grid-area: main;
+    width: 95%;
+    justify-self: center;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: auto;
+    grid-template-areas: "header header header header" "main main main main";
 }

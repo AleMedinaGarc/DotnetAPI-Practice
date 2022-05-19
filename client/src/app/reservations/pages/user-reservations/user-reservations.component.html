@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div>
-    <p-breadcrumb [model]="items" style="padding: 10%;"></p-breadcrumb>
+    <p-breadcrumb [model]="items" [style]="{'margin-top': '1%', 'margin-bottom': '1%'}"></p-breadcrumb>
     <div *ngIf="allReservations.length == 0;else table">
         <h2>
             There is no reservations yet.

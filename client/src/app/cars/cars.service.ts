@@ -62,13 +62,20 @@ export class CarsService {
       body,
       this.getHeaderAuth('text')
     );
-    try {
-      obs.subscribe((response) => {
-        console.log(response);
+    const promise = new Promise<void>((resolve, reject) => {
+      obs.subscribe({
+        next: (res: any) => {
+          this.getResponse = res;
+          this.router.navigate(['/allCars']);
+          resolve();
+        },
+        error: (err: any) => {
+          reject(err);
+        },
       });
-    } catch (e) {
-      console.log(e);
-    }
+    });
+
+    return promise;
   }
 
   private generatePetition(obs: any){

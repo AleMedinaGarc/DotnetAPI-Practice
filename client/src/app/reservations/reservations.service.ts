@@ -29,7 +29,7 @@ export class ReservationsService {
     toDate: string;
     carUse: string;
   }) {
-    await this.postReservation(reservation);
+    return await this.postReservation(reservation);
   }
 
   private async getReservations() {
@@ -64,20 +64,26 @@ export class ReservationsService {
       toDate: reservation.toDate,
       carUse: reservation.carUse,
     };
-    console.log(body);
     const obs = this.http.post<string>(
       'http://localhost:5000/api/Reservations/addReservation',
       body,
       this.getHeaderAuth('text')
     );
-    try {
-      obs.subscribe((response) => {
-        console.log(response);
-        this.router.navigate(['/userReservations']);
+
+    const promise = new Promise<void>((resolve, reject) => {
+      obs.subscribe({
+        next: (res: any) => {
+          this.getResponse = res;
+          this.router.navigate(['/userReservations']);
+          resolve();
+        },
+        error: (err: any) => {
+          reject(err);
+        },
       });
-    } catch (e) {
-      console.log(e);
-    }
+    });
+
+    return promise;
   }
 
   private generatePetition(obs: any) {
@@ -85,7 +91,6 @@ export class ReservationsService {
       obs.subscribe({
         next: (res: any) => {
           this.getResponse = res;
-          console.log(res);
           resolve();
         },
         error: (err: any) => {
@@ -107,7 +112,7 @@ export class ReservationsService {
     });
     const httpOptions = {
       headers: headers_object,
-      responseType: resType ? resType as 'json' : 'json',
+      responseType: resType ? (resType as 'json') : 'json',
     };
     return httpOptions;
   }
